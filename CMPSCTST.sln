@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMPSCTST", "CMPSCTST.vcproj", "{0C914908-2BC4-4A89-9FD7-E27B0936DECE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Scripts", "Test Scripts", "{902B2E95-0323-404D-9287-07D392BE9F2F}"
+	ProjectSection(SolutionItems) = preProject
+		cmpsctst.rexx = cmpsctst.rexx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DOC", "_DOC", "{6AE95C89-3653-4572-8074-EBD2C5FAE36E}"
+	ProjectSection(SolutionItems) = preProject
+		_TODO.txt = _TODO.txt
+		NOTES.txt = NOTES.txt
+		README.txt = README.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{64D2910A-ECF2-4DE2-A15E-72D87497B850}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMPSC", "CMPSC", "{86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_2012", "_2012", "{DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Legacy", "_Legacy", "{00F359F9-6090-4D6B-850F-52BD57D250D8}"
+	ProjectSection(SolutionItems) = preProject
+		cmpsc.c = cmpsc.c
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{B3450B1C-632D-4166-AF69-17E32C9195C7}"
+	ProjectSection(SolutionItems) = preProject
+		_both.cmd = _both.cmd
+		_errors.cmd = _errors.cmd
+		_herc.cmd = _herc.cmd
+		_me.cmd = _me.cmd
+		cmpsctst.cmd = cmpsctst.cmd
+		ff.cmd = ff.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source Files", "Source Files", "{06BCF646-6E08-4E6D-8378-E903AE100A43}"
+	ProjectSection(SolutionItems) = preProject
+		cmpsc_2012.c = cmpsc_2012.c
+		cmpscdbg.c = cmpscdbg.c
+		cmpscdct.c = cmpscdct.c
+		cmpscget.c = cmpscget.c
+		cmpscmem.c = cmpscmem.c
+		cmpscput.c = cmpscput.c
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Header Files", "Header Files", "{1DB192B9-F9A5-4726-8BFB-98C06B4619B2}"
+	ProjectSection(SolutionItems) = preProject
+		cmpsc.h = cmpsc.h
+		cmpscbit.h = cmpscbit.h
+		cmpscdbg.h = cmpscdbg.h
+		cmpscdct.h = cmpscdct.h
+		cmpscget.h = cmpscget.h
+		cmpscmem.h = cmpscmem.h
+		cmpscput.h = cmpscput.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{5D227652-2DED-4049-B5B2-C4B77EF4A450}"
+	ProjectSection(SolutionItems) = preProject
+		cmpsctst.make = cmpsctst.make
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Debug|Win32.Build.0 = Debug|Win32
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Debug|x64.ActiveCfg = Debug|x64
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Debug|x64.Build.0 = Debug|x64
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Release|Win32.ActiveCfg = Release|Win32
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Release|Win32.Build.0 = Release|Win32
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Release|x64.ActiveCfg = Release|x64
+		{0C914908-2BC4-4A89-9FD7-E27B0936DECE}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B3450B1C-632D-4166-AF69-17E32C9195C7} = {902B2E95-0323-404D-9287-07D392BE9F2F}
+		{5D227652-2DED-4049-B5B2-C4B77EF4A450} = {64D2910A-ECF2-4DE2-A15E-72D87497B850}
+		{DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A} = {86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}
+		{00F359F9-6090-4D6B-850F-52BD57D250D8} = {86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}
+		{06BCF646-6E08-4E6D-8378-E903AE100A43} = {DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}
+		{1DB192B9-F9A5-4726-8BFB-98C06B4619B2} = {DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,189 @@
+//TSTCMPSC JOB CLASS=A,REGION=1M,MSGCLASS=H,NOTIFY=&SYSUID,                     
+//             COND=(0,NE)                                                      
+//ST010   EXEC PGM=ASMA90,PARM='NOTEST,OBJECT,RENT,BATCH'                       
+//SYSUT1   DD  UNIT=VIO,SPACE=(CYL,(1,1))                                       
+//SYSPRINT DD  SYSOUT=*                                                         
+//SYSLIB   DD  DSN=SYS1.MACLIB,DISP=SHR                                         
+//         DD  DSN=SYS1.MODGEN,DISP=SHR                                         
+//SYSLIN   DD  DSN=&&OBJ,DISP=(MOD,PASS),                                       
+//         SPACE=(CYL,(1)),UNIT=SYSDA,                                          
+//         DCB=(LRECL=80,BLKSIZE=3200,RECFM=FB)                                 
+//SYSPUNCH DD  DUMMY                                                            
+//SYSIN    DD  *                                                                
+TSTCMPSC CSECT ,             TSTCMPSC PROGRAM, MAIN ENTRY POINT                 
+TSTCMPSC AMODE 31            TSTCMPSC MAY RECEIVE CONTROL IN 31-BITMODE         
+TSTCMPSC RMODE ANY           TSTCMPSC LOAD MODULE MAY RESIDE ABOVE 16MB         
+                                                                SPACE           
+ PRINT NOGEN,NODATA          DON'T LIST MACRO EXPANSIONS                        
+ YREGS ,                     OS REG EQUATES                                     
+ SAVE (14,12),,'TSTCMPSC'    SAVE CALLERS REGS                                  
+ LR R12,R15                  R12 = COPY OF PROGRAM EPA                          
+ USING TSTCMPSC,R12          R12 IS BASE REG IN CSECT                           
+ LH R2,=AL2(BYTES_REQUIRED)  R2 = SIZE OF WORKING STORAGE                       
+ STORAGE OBTAIN,LENGTH=(R2),LOC=BELOW  GET WORKING STORAGE AREA                 
+ LR R11,R1                   R11 = BASE REG FOR WORKING STORAGE                 
+ USING WORKAREA,R11          ESTABLISH ADDRESSABILITY ON WORK AREA              
+ LR R0,R1                    R0 = COPY OF WORKING STORAGE ADDRESS               
+ LR R1,R2                    R1 = COPY OF WORKING STORAGE SIZE                  
+ XR R15,R15                  R15 = 0, LENGTH FOR MVCL                           
+ MVCL R0,R14                 PAD ENTIRE STORAGE BLOCK WITH NULLS                
+ USING WORKAREA,R11          ESTABLISH ADDRESSABILITY ON WORK AREA              
+ ST R13,MAINSAVE+4           LINK SAVE AREAS BACKWARDS                          
+ LR R1,R13                   R1 = COPY OF PTR TO OLD SAVE AREA                  
+ LA R13,MAINSAVE             R13 = ADDRESS OF NEW SAVE AREA                     
+ ST R13,0(R1)                LINK SAVE AREAS FORWARD                            
+ L  R1,24(R1)                R1 = POINTER TO PARAMETER LIST                     
+ MVC EYE,=CL4'MEYE'          SET EYECATCHER IN WORKING STORAGE                  
+ L  R1,0(R1)                 R1 = ADDRESS OF PARM STRING FROM JCL               
+                                                                SPACE           
+ CLC  =C'COMPRESS',2(R1)     COMPRESS?                                          
+ BE   SETCDICT               SET COMPRESSION DICTIONARY                         
+ CLC  =C'EXPAND',2(R1)       EXPAND?                                            
+ BE   SETEDICT               SET EXPANSION DICTIONARY                           
+                                                                SPACE           
+ LH   R2,=AL2(BYTES_REQUIRED)  R2 = SIZE OF WORKING STORAGE                     
+ L    R13,MAINSAVE+4           R13 = ADDR OF PREV SAVE AREA                     
+ STORAGE RELEASE,ADDR=(R11),LENGTH=(R2) FREE WORKING STORAGE                    
+ RETURN (14,12),RC=8,T         RETURN TO CALLER WITH ERROR RC                   
+                                                                SPACE           
+SETEDICT DS 0H                                                                  
+ MVI  FLAG,CMPSC_EXPAND      SET OUR EXPAND FLAG                                
+ MVC  DICTIONARY,=V(AEDICT)  SET OUR POINTER TO EXPANSION DICT                  
+ B    BEGIN                                                                     
+                                                                SPACE           
+SETCDICT DS 0H                                                                  
+ MVC  DICTIONARY,=V(ACDICT)  SET OUR POINTER TO COMPRESSION DICT                
+*B    BEGIN                                                                     
+                                                                SPACE           
+BEGIN DS 0H                                                                     
+ MVC OUTFILE,OUTFILE_I       INIT OUTFILE DCB IN DYNAMIC STORAGE                
+ MVC INFILE,INFILE_I         INIT INFILE DCB IN DYNAMIC STORAGE                 
+ MVC OPEN_L,OPEN_I           INIT OPEN MACRO IN DYNAMIC STORAGE                 
+ OPEN (INFILE,(INPUT),OUTFILE,(OUTPUT)),MODE=31,MF=(E,OPEN_L)                   
+                                                                SPACE           
+LOOP DS 0H                   DO UNTIL END OF INPUT DATA (EODAD)                 
+    GET INFILE               READ A RECORD FROM INFILE                          
+                                                                SPACE           
+    LR  R2,R1                R2 = COPY OF POINTER TO INFILE BUFFER              
+    PUT OUTFILE              GET NEW OUTPUT BUFFER FROM QSAM                    
+    LR  R3,R1                R3 = COPY OF POINTER TO OUTFILE BUFFER             
+    XC  CMPSC(CMPSC_LEN),CMPSC             CLEAR PARM BLOCK                     
+    MVI CMPSC_FLAGS_BYTE2,CMPSC_SYMSIZE_4  SET SYMBOL SIZE 4                    
+    OC  CMPSC_FLAGS_BYTE2,FLAG             PUT IN COMPRESS/EXPAND FLAG          
+    MVC CMPSC_DICTADDR,DICTIONARY  SET DICTIONARY ADDRESS                       
+    L   R4,=F'32710'         R4 = LENGTH OF TARGET AREA, OUTFILE BUFFER         
+    ST  R4,CMPSC_TARGETLEN   SET LENGTH OF TARGET AREA                          
+    LA  R0,4(R3)             R0 = ADDRESS OF TARGET AREA                        
+    ST  R0,CMPSC_TARGETADDR  SET TARGET AREA ADDRESS, OUTFILE BUFFER            
+    LA  R0,4(R2)             R0 = ADDRESS OF TEXT TO COMPRESS                   
+    ST  R0,CMPSC_SOURCEADDR  SET SOURCE AREA, INFILE BUFFER                     
+    LH  R0,0(R2)             R0 = LENGTH OF SOURCE AREA INPUT REC RDW           
+    SL  R0,=F'4'             R0 = LENGTH OF SOURCE AREA MINUS RDW               
+    ST  R0,CMPSC_SOURCELEN   SET LENGTH OF TEXT TO PROCESS                      
+    LA  R0,WA                R0 = ADDRESS OF WORK AREA FOR SERVICE RTN          
+    ST  R0,CMPSC_WORKAREAADDR  SET WORKAREA ADDRESS                             
+                                                                SPACE           
+    CSRCMPSC  CBLOCK=CMPSC   CALL THE COMPRESSION SERVICE ROUTINE               
+                                                                SPACE           
+    CL  R15,=A(CMPSC_RETCODE_OK)   CHECK IF                                     
+    BE  CMPSCOK                    THAT WORKED                                  
+                                                                SPACE           
+    LR R2,R15                R2 = COPY OF RETURN CODE FROM CSRCMPSC             
+    ABEND 100,REASON=(2)     PROGRAM ABEND 100 WITH REASON IN R2                
+                                                                SPACE           
+CMPSCOK DS 0H                                                                   
+    SL  R4,CMPSC_TARGETLEN   R4 = TARGET LENGTH BEFORE MINUS AFTER CMP          
+    LA  R4,4(R4)             R4 = RECORD LENGTH INCLUDING 4 BYTES RDW           
+                                                                SPACE           
+    CLI FLAG,CMPSC_EXPAND                  IF COMPRESSING,                      
+    BE  GOTLEN                                                                  
+    TM  CMPSC_DICTADDR_BYTE3,CMPSC_BITNUM  AND BITNUM IS NON-ZERO,              
+    BZ  GOTLEN                                                                  
+    LA  R4,1(,R4)                          THEN ADD ONE TO RECLEN               
+GOTLEN DS 0H                                                                    
+    STH R4,0(R3)             STORE RECORD LENGTH IN OUTPUT RDW                  
+    B   LOOP                 LOOOOOOOOOOOOOOOOOOOP....                          
+                                                                SPACE           
+EODAD DS 0H                  31 BIT EOND OF DATA ADDRESS IN DCBE                
+ MVC CLOSE_L,CLOSE_I         INIT CLOSE MACRO IN DYNAMIC STORAGE                
+ CLOSE (INFILE,,OUTFILE),MODE=31,MF=(E,CLOSE_L)                                 
+                                                                SPACE           
+ LH R2,=AL2(BYTES_REQUIRED)  R2 = SIZE OF WORKING STORAGE                       
+ L  R13,MAINSAVE+4           R13 = ADDRESS OF PREVIOUS SAVE AREA                
+ STORAGE RELEASE,ADDR=(R11),LENGTH=(R2) FREE WORKING STORAGE                    
+ RETURN (14,12),RC=0,T       RETURN TO CALLER WITH RC ZERO                      
+                                                                SPACE           
+ LTORG ,                     LITERALS HERE                                      
+                                                                SPACE           
+OUTFILE_I  DCB DDNAME=OUTFILE,  SKELETON DCB TO INIT DYNAMIC STORAGE   C        
+               LRECL=32710,                                            C        
+               RECFM=VB,                                               C        
+               DSORG=PS,                                               C        
+               MACRF=PL                                                         
+                                                                SPACE           
+INFILE_I   DCB DDNAME=INFILE,  SKELETON DCB TO INIT DYNAMIC STORAGE    C        
+               LRECL=32710,                                            C        
+               RECFM=VB,                                               C        
+               DSORG=PS,                                               C        
+               MACRF=GL,                                               C        
+               DCBE=INFILE_DCBE                                                 
+                                                                SPACE           
+INFILE_DCBE DCBE EODAD=EODAD   DCBE TO ENABLE 31 BIT EODAD                      
+                                                                SPACE           
+OPEN_I  OPEN  (,(INPUT),,(OUTPUT)),MODE=31,MF=L SKELETON OPEN LIST              
+                                                                SPACE           
+CLOSE_I CLOSE (,,,,),MODE=31,MF=L               SKELETON CLOSE LIST             
+                                                                SPACE           
+WORKAREA DSECT ,             MAP OF WORKING STORAGE AREA                        
+MAINSAVE DS  18F             SAVE AREA FOR MAIN PROGRAM                         
+EYE      DS  CL4             EYECATCHER IN CASE DUMP                            
+                                                                SPACE           
+         CSRYCMPS  DSECT=NO  INLINE COMPRESSION PARAMETER BLOCK                 
+                                                                SPACE           
+         DS  0D              ALIGN WORKAREA ON DOUBLEWORD BDY                   
+WA       DS  CL192           WORK AREA                                          
+                                                                SPACE           
+FLAG     DS C                COMPRESS/EXPAND FLAG                               
+DICTIONARY DS A              PTR TO COMPRESSION OR EXPANSION DICTIONARY         
+                                                                SPACE           
+OUTFILE_ DCB DDNAME=OUTFILE,DSORG=PS,MACRF=PL                                   
+OUTFILE  EQU OUTFILE_,*-OUTFILE_   LABEL TO INIT DCB IN DYNAMIC STORAGE         
+                                                                SPACE           
+INFILE_  DCB DDNAME=INFILE,DSORG=PS,MACRF=GL,DCBE=INFILE_DCBE                   
+INFILE   EQU INFILE_,*-INFILE_     LABEL TO INIT DCB IN DYNAMIC STORAGE         
+                                                                SPACE           
+OPEN_    OPEN (,,,,),MODE=31,MF=L                                               
+OPEN_L   EQU OPEN_,*-OPEN_   PARM LIST FOR OPEN MACRO                           
+                                                                SPACE           
+CLOSE_   CLOSE (,,,,),MODE=31,MF=L                                              
+CLOSE_L  EQU CLOSE_,*-CLOSE_ PARM LIST FOR CLOSE MACRO                          
+                                                                SPACE           
+BYTES_REQUIRED EQU *-WORKAREA SIZE OF WORKING STORAGE                           
+ END TSTCMPSC                                                                   
+           PRINT OFF         DON'T LIST ASSEMBLY OF DICTONARIES                 
+//         DD  DSN=IBMUSER.TESTDATA.ACDICT11,DISP=SHR                           
+//         DD  DSN=IBMUSER.TESTDATA.AEDICT11,DISP=SHR                           
+//*                                                                             
+//ST020   EXEC PGM=IEWL,PARM='NOTEST,XREF,LIST,XREF,RENT'                       
+//SYSPRINT DD  SYSOUT=*                                                         
+//SYSUT1   DD  UNIT=VIO                                                         
+//SYSLIB   DD  DUMMY                                                            
+//SYSLMOD  DD  DSN=IBMUSER.FISHTEST.LOADLIB(TSTCMPSC),DISP=SHR                  
+//SYSLIN   DD  DSN=&&OBJ,DISP=OLD                                               
+//         DD  *                                                                
+    ORDER ACDICT,AEDICT,TSTCMPSC                                                
+    PAGE  ACDICT                                                                
+    ENTRY TSTCMPSC                                                              
+    NAME  TSTCMPSC(R)                                                           
+//*                                                                             
+//ST030   EXEC PGM=TSTCMPSC,PARM=COMPRESS                                       
+//STEPLIB  DD  DSN=IBMUSER.FISHTEST.LOADLIB,DISP=SHR                            
+//SYSUDUMP DD  SYSOUT=*                                                         
+//INFILE   DD  DSN=IBMUSER.TESTIN,DISP=SHR                                      
+//OUTFILE  DD  DSN=IBMUSER.WORK,DISP=SHR                                        
+//*                                                                             
+//ST040   EXEC PGM=TSTCMPSC,PARM=EXPAND                                         
+//STEPLIB  DD  DSN=IBMUSER.FISHTEST.LOADLIB,DISP=SHR                            
+//SYSUDUMP DD  SYSOUT=*                                                         
+//INFILE   DD  DSN=IBMUSER.WORK,DISP=SHR                                        
+//OUTFILE  DD  DSN=IBMUSER.TESTOUT,DISP=SHR                                     

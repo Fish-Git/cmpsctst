@@ -1,0 +1,55 @@
+
+
+-a 1 -c -z -v -i 1158:3495:.\WORK\TSTCMPSC-EBCDIC.txt  -o 1473:2766:.\WORK\cmpout.bin -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -1 -s 5
+-a 1 -e -z -v -i 1158:3495:.\WORK\cmpout.bin           -o 1473:2766:.\WORK\expout.txt -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -1 -s 5
+
+
+-------------------------------------------------------------------------------
+
+  TODO!   check registers: R0 shouldn't change, only the CBN field of R1 may
+          change, R2 and R4 should never point outside their buffers, and R3
+          and R5 should always equal the end of buffer minus buffer pointer.
+          No other registers should be modified. We should maybe also check
+          to make sure only the lower 32 bits of the registers are modified
+          when running in S/390 mode (as opposed to 64-bit z/Arch. mode).
+
+-------------------------------------------------------------------------------
+
+  TODO?   add -compare option to compare the output of of one algorithm
+          with the output from the other. Another possible new option:
+          implementation cross-checking: have each implementation expand
+          the compressed output from the other to ensure each can handle
+          the output of the other or that both fail identically whenever
+          given invalid/malformed input.
+
+-------------------------------------------------------------------------------
+
+  TODO?   add option to randomly generate ASCII/EBCDIC test data. How best
+          to do it is debatable. One way is to select random length strings
+          from a template file. Another is to simply generate random ASCII
+          or EBCDIC bytes. Note: we'll also need a min-max size option too.
+
+-------------------------------------------------------------------------------
+
+  TODO?   Run the test in a secondary thread and have the main thread
+          monitor the secondary thread to detect when an algorithm is
+          stuck in a loop. Will need new -m max duration seconds option.
+          Main thread waits for signal from secondary thread indicating
+          it has finished. If signal not received within specified time,
+          cancel the secondary thread.
+
+-------------------------------------------------------------------------------
+
+  Tool to create/verify dictionaries?         (reverse engineer BDICT?)
+  Tool to create specific dictionary errors?  (e.g. 0C7)
+
+-------------------------------------------------------------------------------
+
+  TODO?   Debugging functions: each call? on demand?
+          Snap cpuamt, cdss, f1, st.
+          Snap input buffer, cbn, output buffer, cbn, pic, cc.
+          Snap dictionaries and symbol table
+          Formatted dictionaries snap.
+            How to interpret entries? (How do you detect SD's?!)
+
+-------------------------------------------------------------------------------
