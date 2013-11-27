@@ -15,6 +15,8 @@
         an acceptably high degree of confidence depending on the
         number and variety of files and dictionaries used.
 
+fishtest aaaaaaa
+
     ARGUMENTS
 
         filesdir   The name of the directory tree where the set of
