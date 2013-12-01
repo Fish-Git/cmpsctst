@@ -3,7 +3,6 @@
 -a 1 -c -z -v -i 1158:3495:.\WORK\TSTCMPSC-EBCDIC.txt  -o 1473:2766:.\WORK\cmpout.bin -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -1 -s 5
 -a 1 -e -z -v -i 1158:3495:.\WORK\cmpout.bin           -o 1473:2766:.\WORK\expout.txt -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -1 -s 5
 
-foo
 
 -------------------------------------------------------------------------------
 
