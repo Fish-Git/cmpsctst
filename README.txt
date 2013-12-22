@@ -191,7 +191,7 @@
 -------------------------------------------------------------------------------
 
 CMPSC Instruction Testing Tool, version 2.5.0
-Copyright (C) 2012 Software Development Laboratories
+Copyright (C) 2012-2014 Software Development Laboratories
 
 Options:
 

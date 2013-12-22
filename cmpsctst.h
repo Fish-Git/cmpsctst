@@ -1,4 +1,4 @@
-// Copyright (C) 2012, Software Development Laboratories, "Fish" (David B. Trout)
+// Copyright (C) 2012-2014, Software Development Laboratories, "Fish" (David B. Trout)
 ///////////////////////////////////////////////////////////////////////////////
 // CMPSCTST.h  --  CMPSC Instruction Testing Tool
 ///////////////////////////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@
 #define PRODUCT_NAME        "CMPSCTST"
 #define PRODUCT_DESC        "CMPSC Instruction Testing Tool"
 #define VERSION_STR         "2.5.0"
-#define COPYRIGHT           "Copyright (C) 2012"
+#define COPYRIGHT           "Copyright (C) 2012-2014"
 #define COMPANY             "Software Development Laboratories"
 
 ///////////////////////////////////////////////////////////////////////////////

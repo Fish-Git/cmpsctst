@@ -3,7 +3,7 @@
 
                 Front-end driver for CMPSCTST.EXE Testing Tool
 
-                (C) Copyright "Fish" (David B. Trout), 2012
+               (C) Copyright "Fish" (David B. Trout), 2012-2014
 
                 Released under "The Q Public License Version 1"
                  (http://www.hercules-390.org/herclic.html)
