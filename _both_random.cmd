@@ -5,9 +5,6 @@
   call _me_random.cmd
   call _herc_random.cmd
 
-  call _me_builtin.cmd
-  call _herc_builtin.cmd
-
   call _errors.cmd
 
   endlocal

@@ -29,9 +29,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{B3450B1C-632D-4166-AF69-17E32C9195C7}"
 	ProjectSection(SolutionItems) = preProject
 		_both.cmd = _both.cmd
+		_both_builtin.cmd = _both_builtin.cmd
+		_both_random.cmd = _both_random.cmd
 		_errors.cmd = _errors.cmd
 		_herc.cmd = _herc.cmd
+		_herc_builtin.cmd = _herc_builtin.cmd
+		_herc_random.cmd = _herc_random.cmd
 		_me.cmd = _me.cmd
+		_me_builtin.cmd = _me_builtin.cmd
+		_me_random.cmd = _me_random.cmd
 		cmpsctst.cmd = cmpsctst.cmd
 		ff.cmd = ff.cmd
 	EndProjectSection
