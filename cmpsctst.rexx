@@ -11,8 +11,8 @@
 
 \*****************************************************************************/
 
-  ver      = "2.4"          -- (version of this script)
-  ver_date = "July 2012"    -- (version of this script)
+  ver      = "2.5"              -- (version of this script)
+  ver_date = "December 2013"    -- (version of this script)
 
   Trace Off
   signal initialize
@@ -123,6 +123,7 @@ help:
   say "        -speed  Speed test; -r = repeats           (see NOTES below)"
   say "        -z      Zero Padding [enabled:requested]   (see NOTES below)"
   say "        -w      Zero Padding Alignment             (default = "zp_bits" bit)"
+  say "        -bb     Test Buffer Bits option            (default = 1:1)"
   say ""
   say "    EXAMPLES"
   say ""
@@ -221,6 +222,16 @@ help:
   say "        of the model-dependent storage boundary used by zero padding."
   say "        The value should be specified as a power of 2 number of bytes"
   say "        ranging from 1 to 12 (i.e. zero pad to 2-4096 byte boundary)."
+  say ""
+  say "        The '-bb' (Test Buffer Bits) option indicates whether to check"
+  say "        for the improper use of o/p or i/p buffer bits that according"
+  say "        to the CBN should not be used as part of the compressed output"
+  say "        or input. The option is specified as two 1/0 boolean values"
+  say "        separated by a single colon. The first one indicates whether"
+  say "        to perform the o/p buffer test during compression whereas the"
+  say "        second one indicates whether to perform the same test for the"
+  say "        i/p buffer during expansion. The default is 1:1 meaning both"
+  say "        tests should always be performed."
   say ""
   say "        All dictionaries must be in RAW BINARY format and MUST use"
   say "        the following file naming convention:"
@@ -332,6 +343,8 @@ initialize:
   zp_enable   = 0         -- ("-z" ENABLED:requested option)
   zp_request  = 0         -- ("-z" enabled:REQUESTED option)
   zp_bits     = 8         -- ("-w" padding alignment option)
+  bb_cmp_opt  = 1         -- ("-bb" test buffer bits option)
+  bb_exp_opt  = 1         -- ("-bb" test buffer bits option)
 
   buffsizes   = bs1 || " " || bs2 || " " || bs3     -- (the complete set)
   offsets     = of1 || " " || of2                   -- (the complete set)
@@ -548,6 +561,32 @@ parse_arguments:
         no_nonrand = 1
         if speed <> "" then
           call warnmsg "Option '-n' already implied by -speed"
+      end
+
+      when opt = "-bb" then do
+
+        /* The "-bb" option's argumment is OPTIONAL */
+
+        if val = "" | left(val,1) = "-" | left(val,1) = "/" then do
+          -- (the -bb option without any argument; use defaults)
+          bb_cmp_opt = 1
+          bb_exp_opt = 1
+        end; else do
+          -- (the -bb "cmp:exp" argument was specified)
+          i += 1    -- (because we're consuming "val")
+          parse var val bbcmp ":" bbexp
+          if  \isnum(bbcmp) | \isnum(bbexp) then
+            call bad_option_value       -- (not a valid number)
+          else do
+            if bbcmp < 0 | bbcmp > 1 | bbexp < 0 | bbexp > 1 then
+              call bad_option_value     -- (out of valid range)
+            else do
+              bb_cmp_opt = bbcmp + 0
+              bb_exp_opt = bbexp + 0
+            end
+          end
+          drop bbcmp bbexp
+        end
       end
 
       when opt = "-a" then do
@@ -923,7 +962,7 @@ dotest:
   /*--------------------------------------------------*/
   totcmp += 1
   exp = 0  -- (0 = compression)
-  qif(cmpsctst_bin)" -c -a "algorithm" "repeat" "trans" -v -i "qif(ib":"io":"infile)" -o "qif(ob":"oo":"cmpout_bin)" -d "qif(cdict)" -x "qif(edict)" -s "cdss" -"fmt" -z "zp_enable":"zp_request" -w "zp_bits
+  qif(cmpsctst_bin)" -c -a "algorithm" "repeat" "trans" -v -i "qif(ib":"io":"infile)" -o "qif(ob":"oo":"cmpout_bin)" -d "qif(cdict)" -x "qif(edict)" -s "cdss" -"fmt" -z "zp_enable":"zp_request" -w "zp_bits" -b "bb_cmp_opt":"bb_exp_opt
   if rc <> 0 then do
     err = rc
     call count_errors
@@ -939,7 +978,7 @@ dotest:
     /*--------------------------------------------------*/
     totexp += 1
     exp = 1  -- (1 = expansion)
-    qif(cmpsctst_bin)" -e -a "algorithm" "repeat" "trans" -v -i "qif(ib":"io":"cmpout_bin)" -o "qif(ob":"oo":"expout_txt)" -d "qif(cdict)" -x "qif(edict)" -s "cdss" -"fmt" -z "zp_enable":"zp_request" -w "zp_bits
+    qif(cmpsctst_bin)" -e -a "algorithm" "repeat" "trans" -v -i "qif(ib":"io":"cmpout_bin)" -o "qif(ob":"oo":"expout_txt)" -d "qif(cdict)" -x "qif(edict)" -s "cdss" -"fmt" -z "zp_enable":"zp_request" -w "zp_bits" -b "bb_cmp_opt":"bb_exp_opt
     if rc <> 0 then do
       err = rc
       call count_errors

@@ -47,6 +47,7 @@
         -speed  Speed test; -r = repeats           (see NOTES below)
         -z      Zero Padding [enabled:requested]   (see NOTES below)
         -w      Zero Padding Alignment             (default = 8 bit)
+        -bb     Test Buffer Bits option            (default = 1:1)
 
     EXAMPLES
 
@@ -143,8 +144,18 @@
 
         The '-w' (Zero Padding Alignment) option controls adjustment
         of the model-dependent storage boundary used by zero padding.
-        The value should be specified as a power of 2 number of bits
+        The value should be specified as a power of 2 number of bytes
         ranging from 1 to 12 (i.e. zero pad to 2-4096 byte boundary).
+
+        The '-bb' (Test Buffer Bits) option indicates whether to check
+        for the improper use of o/p or i/p buffer bits that according
+        to the CBN should not be used as part of the compressed output
+        or input. The option is specified as two 1/0 boolean values
+        separated by a single colon. The first one indicates whether
+        to perform the o/p buffer test during compression whereas the
+        second one indicates whether to perform the same test for the
+        i/p buffer during expansion. The default is 1:1 meaning both
+        tests should always be performed.
 
         All dictionaries must be in RAW BINARY format and MUST use
         the following file naming convention:
@@ -186,7 +197,7 @@
 
     VERSION
 
-        2.4  (July 2012)
+        2.5  (December 2013)
 
 -------------------------------------------------------------------------------
 
@@ -214,7 +225,7 @@ Options:
   -w  Zero Padding Alignment (default = 8 bit)
 
   -t  Translate (ASCII <-> EBCDIC as needed)
-  -b  Test cmp o/p buff bit handling (default = 1)
+  -b  Test proper cmp:exp out:input buffer CBN bit handling
   -v  Verbose [filename]
   -q  Quiet
 
@@ -274,9 +285,13 @@ Notes:
   will very likely cause erroneous compression/expansion results.
 
   The '-b' option indicates whether to check for the improper use of
-  output buffer data bits during compression. It should be specified
-  as a boolean value of either 0 (disable test) or 1 (enable test).
-  The default is 1 (enabled) to cause the test to always be performed.
+  output/input buffer bits which according to the CBN should not be
+  used as part of the compressed output/input. The option is specified
+  as two 1/0 boolean values separated by a single colon. The first one
+  indicates whether to perform the output buffer test during compression
+  and the second one indicates whether to perform the same test for the
+  input buffer during expansion. The default is 1:1 meaning both tests
+  should be performed.
 
   The '-a' (Algorithm) option allows you to choose between different
   Compression Call algorithms to allow you to compare implementations

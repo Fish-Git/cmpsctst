@@ -123,7 +123,7 @@ Notes:\n\
   The '-b' option indicates whether to check for the improper use of\n\
   output/input buffer bits which according to the CBN should not be\n\
   used as part of the compressed output/input. The option is specified\n\
-  as two 0/1 boolean values separated by a single colon. The first one\n\
+  as two 1/0 boolean values separated by a single colon. The first one\n\
   indicates whether to perform the output buffer test during compression\n\
   and the second one indicates whether to perform the same test for the\n\
   input buffer during expansion. The default is 1:1 meaning both tests\n\
