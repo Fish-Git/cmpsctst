@@ -28,16 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Legacy", "_Legacy", "{00F3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{B3450B1C-632D-4166-AF69-17E32C9195C7}"
 	ProjectSection(SolutionItems) = preProject
-		_both.cmd = _both.cmd
-		_both_builtin.cmd = _both_builtin.cmd
-		_both_random.cmd = _both_random.cmd
 		_errors.cmd = _errors.cmd
-		_herc.cmd = _herc.cmd
-		_herc_builtin.cmd = _herc_builtin.cmd
-		_herc_random.cmd = _herc_random.cmd
-		_me.cmd = _me.cmd
-		_me_builtin.cmd = _me_builtin.cmd
-		_me_random.cmd = _me_random.cmd
 		cmpsctst.cmd = cmpsctst.cmd
 		ff.cmd = ff.cmd
 	EndProjectSection
@@ -68,6 +59,48 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{5D227652
 		cmpsctst.make = cmpsctst.make
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "herc", "herc", "{A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19}"
+	ProjectSection(SolutionItems) = preProject
+		_herc.cmd = _herc.cmd
+		_herc_builtin.cmd = _herc_builtin.cmd
+		_herc_random.cmd = _herc_random.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{96998E5F-A4E7-43A0-B5D7-DBAFBC52211F}"
+	ProjectSection(SolutionItems) = preProject
+		_herc_b00.cmd = _herc_b00.cmd
+		_herc_builtin_b00.cmd = _herc_builtin_b00.cmd
+		_herc_random_b00.cmd = _herc_random_b00.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "me", "me", "{FAC45E0C-FD3D-4F25-9B0B-686A7A050F56}"
+	ProjectSection(SolutionItems) = preProject
+		_me.cmd = _me.cmd
+		_me_builtin.cmd = _me_builtin.cmd
+		_me_random.cmd = _me_random.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{0A0012FE-97D9-43B8-9EC1-98824DBEA1E9}"
+	ProjectSection(SolutionItems) = preProject
+		_me_b00.cmd = _me_b00.cmd
+		_me_builtin_b00.cmd = _me_builtin_b00.cmd
+		_me_random_b00.cmd = _me_random_b00.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "both", "both", "{E10918C5-BE81-4523-A504-160A3F37EA63}"
+	ProjectSection(SolutionItems) = preProject
+		_both.cmd = _both.cmd
+		_both_builtin.cmd = _both_builtin.cmd
+		_both_random.cmd = _both_random.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{2ACBFC65-4876-4151-87FB-28587F2CCC81}"
+	ProjectSection(SolutionItems) = preProject
+		_both_b00.cmd = _both_b00.cmd
+		_both_builtin_b00.cmd = _both_builtin_b00.cmd
+		_both_random_b00.cmd = _both_random_b00.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -95,5 +128,11 @@ Global
 		{00F359F9-6090-4D6B-850F-52BD57D250D8} = {86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}
 		{06BCF646-6E08-4E6D-8378-E903AE100A43} = {DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}
 		{1DB192B9-F9A5-4726-8BFB-98C06B4619B2} = {DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}
+		{A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
+		{FAC45E0C-FD3D-4F25-9B0B-686A7A050F56} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
+		{E10918C5-BE81-4523-A504-160A3F37EA63} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
+		{96998E5F-A4E7-43A0-B5D7-DBAFBC52211F} = {A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19}
+		{0A0012FE-97D9-43B8-9EC1-98824DBEA1E9} = {FAC45E0C-FD3D-4F25-9B0B-686A7A050F56}
+		{2ACBFC65-4876-4151-87FB-28587F2CCC81} = {E10918C5-BE81-4523-A504-160A3F37EA63}
 	EndGlobalSection
 EndGlobal
