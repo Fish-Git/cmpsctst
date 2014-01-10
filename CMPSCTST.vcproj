@@ -451,6 +451,14 @@
 			RelativePath=".\cmpsctst.h"
 			>
 		</File>
+		<File
+			RelativePath=".\hexdumpe.c"
+			>
+		</File>
+		<File
+			RelativePath=".\hexdumpe.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

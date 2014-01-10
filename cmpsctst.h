@@ -6,6 +6,8 @@
 #ifndef _CMPSCTST_H_
 #define _CMPSCTST_H_
 
+///////////////////////////////////////////////////////////////////////////////
+
 #define PRODUCT_NAME        "CMPSCTST"
 #define PRODUCT_DESC        "CMPSC Instruction Testing Tool"
 #define VERSION_STR         "2.5.0"
@@ -26,7 +28,7 @@ typedef struct REGS REGS;       // (fwd ref)
 extern void DEF_ALGORITHM( REGS* regs );
 extern void ALT_ALGORITHM( REGS* regs );
 
-#define NUM_ALGORITHMS          2
+#define NUM_ALGORITHMS          2       // (only supported value right now)
 
 #define  FEATURE_COMPRESSION
 #define  FEATURE_CMPSC_ENHANCEMENT_FACILITY
@@ -623,32 +625,6 @@ void  my_offset_aligned_free( void* p );
 #define  UNINIT_HEAP_PATT       (0xCD)  // (uninitialized heap fill pattern)
 #define  NO_ZERO_PAD_PATT       (0xFF)  // (catch zero padding errs pattern)
 #define  ZERO_PADDED_PATT       (0x00)  // (catch zero padding errs pattern)
-
-///////////////////////////////////////////////////////////////////////////////
-// ASCII/EBCDIC translation...
-
-#ifndef  CP_ACP                     // Default to ANSI Code Page
-#define  CP_ACP         0           // (defined in winnls.h)
-#endif
-
-#ifndef  CP_37                      // IBM EBCDIC Code Page
-#define  CP_37          37          // (missing from winnls.h)
-#endif
-
-#define  EBCDIC_CP      CP_37       // (more descriptive name)
-#define  ASCII_CP       CP_ACP      // (more descriptive name)
-
-U8 Translate                        // Returns TRUE/FALSE success/failure
-(
-          U8*  pszToString,         // resulting translated string
-    const U32  cpToString,          // desired translation code page
-    const U8*  pszFromString,       // string to be translated
-    const U32  cpFromString,        // code page of string
-    const U32  nLen                 // length of both string buffers IN BYTES
-);
-
-void buf_host_to_guest( const BYTE *psinbuf, BYTE *psoutbuf, const u_int ilength );
-void buf_guest_to_host( const BYTE *psinbuf, BYTE *psoutbuf, const u_int ilength );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Return randomly chosen buffer size or alignment...
