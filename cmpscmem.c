@@ -604,10 +604,9 @@ void (CMPSC_FASTCALL ARCH_DEP( cmpsc_vstorec ))( U8* src, U16 len, VADR addr, ME
                     pMEMBLK->vpagebeg + PAGEFRAME_PAGESIZE,
                     pMEMBLK->arn,
                     pMEMBLK->regs,
-                    ACCTYPE_WRITE_SKP,  // (store CHECK)
+                    ACCTYPE_WRITE,  // (store)
                     pMEMBLK->pkey
                 );
-                *pMEMBLK->regs->dat.storkey |= (STORKEY_REF | STORKEY_CHANGE);
             }
             memcpy( &pMEMBLK->maddr[0][addr & PAGEFRAME_BYTEMASK], src,                len1 );
             memcpy(  pMEMBLK->maddr[1],                            src + len1, len+1 - len1 );
