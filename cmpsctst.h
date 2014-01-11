@@ -493,11 +493,11 @@ extern void ALT_ALGORITHM( REGS* regs );
 #define PGM_PROTECTION_EXCEPTION        4
 #define PGM_DATA_EXCEPTION              7
 #define DXC_DECIMAL                     0
-#define ACCTYPE_WRITE_SKP               1
-#define ACCTYPE_WRITE                   2
-#define ACCTYPE_READ                    4
-#define STORKEY_CHANGE                  2
-#define STORKEY_REF                     4
+#define ACCTYPE_WRITE_SKP               0x01
+#define ACCTYPE_WRITE                   0x02
+#define ACCTYPE_READ                    0x04
+#define STORKEY_CHANGE                  0x02
+#define STORKEY_REF                     0x04
 #define INTERRUPT_PENDING( regs )       0
 
 #define ITIMER_SYNC( addr, len, regs )
@@ -525,7 +525,7 @@ typedef struct SYSBLK SYSBLK;
 struct DAT              // Dynamic Address Translation
 {
     U8*  storkey;       // (ptr to storage key)
-    U8   storage;       // (storage key itself)
+    U8   keybyte;       // (storage key itself)
 };
 typedef struct DAT DAT;
 

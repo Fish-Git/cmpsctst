@@ -1872,7 +1872,7 @@ int main( int argc, char* argv[] )
     ARCH_DEP( util_cmpsc_SetREGS )( &g_cmpsc, &g_regs,
         OPERAND_1_REGNUM, OPERAND_2_REGNUM, expand, zeropad_wanted );
 
-    g_regs.dat.storkey = &g_regs.dat.storage;
+    g_regs.dat.storkey = &g_regs.dat.keybyte;
     g_regs.zeropad     = zeropad_enabled;   // (zeropad facility enabled)
 
     //-------------------------------------------------------------------------
