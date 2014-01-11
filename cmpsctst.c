@@ -1004,7 +1004,7 @@ static void GetInput()
     g_cmpsc.nLen2 =       bytes;       // (how much of it there is)
 
     if (expand && test_exp_ibbits)                        // (catch CBN bugs)
-        *pInBuffer |= (U8) (0xFFFF << (8 - g_cmpsc.cbn)); // (catch CBN bugs)
+        *pInBuffer |= (0xFF << (8 - g_cmpsc.cbn));  // (catch CBN bugs)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1794,8 +1794,11 @@ int main( int argc, char* argv[] )
     {
         FPRINTF( fRptFile, "%10s Enable CMPSC-Enhancement Facility\n",
             zeropad_enabled ? "Yes" : "No" );
-        FPRINTF( fRptFile, "%10s Request Zero Padding (%d bit = %d byte alignment)\n",
-            zeropad_wanted ? "Yes" : "No", CMPSC_ZP_BITS, CMPSC_ZP_BYTES );
+        if (zeropad_enabled)
+        FPRINTF( fRptFile, "           (%d bit = %d byte alignment)\n",
+            CMPSC_ZP_BITS, CMPSC_ZP_BYTES );
+        FPRINTF( fRptFile, "%10s Request Zero Padding\n",
+            zeropad_wanted ? "Yes" : "No" );
     }
 #endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
 
