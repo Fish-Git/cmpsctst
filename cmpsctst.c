@@ -479,10 +479,13 @@ U8* logical_to_main_l( VADR addr, int arn, REGS *regs, int acctype, BYTE akey, s
 {
     UNREFERENCED( arn     );
     UNREFERENCED( regs    );
-    UNREFERENCED( acctype );
     UNREFERENCED( akey    );
     UNREFERENCED( len     );
     ++g_nAddrTransCtr;
+    if (acctype & ACCTYPE_READ)
+        regs->dat.keybyte |= STORKEY_REF;
+    if (acctype & ACCTYPE_WRITE && !(acctype & ACCTYPE_WRITE_SKP))
+        regs->dat.keybyte |= STORKEY_CHANGE;
     return (U8*)(uintptr_t)(addr);
 }
 
