@@ -65,7 +65,6 @@
 #include <ctype.h>      /* isgraph */
 #include <malloc.h>     /* malloc  */
 #include <string.h>     /* strlen  */
-#include <memory.h>     /* memcpy  */
 
 /*********************************************************************/
 /*                          HEXDUMP                                  */
@@ -121,7 +120,7 @@ void hexdumpew( const char *pfx, BYTE **buf, const BYTE *dat, size_t skp,
 /*               EBCDIC/ASCII Translation Tables                     */
 /*********************************************************************/
 static const BYTE
-_a2e_tab[] = {
+_a2e_tab[] = { /* ASCII code page 1252 to EBCDIC code page 1140 */
 /*      x0   x1   x2   x3   x4   x5   x6   x7   x8   x9   xA   xB   xC   xD   xE   xF*/
 /*0x*/0x00,0x01,0x02,0x03,0x37,0x2D,0x2E,0x2F,0x16,0x05,0x25,0x0B,0x0C,0x0D,0x0E,0x0F,
 /*1x*/0x10,0x11,0x12,0x13,0x3C,0x3D,0x32,0x26,0x18,0x19,0x3F,0x27,0x1C,0x1D,0x1E,0x1F,
@@ -141,7 +140,7 @@ _a2e_tab[] = {
 /*Fx*/0x8C,0x49,0xCD,0xCE,0xCB,0xCF,0xCC,0xE1,0x70,0xDD,0xDE,0xDB,0xDC,0x8D,0x8E,0xDF,
 };/*    x0   x1   x2   x3   x4   x5   x6   x7   x8   x9   xA   xB   xC   xD   xE   xF*/
 static const BYTE
-_e2a_tab[] = {
+_e2a_tab[] = { /* EBCDIC code page 1140 to ASCII code page 1252 */
 /*      x0   x1   x2   x3   x4   x5   x6   x7   x8   x9   xA   xB   xC   xD   xE   xF*/
 /*0x*/0x00,0x01,0x02,0x03,0x9C,0x09,0x86,0x7F,0x97,0x8D,0x8E,0x0B,0x0C,0x0D,0x0E,0x0F,
 /*1x*/0x10,0x11,0x12,0x13,0x9D,0x85,0x08,0x87,0x18,0x19,0x92,0x8F,0x1C,0x1D,0x1E,0x1F,
@@ -161,12 +160,14 @@ _e2a_tab[] = {
 /*Fx*/0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0xB3,0xDB,0xDC,0xD9,0xDA,0x9F,
 };/*    x0   x1   x2   x3   x4   x5   x6   x7   x8   x9   xA   xB   xC   xD   xE   xF*/
 
-static INLINE  const BYTE*  a2etab()    { return _a2e_tab; }
-static INLINE  const BYTE*  e2atab()    { return _e2a_tab; }
-
 /*********************************************************************/
 /*              EBCDIC/ASCII Translation Functions                   */
 /*********************************************************************/
+/*
+**              Get pointer to translation table
+*/
+static INLINE  const BYTE*  a2etab()    { return _a2e_tab; }
+static INLINE  const BYTE*  e2atab()    { return _e2a_tab; }
 /*
 **                  Translate single byte
 */
@@ -175,24 +176,12 @@ static INLINE  BYTE  e2a( BYTE b )    { return e2atab()[ b ]; }
 /*
 **              Translate an entire array of bytes
 */
-#ifndef  CP_ACP                 /* ANSI Code Page                    */
-#define  CP_ACP       0         /* Normally defined in winnls.h      */
-#endif
-
-#ifndef  CP_37                  /* IBM EBCDIC Code Page              */
-#define  CP_37        37        /* Normally missing from winnls.h    */
-#endif
-
-#define  EBCDIC_CP    CP_37     /* Just a more descriptive name      */
-#define  ASCII_CP     CP_ACP    /* Just a more descriptive name      */
-
-extern U8 e2aora2e              /* Return TRUE/FALSE success/failure */
+extern bool e2aora2e            /* Return true/false success/failure */
 (
-          U8*  pszToString,     /* Resulting translated array        */
-    const U32  cpToString,      /* Desired translation Code Page     */
-    const U8*  pszFromString,   /* Array to be translated            */
-    const U32  cpFromString,    /* Code Page of array                */
-    const U32  nLen             /* Length of each array in bytes     */
+          BYTE    *out,         /* Resulting translated array        */
+    const BYTE    *in,          /* Array to be translated            */
+    const size_t   len,         /* Length of each array in bytes     */
+    const BYTE    *x2xtab       /* Pointer to translation table      */
 );
 
 #endif // _HEXDUMP_H_

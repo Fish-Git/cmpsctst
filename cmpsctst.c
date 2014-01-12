@@ -788,7 +788,7 @@ BOOL valid_inout_filename( const char* pszOptArg, char optchar,
 
 static void AtoE( U8* p, U32 n ) // EBCDIC <-- ASCII
 {
-    if (bTranslate && !e2aora2e( p, EBCDIC_CP, p, ASCII_CP, n ))
+    if (bTranslate && !e2aora2e( p, p, n, a2etab() ))
     {
         FPRINTF( fRptFile, "ERROR: Translate error.\n" );
         UTIL_PROGRAM_INTERRUPT( PGM_UTIL_FAILED );
@@ -796,7 +796,7 @@ static void AtoE( U8* p, U32 n ) // EBCDIC <-- ASCII
 }
 static void EtoA( U8* p, U32 n ) // ASCII <-- EBCDIC
 {
-    if (bTranslate && !e2aora2e( p, ASCII_CP, p, EBCDIC_CP, n ))
+    if (bTranslate && !e2aora2e( p, p, n, e2atab() ))
     {
         FPRINTF( fRptFile, "ERROR: Translate error.\n" );
         UTIL_PROGRAM_INTERRUPT( PGM_UTIL_FAILED );

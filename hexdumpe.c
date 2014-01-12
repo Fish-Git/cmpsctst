@@ -83,44 +83,20 @@ _x2x_tab[16*16] = { /* dummy table to 'translate' to very same value */
 0xE0,0xE1,0xE2,0xE3,0xE4,0xE5,0xE6,0xE7,0xE8,0xE9,0xEA,0xEB,0xEC,0xED,0xEE,0xEF,
 0xF0,0xF1,0xF2,0xF3,0xF4,0xF5,0xF6,0xF7,0xF8,0xF9,0xFA,0xFB,0xFC,0xFD,0xFE,0xFF,
 };
-static
-void buf_a2e( const BYTE *in, BYTE *out, const size_t len )
-{
-    size_t  i;
-    for (i = 0; i < len; i++)
-        out[i] = a2e( in[i]);
-}
-static
-void buf_e2a( const BYTE *in, BYTE *out, const size_t len )
-{
-    size_t  i;
-    for (i = 0; i < len; i++)
-        out[i] = e2a( in[i]);
-}
-U8 e2aora2e                     /* Return TRUE/FALSE success/failure */
+bool e2aora2e                   /* Return true/false success/failure */
 (
-          U8*  pszToString,     /* Resulting translated array        */
-    const U32  cpToString,      /* Desired translation Code Page     */
-    const U8*  pszFromString,   /* Array to be translated            */
-    const U32  cpFromString,    /* Code Page of array                */
-    const U32  nLen             /* Length of each array in bytes     */
+          BYTE    *out,         /* Resulting translated array        */
+    const BYTE    *in,          /* Array to be translated            */
+    const size_t   len,         /* Length of each array in bytes     */
+    const BYTE    *x2xtab       /* Pointer to translation table      */
 )
 {
-    if (0
-        || !pszToString
-        || !pszFromString
-        || (cpFromString != ASCII_CP && cpFromString != EBCDIC_CP)
-        || (cpToString   != ASCII_CP && cpToString   != EBCDIC_CP)
-        || !nLen
-    )
-        return FALSE;
-    if (cpToString == cpFromString)
-        memcpy( pszToString, pszFromString, nLen );
-    else if (cpFromString == EBCDIC_CP)
-        buf_e2a( pszFromString, pszToString, nLen );
-    else /* (cpFromString == ASCII_CP) */
-        buf_a2e( pszFromString, pszToString, nLen );
-    return TRUE;
+    size_t i;
+    if (!out || !in || !len || !x2xtab)
+        return false;
+    for (i=0; i < len; i++)
+        out[i] = x2xtab[in[i]];
+    return true;
 }
 
 /*********************************************************************/

@@ -57,6 +57,16 @@
 #include <ctype.h>          // (isalnum)
 
 #endif // _MSVC_
+
+///////////////////////////////////////////////////////////////////////////////
+// Miscellaneous #defines and typedefs
+
+#ifndef __cplusplus
+typedef unsigned char bool;
+#define true 1
+#define false 0
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // Headers common to ALL platforms...
 
