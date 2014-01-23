@@ -1788,6 +1788,8 @@ U8 DifferentResults( REGS* starting_regs, REGS* baseline_regs )
         DumpRegs( &g_regs, baseline_regs );
         FPRINTF( fRptFile, "\n\n" );
     }
+    else
+        FPRINTF( fRptFile, "\n" );
 
     // ------------------------------------------------------------------------
     // Show the i/p and o/p buffers and dictionary passed to the instruction...
