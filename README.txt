@@ -37,8 +37,8 @@
 
     OPTIONS
 
+        -a      Algorithm to be used               (see NOTES below)
         -t      Translate ASCII/EBCDIC             (default = no)
-        -a      Algorithm to be used               (default = 0)
         -r      Number of random tests             (default = 4)
         -r      Number of speed test repeats       (default = 4)
         -n      No hard-coded test cases           (default = all)
@@ -55,17 +55,19 @@
         cmpsctst  .\files\small  .\dicts  .\work  -r 0 -z -w 3 > VERY-long-non-random-test.log
         cmpsctst  .\files\small  .\dicts  .\work  -n -r 3 -z 0:1 > short-randoms-test.log
         cmpsctst  .\files\large  .\dicts  .\work  -speed -r 100 > speed-test.log
+        cmpsctst  .\files\small\ebcdic\ .\dicts\ .\work\ -a 1:0 -r 1 -n -z 0:0 -bb 0:1  >  .\work\cmp2base.txt
 
     NOTES
 
-        Unless a timing run (speed test) is being done, cmpsctst
-        repeatedly calls the CMPSCTST.EXE test tool for every test
-        file and dictionary found in the two specified directories
-        and all of their subdirectories first asking it to compress
-        the test file to a temporary work file, then expanding the
-        work file to a second work file, and finally comparing the
-        MD5 hash of the final expanded output to make sure that it
-        matches bit-for-bit with the original input file.
+        Unless a timing run (speed test) or algorithm comparison
+        test (cmp2base) is being done, cmpsctst repeatedly calls
+        the CMPSCTST.EXE tool for every test file and dictionary
+        found in the two specified directories and all of their
+        subdirectories, first asking it to compress a test file
+        to a temporary work file followed by expanding it to a
+        second work file before finally comparing the MD5 hash
+        of the expanded result to ensure it matches bit-for-bit
+        with the original input.
 
         A series of several compress/expand cycles are performed,
         first using a hard-coded range of buffer size and offset
@@ -88,7 +90,7 @@
 
         It is therefore HIGHLY RECOMMENDED you redirect its stdout
         output to a log file. Redirecting stderr to a log file is
-        optional but not recommended since the volume of progress
+        optional but NOT recommended since the volume of progress
         messages written to stderr is quite small, being limited
         to notification when each new test is about to start and
         which dictionary it is using. It does NOT notify you when
@@ -132,6 +134,17 @@
         offset values. To perform a custom timing/speed test using
         specific buffer size and offset values, you need to call the
         CMPSCTST.EXE tool yourself (i.e. don't use cmpsctst.rexx).
+
+        cmpsctst.rexx can also compare one algorithm against another
+        by specifying the '-a' option as 'a:b', where 'a' identifies
+        the test algorithm (the one being tested) and 'b' identifies
+        the base algorithm (to compare the test algorithm's results
+        against). As each buffer is either compressed or expanded
+        the results are compared against the base algorithm's using
+        the same register and buffer values. If any differences are
+        found, the test immediately aborts (fails) and, if the '-v'
+        verbose option given, the differences and all information
+        needed to reproduce the error is then displayed.
 
         The '-z' (Zero Padding) option controls CMPSC-Enhancement
         Facility. Specify the option as two 0/1 values separated by
@@ -184,7 +197,7 @@
             ...etc...
 
         Each dictionary pair MUST have the same name and each MUST
-        be in raw binary format.
+        be in the same directory and MUST be in raw binary format.
 
     EXIT STATUS
 
@@ -197,18 +210,18 @@
 
     VERSION
 
-        2.5  (December 2013)
+        2.6  (January 2014)
 
 -------------------------------------------------------------------------------
 
-CMPSC Instruction Testing Tool, version 2.5.0
+CMPSC Instruction Testing Tool, version 2.6.0
 Copyright (C) 2012-2014 Software Development Laboratories
 
 Options:
 
   -c  Compress (default)
   -e  Expand
-  -a  Algorithm (optional)
+  -a  Algorithm (see NOTES)
   -r  Repeat Count
 
   -i  [buffer size:[offset:]] Input filename
@@ -239,11 +252,14 @@ Returns:
 Examples:
 
   CMPSCTST -c -i 8192:*:foo.txt -o *:4095:foo.cmpsc -r 1000 \
-        -t -d cdict.bin -x edict.bin -1 -s 10 -v rpt.log -z
+           -t -d cdict.bin -x edict.bin -1 -s 10 -v rpt.log -z
 
   CMPSCTST -e -i foo.cmpsc -o foo.txt -t -x edict.bin -s 10 -q
 
-Notes:
+  CMPSCTST -c -a 1:0 -v -i 22684:2509:in.txt -o 2307:3221:out.bin \
+           -d cdict.bin -x edict.bin -s 5 -1 -z 0:0 -b 1:0
+
+NOTES:
 
   You may specify the buffer size to be used for input or output by
   preceding the filename with a number followed by a colon. Use the
@@ -303,6 +319,16 @@ Notes:
 
   If you specify the -a option without also specifying which algorithm
   to use then the default alternate algorithm 1 will always be chosen.
+
+  The -a option also allows you to perform an algorithm comparison test
+  where the results of one algorithm (the one being tested) is compared
+  against the results of the other (the base algorithm) using the format
+  a:b where 'a' identifies the test algorithm and 'b' the base algorithm.
+  As each buffer is compressed or expanded the results are compared with
+  the base algorithm's results using the same register and buffer values.
+  The test run immediately fails as soon as any difference is detected.
+  If the -v option is also specified the detected differences as well as
+  all information needed to reproduce the failure are also displayed.
 
   The '-r' (Repeat) option repeats each compression or expansion call
   the number of times specified. The input/output files are still read
