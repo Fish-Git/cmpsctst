@@ -59,10 +59,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Symbols Cache Control Entry
 
-#ifndef EXP_ONCE                    // (we only need to define this once)
-#define EXP_ONCE                    // (we only need to define this once)
+#ifndef EXP_ONCE                    // (we only need to define these once)
+#define EXP_ONCE                    // (we only need to define these once)
 
-#ifdef CMPSC_SYMCACHE
+#ifdef CMPSC_SYMCACHE               // (Symbol caching option)
 
 struct SYMCTL                       // Symbol Cache Control Entry
 {
@@ -71,18 +71,18 @@ struct SYMCTL                       // Symbol Cache Control Entry
 };
 typedef struct SYMCTL SYMCTL;
 
-#endif // CMPSC_SYMCACHE            // (we only need to define this once)
+#endif // CMPSC_SYMCACHE            // (Symbol caching option)
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXPAND Index Symbol parameters block
 
 struct EXPBLK                 // EXPAND Index Symbol parameters block
 {
-#ifdef CMPSC_SYMCACHE
+#ifdef CMPSC_SYMCACHE                        // (Symbol caching option)
     SYMCTL  symcctl[ MAX_DICT_ENTRIES ];     // Symbols cache control entries
     U8      symcache[ CMPSC_SYMCACHE_SIZE ]; // Previously expanded symbols
     U16     symindex;                        // Next available cache location
-#endif // CMPSC_SYMCACHE
+#endif // CMPSC_SYMCACHE                     // (Symbol caching option)
     DCTBLK      dctblk;       // GetDCT parameters block
     ECEBLK      eceblk;       // GetECE parameters block
     MEMBLK      op1blk;       // Operand-1 memory access control block
@@ -95,7 +95,7 @@ struct EXPBLK                 // EXPAND Index Symbol parameters block
 };
 typedef struct EXPBLK EXPBLK;
 
-#endif // EXP_ONCE
+#endif // EXP_ONCE                  // (we only need to define these once)
 
 ///////////////////////////////////////////////////////////////////////////////
 // ZeroPadOp1 only if facility was enabled for this build architecture...

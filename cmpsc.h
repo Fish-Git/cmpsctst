@@ -21,7 +21,7 @@
 #define DEF_CMPSC_CPU_AMT     ( 1024 * 1024 )         // 1MB
 #define MAX_CMPSC_CPU_AMT     ( 1024 * 1024 * 1024 )  // 1GB
 
-#define CMPSC_INLINE          INLINE                // __forceinline
+#define CMPSC_INLINE          INLINE                // __inline
 #define CMPSC_FASTCALL        ATTR_REGPARM( 3 )     // __fastcall
 
 #define CMPSC_EXPAND8         // (#define to enable expand-8 logic)
