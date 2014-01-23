@@ -452,34 +452,18 @@ extern void ALT_ALGORITHM( REGS* regs );
 ///////////////////////////////////////////////////////////////////////////////
 // CMPSC
 
-#ifdef _64_BIT
-  #define PAGEFRAME_PAGESIZE            4096
-  #define PAGEFRAME_PAGESHIFT           12
-  #define PAGEFRAME_BYTEMASK            0x00000FFF
-  #define PAGEFRAME_PAGEMASK            0xFFFFFFFFFFFFF000ULL
-  #define ADDRESS_MAXWRAP( regs )       ((U64)~((U64)0))
-  #define GREG                          U64
-  #define VADR                          U64
-  #define F_GREG                        I64_FMTX
-  #define F_VADR                        I64_FMTX
-  #define GR_L(_r)                      gr[(_r)]
-  #define GR_G(_r)                      gr[(_r)]
-  #define GR(_r)                        GR_G(_r)
-#else // _32_BIT
-  #define PAGEFRAME_PAGESIZE            4096
-  #define PAGEFRAME_PAGESHIFT           12
-  #define PAGEFRAME_BYTEMASK            0x00000FFF
-  #define PAGEFRAME_PAGEMASK            0xFFFFF000
-  #define ADDRESS_MAXWRAP( regs )       ((U32)~((U32)0))
-  #define GREG                          U32
-  #define VADR                          U32
-  #define F_GREG                        I32_FMTX
-  #define F_VADR                        I32_FMTX
-  #define GR_L(_r)                      gr[(_r)]
-  #define GR_G(_r)                      gr[(_r)]
-  #define GR(_r)                        GR_L(_r)
-#endif
-
+#define PAGEFRAME_PAGESIZE              4096
+#define PAGEFRAME_PAGESHIFT             12
+#define PAGEFRAME_BYTEMASK              0x00000FFF
+#define PAGEFRAME_PAGEMASK              0xFFFFFFFFFFFFF000ULL
+#define ADDRESS_MAXWRAP( regs )         ((U64)~((U64)0))
+#define GREG                            U64
+#define VADR                            U64
+#define F_GREG                          I64_FMTX
+#define F_VADR                          I64_FMTX
+#define GR_L(_r)                        gr[(_r)]
+#define GR_G(_r)                        gr[(_r)]
+#define GR(_r)                          GR_G(_r)
 #define GR_A( _r,  _regs )              ( (_regs)->GR_L(_r) )
 #define SET_GR_A( _r, _regs, _v )       ( (_regs)->GR_L(_r) = (_v) )
 #define ARCH_DEP( name )                name
