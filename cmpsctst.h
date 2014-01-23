@@ -10,7 +10,7 @@
 
 #define PRODUCT_NAME        "CMPSCTST"
 #define PRODUCT_DESC        "CMPSC Instruction Testing Tool"
-#define VERSION_STR         "2.5.0"
+#define VERSION_STR         "2.6.0"
 #define COPYRIGHT           "Copyright (C) 2012-2014"
 #define COMPANY             "Software Development Laboratories"
 
@@ -594,7 +594,9 @@ typedef void DEF_INST_FUNC( REGS* regs );       // (instruction function)
 
 #define  PGM_UTIL_FAILED        (0xF000)        // (fabricated)
 #define  PGM_ZEROPAD_ERR        (0xF026)        // (fabricated)
+
 #define  RC_ZEROPAD_ERROR       (2616)          // "ZP"
+#define  RC_CMP2BASE_ERROR      (8509)          // "!="
 
 ///////////////////////////////////////////////////////////////////////////////
 // Global variables...

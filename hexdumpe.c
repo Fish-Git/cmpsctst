@@ -131,7 +131,7 @@ void _hexdumpxn( const char *pfx, BYTE **buf, const BYTE *dat, size_t skp,
     }
     if (amt) {
         sprintf( &p[0], "%s%0*llX  ", pfx, hxd, adr );
-        _hexlinex( &p[n+hxd+2], dat, 0, amt, bpg, gpl, x2x );
+        _hexlinex( &p[n+hxd+2], dat, skp, amt, bpg, gpl, x2x );
     }
 }
 void hexdumpaw( const char *pfx, BYTE **buf, const BYTE *dat, size_t skp,

@@ -1,8 +1,30 @@
 
 
--a 1 -c -z -v -i 1158:3495:.\WORK\TSTCMPSC-EBCDIC.txt  -o 1473:2766:.\WORK\cmpout.bin -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -1 -s 5
--a 1 -e -z -v -i 1158:3495:.\WORK\cmpout.bin           -o 1473:2766:.\WORK\expout.txt -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -1 -s 5
+    -m  addressing-mode! (64, 31, 24)
 
+
+-c -a 1 -v -i 22684:2509:.\files\small\EBCDIC\SMP-E_0C4\SMPE-0C4.bin -o 2307:3221:.\work\cmpout.bin -d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -s 5 -1 -z 0:0 -w 8 -b 1:0
+-e -a 1 -v -i 22684:2509:.\work\cmpout.bin                           -o 2307:3221:.\work\expout.txt -d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -s 5 -1 -z 0:0 -w 8 -b 1:0
+
+
+-c -a 1 -v -i 1158:3495:.\WORK\TSTCMPSC-EBCDIC.txt                   -o 1473:2766:.\WORK\cmpout.bin -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -s 5 -1 -z 1:1 -w 8 -b 1:1
+-e -a 1 -v -i 1158:3495:.\WORK\cmpout.bin                            -o 1473:2766:.\WORK\expout.txt -d .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C -x .\DICTS\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E -s 5 -1 -z 1:1 -w 8 -b 1:1
+
+
+-e -a 1:0 -v -i 2228:3304:.\work\cmpout.bin -o 4353:1668:.\work\expout.txt -d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C -x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E -s 5 -1 -z 0:0 -w 8 -b 0:1 > .\work\cmp2base.txt
+
+
+-------------------------------------------------------------------------------
+
+  TODO!   write protect the entire input buffer before calling the CMPSC
+          instruction function to detect buggy implementations that may,
+          as a result of a bug, try modifying it (and then unprotect it
+          afterwards of course, so existing cmpsctst logic can proceed
+          normally). The input buffer to the CMPSC instruction should
+          NEVER be modified by the instruction. It is read-only. Same
+          with the compression/expansion dictionaries themselves: they
+          should be considered read-only. We should write protect them
+          to detect any attempt to modify them.
 
 -------------------------------------------------------------------------------
 
@@ -12,15 +34,6 @@
           No other registers should be modified. We should maybe also check
           to make sure only the lower 32 bits of the registers are modified
           when running in S/390 mode (as opposed to 64-bit z/Arch. mode).
-
--------------------------------------------------------------------------------
-
-  TODO?   add -compare option to compare the output of of one algorithm
-          with the output from the other. Another possible new option:
-          implementation cross-checking: have each implementation expand
-          the compressed output from the other to ensure each can handle
-          the output of the other or that both fail identically whenever
-          given invalid/malformed input.
 
 -------------------------------------------------------------------------------
 

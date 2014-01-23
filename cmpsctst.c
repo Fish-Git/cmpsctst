@@ -41,7 +41,7 @@ Options:\n\
 \n\
   -c  Compress (default)\n\
   -e  Expand\n\
-  -a  Algorithm (optional)\n\
+  -a  Algorithm (see NOTES)\n\
   -r  Repeat Count\n\
 \n\
   -i  [buffer size:[offset:]] Input filename\n\
@@ -74,11 +74,14 @@ Returns:\n\
 Examples:\n\
 \n\
   %s -c -i 8192:*:foo.txt -o *:4095:foo.cmpsc -r 1000 \\\n\
-        -t -d cdict.bin -x edict.bin -1 -s 10 -v rpt.log -z\n\
+           -t -d cdict.bin -x edict.bin -1 -s 10 -v rpt.log -z\n\
 \n\
   %s -e -i foo.cmpsc -o foo.txt -t -x edict.bin -s 10 -q\n\
 \n\
-Notes:\n\
+  %s -c -a 1:0 -v -i 22684:2509:in.txt -o 2307:3221:out.bin \\\n\
+           -d cdict.bin -x edict.bin -s 5 -1 -z 0:0 -b 1:0\n\
+\n\
+NOTES:\n\
 \n\
   You may specify the buffer size to be used for input or output by\n\
   preceding the filename with a number followed by a colon. Use the\n\
@@ -141,6 +144,16 @@ Notes:\n\
   If you specify the -a option without also specifying which algorithm\n\
   to use then the default alternate algorithm 1 will always be chosen.\n\
 \n\
+  The -a option also allows you to perform an algorithm comparison test\n\
+  where the results of one algorithm (the one being tested) is compared\n\
+  against the results of the other (the base algorithm) using the format\n\
+  a:b where 'a' identifies the test algorithm and 'b' the base algorithm.\n\
+  As each buffer is compressed or expanded the results are compared with\n\
+  the base algorithm's results using the same register and buffer values.\n\
+  The test run immediately fails as soon as any difference is detected.\n\
+  If the -v option is also specified the detected differences as well as\n\
+  all information needed to reproduce the failure are also displayed.\n\
+\n\
   The '-r' (Repeat) option repeats each compression or expansion call\n\
   the number of times specified. The input/output files are still read\n\
   from and written to however. The repeat option only controls how many\n\
@@ -158,6 +171,7 @@ Notes:\n\
 #if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
     , DEF_CMPSC_ZP_BITS
 #endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+    , PRODUCT_NAME
     , PRODUCT_NAME
     , PRODUCT_NAME
     , DEF_BUFFSIZE / (1024*1024)
@@ -204,54 +218,61 @@ static const U32 g_nDictSize[5] =
      8192 * 8,    //  cdss 5:  8192  8-byte entries =   64K  (65536 bytes)
 };
 
-static       char* pszOptions  = NULL;
-static const char* pszInName   = NULL;
-static const char* pszOutName  = NULL;
-static const char* pszCmpName  = NULL;
-static const char* pszExpName  = NULL;
-static const char* pszRptName  = NULL;
+static       char* pszOptions   = NULL;
+static const char* pszInName    = NULL;
+static const char* pszOutName   = NULL;
+static const char* pszCmpName   = NULL;
+static const char* pszExpName   = NULL;
+static const char* pszRptName   = NULL;
 
-static FILE*   fInFile         = NULL;
-static FILE*   fOutFile        = NULL;
-static FILE*   fCmpFile        = NULL;
-static FILE*   fExpFile        = NULL;
-static FILE*   fRptFile        = NULL;
+static FILE*   fInFile          = NULL;
+static FILE*   fOutFile         = NULL;
+static FILE*   fCmpFile         = NULL;
+static FILE*   fExpFile         = NULL;
+static FILE*   fRptFile         = NULL;
 
-static U8*     pInBuffer       = NULL;
-static U8*     pOutBuffer      = NULL;
-static U8*     pDictBuffer     = NULL;
+static U8*     pInBuffer        = NULL;
+static U8*     pOutBuffer       = NULL;
+static U8*     pDictBuffer      = NULL;
 
-static U32     nInBuffSize     = 0;
-static U32     nOutBuffSize    = 0;
-static U32     nDictBuffSize   = 0;
-static U32     nSymbolSize     = DEF_CDSS;
-static U32     nRepeatCount    = 0;
-static U32     nIterations     = 0;
-static U32     nInBlockNum     = 0;
-static U32     nOutBlockNum    = 0;
+static U8*     pInBufferBefore  = NULL;
+static U8*     pInBufferAfter   = NULL;
+static U8*     pOutBufferBefore = NULL;
+static U8*     pOutBufferAfter  = NULL;
 
-static U16     nInBuffAlign    = 0;
-static U16     nOutBuffAlign   = 0;
+static U32     nInBuffSize      = 0;
+static U32     nOutBuffSize     = 0;
+static U32     nDictBuffSize    = 0;
+static U32     nSymbolSize      = DEF_CDSS;
+static U32     nRepeatCount     = 0;
+static U32     nIterations      = 0;
+static U32     nInBlockNum      = 0;
+static U32     nOutBlockNum     = 0;
 
-static U8      algorithm       = 0;
-static U8      expand          = FALSE;
-static U8      test_cmp_obbits = TRUE;
-static U8      test_exp_ibbits = TRUE;
-static U8      zeropad_enabled = FALSE;
-static U8      zeropad_wanted  = FALSE;
-static U8      zeropad_bits    = DEF_CMPSC_ZP_BITS;
-static U8      format1         = FALSE;
-static U8      bVerbose        = FALSE;
-static U8      bQuiet          = FALSE;
-static U8      bTranslate      = FALSE;
-static U8      bRepeat         = FALSE;
-static U8      bRandInSize     = FALSE;
-static U8      bRandOutSize    = FALSE;
-static U8      bRandInAlign    = FALSE;
-static U8      bRandOutAlign   = FALSE;
+static U16     nInBuffAlign     = 0;
+static U16     nOutBuffAlign    = 0;
 
-static size_t  bytes           =  0;
-static int     rc              =  0;
+static U8      algorithm        = 0;
+static U8      cmp2base         = FALSE;
+static U8      different        = FALSE;
+static U8      expand           = FALSE;
+static U8      test_cmp_obbits  = TRUE;
+static U8      test_exp_ibbits  = TRUE;
+static U8      zeropad_enabled  = FALSE;
+static U8      zeropad_wanted   = FALSE;
+static U8      zeropad_bits     = DEF_CMPSC_ZP_BITS;
+static U8      format1          = FALSE;
+static U8      bVerbose         = FALSE;
+static U8      bQuiet           = FALSE;
+static U8      bTranslate       = FALSE;
+static U8      bRepeat          = FALSE;
+static U8      bRandInSize      = FALSE;
+static U8      bRandOutSize     = FALSE;
+static U8      bRandInAlign     = FALSE;
+static U8      bRandOutAlign    = FALSE;
+
+static size_t  bytes            =  0;
+static int     rc               =  0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // (fprintf to also send o/p to debugger window)
@@ -1003,7 +1024,7 @@ static void GetInput()
     g_cmpsc.pOp2  = (U64) pInBuffer;   // (point to unprocessed data)
     g_cmpsc.nLen2 =       bytes;       // (how much of it there is)
 
-    if (expand && test_exp_ibbits)                        // (catch CBN bugs)
+    if (expand && test_exp_ibbits)                  // (catch CBN bugs)
         *pInBuffer |= (0xFF << (8 - g_cmpsc.cbn));  // (catch CBN bugs)
 }
 
@@ -1012,8 +1033,11 @@ static void GetInput()
 
 static void FlushOutput()
 {
-    CheckZeroPadding();
-    CheckBuffer( pOutBuffer, nOutBuffAlign, nOutBuffSize );
+    if (!cmp2base)
+    {
+        CheckZeroPadding();
+        CheckBuffer( pOutBuffer, nOutBuffAlign, nOutBuffSize );
+    }
 
     // write out all completed bytes...
 
@@ -1125,19 +1149,95 @@ void ParseArgs( int argc, char* argv[] )
 
             case 'a': // (algorithm)
             {
+                U8 err = FALSE, err2 = FALSE, err3 = FALSE;
                 save_option( "-a ", pszOptArg );
                 if (pszOptArg)
                 {
-                    if ((algorithm = atoi( pszOptArg )) >= _countof( algorithm_table )
-                        || ERANGE == errno )
+                    if (strchr( pszOptArg, ':' ))
                     {
-                        FPRINTF( stderr, "ERROR: Invalid '-a' algorithm \"%s\".\n",
-                            pszOptArg );
-                        syntax = 1;
+                        // ("a:b" -- compare one to another)
+
+                        char test_algorithm[2] = {0};  // "a"
+                        char base_algorithm[2] = {0};  // "b"
+
+                        cmp2base = TRUE;    // (always!)
+
+                        if (0
+                            || strlen(  pszOptArg ) != 3
+                            || ':' != *(pszOptArg + 1)
+                        )
+                            err = TRUE;
+                        else
+                        {
+                            int test = -1;
+                            int base = -1;
+
+                            test_algorithm[0] = *(pszOptArg + 0);
+                            base_algorithm[0] = *(pszOptArg + 2);
+
+                            if (0
+                                || (test = atoi( test_algorithm )) < 0 || ERANGE == errno
+                                ||  test >= _countof( algorithm_table )
+                                || (base = atoi( base_algorithm )) < 0 || ERANGE == errno
+                                ||  base >= _countof( algorithm_table )
+                                ||  base == test
+                            )
+                                err = TRUE;
+                            else
+                            {
+                                if (bRepeat && 1 != nRepeatCount)
+                                    err3 = TRUE;
+                                else
+                                    algorithm = test;
+                            }
+                        }
+                    }
+                    else // (algorithm)
+                    {
+                        int test;
+
+                        if (0
+                            || (test = atoi( pszOptArg )) < 0
+                            || ERANGE == errno
+                            || test >= _countof( algorithm_table )
+                        )
+                            err = TRUE;
+                        else
+                        {
+                            if (cmp2base && test != algorithm)
+                                err2 = TRUE;
+                            else
+                                algorithm = test;
+                        }
                     }
                 }
                 else
-                    algorithm = 1;
+                {
+                    if (cmp2base && 1 != algorithm)
+                        err2 = TRUE;
+                    else
+                        algorithm = 1;
+                }
+
+                if (err2 || err3)
+                    err = TRUE;
+
+                if (err)
+                {
+                    FPRINTF( stderr, "ERROR: Invalid '-a' algorithm \"%s\".\n",
+                        pszOptArg );
+                    if (err2)
+                    {
+                        char a = '0' +  algorithm;
+                        char b = '0' + !algorithm;
+                        FPRINTF( stderr, "       ('-a %c:%c' previously specified)\n",
+                            a, b );
+                    }
+                    if (err3)
+                        FPRINTF( stderr, "       ('-r %d' previously specified)\n",
+                            nRepeatCount );
+                    syntax = 1;
+                }
             }
             break;
 
@@ -1176,13 +1276,24 @@ void ParseArgs( int argc, char* argv[] )
             case 'r': // (repeat count)
             {
                 save_option( "-r ", pszOptArg );
-                if (pszOptArg && (nRepeatCount = atoi( pszOptArg )) >= 1
-                    && nRepeatCount <= INT_MAX)
+                if (1
+                    && pszOptArg
+                    && (nRepeatCount = atoi( pszOptArg )) >= 1
+                    && nRepeatCount <= INT_MAX
+                    && (nRepeatCount == 1 || !cmp2base)
+                )
                     bRepeat = TRUE;
                 else
                 {
                     FPRINTF( stderr, "ERROR: Invalid '-r' repeat count \"%s\".\n",
                         pszOptArg ? pszOptArg : "(undefined)" );
+                    if (cmp2base && 1 != nRepeatCount)
+                    {
+                        char a = '0' +  algorithm;
+                        char b = '0' + !algorithm;
+                        FPRINTF( stderr, "       ('-a %c:%c' previously specified)\n",
+                            a, b );
+                    }
                     syntax = 1;
                 }
             }
@@ -1446,6 +1557,270 @@ void ParseArgs( int argc, char* argv[] )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Compare the contents of buffer1 with buffer2 returning the address of
+// the first byte within buffer1 which is different from the corresponding
+// byte in buffer 2 or NULL if both buffers are identical to one another.
+
+const BYTE* memcmp2( const BYTE* pBuf1, const BYTE* pBuf2, size_t nCount )
+{
+    for (; nCount && pBuf1[0] == pBuf2[0]; --nCount, ++pBuf1, ++pBuf2)
+        ; // nop
+    return nCount ? pBuf1 : NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Compare the contents of buffer1 with buffer2 returning the address of
+// the LAST byte within buffer1 which is different from the corresponding
+// byte in buffer 2 or NULL if both buffers are identical to one another.
+
+const BYTE* rmemcmp2( const BYTE* pBuf1, const BYTE* pBuf2, size_t nCount )
+{
+    pBuf1 += nCount-1;
+    pBuf2 += nCount-1;
+
+    for (; nCount && pBuf1[0] == pBuf2[0]; --nCount, --pBuf1, --pBuf2)
+        ; // nop
+    return nCount ? pBuf1 : NULL;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Calculate total number of symbols that were expanded
+
+U64 ExpandedSymbols( U8 cdss, U8 begcbn, U8 endcbn, U64 len )
+{
+    U64  bits, syms;
+    bits  = ((len * 8) + endcbn - begcbn);
+    syms  = bits / cdss;
+    if (bits % cdss)
+        __debugbreak();
+    return syms;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+#define REGS_DIFF(fld)      test_regs->fld != base_regs->fld ? '*' : ' '
+#define CMPSC_DIFF(fld)     test_cmpsc.fld != base_cmpsc.fld ? '*' : ' '
+
+void DumpRegs( REGS* test_regs, REGS* base_regs )
+{
+    CMPSCBLK  test_cmpsc  = {0};
+    CMPSCBLK  base_cmpsc  = {0};
+
+    int i, k;
+
+    ARCH_DEP( cmpsc_SetCMPSC )( &test_cmpsc, test_regs,
+        OPERAND_1_REGNUM, OPERAND_2_REGNUM );
+
+    ARCH_DEP( cmpsc_SetCMPSC )( &base_cmpsc, base_regs,
+        OPERAND_1_REGNUM, OPERAND_2_REGNUM );
+
+    FPRINTF( fRptFile, "    %c64-bit addressing mode:         %c%s\n",      REGS_DIFF( psw.amode64 ), REGS_DIFF( psw.amode64 ), test_regs->psw.amode64 ? "yes" : "no" );
+    FPRINTF( fRptFile, "    %cZero padding enabled:           %c%s\n",      REGS_DIFF( zeropad     ), REGS_DIFF( zeropad     ), test_regs->zeropad     ? "yes" : "no" );
+    FPRINTF( fRptFile, "    %cPSW key:                        %c%02X\n",    REGS_DIFF( psw.pkey    ), REGS_DIFF( psw.pkey    ), test_regs->psw.pkey    );
+    FPRINTF( fRptFile, "    %cDAT storage key:                %c%02X\n",    REGS_DIFF( dat.keybyte ), REGS_DIFF( dat.keybyte ), test_regs->dat.keybyte );
+    FPRINTF( fRptFile, "    %cInterruption code:              %c%04X\n",    REGS_DIFF( psw.intcode ), REGS_DIFF( psw.intcode ), test_regs->psw.intcode );
+    FPRINTF( fRptFile, "    %cData exception code:            %c%02X\n",    REGS_DIFF( dxc         ), REGS_DIFF( dxc         ), test_regs->dxc         );
+    FPRINTF( fRptFile, "    %cCondition code:                 %c%d\n",      REGS_DIFF( psw.cc      ), REGS_DIFF( psw.cc      ), test_regs->psw.cc      );
+    for (i=0, k=max( OPERAND_1_REGNUM, OPERAND_2_REGNUM ); i <= k+1; i++)
+    FPRINTF( fRptFile, "    %cRegister %d:                     %c%08X_%08X\n",
+        REGS_DIFF(gr[i]), i, REGS_DIFF(gr[i]), (U32) (test_regs->gr[i] >> 32), (U32) test_regs->gr[i] );
+    FPRINTF( fRptFile, "    %cZero padding requested:         %c%s\n",      CMPSC_DIFF( zp    ), CMPSC_DIFF( zp    ), test_cmpsc.zp ? "yes" : "no" );
+    FPRINTF( fRptFile, "    %cSymbol Translation option:      %c%s\n",      CMPSC_DIFF( st    ), CMPSC_DIFF( st    ), test_cmpsc.st ? "yes" : "no" );
+    FPRINTF( fRptFile, "    %cCompressed-Data Symbol Size:    %c%d bits\n", CMPSC_DIFF( cdss  ), CMPSC_DIFF( cdss  ), test_cmpsc.cdss + 8 );
+    FPRINTF( fRptFile, "    %cFormat-1 sibling descriptors:   %c%s\n",      CMPSC_DIFF( f1    ), CMPSC_DIFF( f1    ), test_cmpsc.f1 ? "yes" : "no" );
+    FPRINTF( fRptFile, "     Expansion:                       %s\n",        expand   ? "yes" : "no  (compression)" );
+    FPRINTF( fRptFile, "    %cDictionary origin:              %c%0llX\n",   CMPSC_DIFF( pDict ), CMPSC_DIFF( pDict ), test_cmpsc.pDict );
+    FPRINTF( fRptFile, "     Dictionary size:                 %0X (%dK)\n", expand ? nDictBuffSize >> 1 : nDictBuffSize, (expand ? nDictBuffSize >> 1 : nDictBuffSize) / 1024 );
+    if (test_cmpsc.st)
+    FPRINTF( fRptFile, "    %cTranslation Table offset:       %c%hd\n",     CMPSC_DIFF( stt   ), CMPSC_DIFF( stt   ), test_cmpsc.stt  );
+    FPRINTF( fRptFile, "    %cCompressed-data Bit Number:     %c%d\n",      CMPSC_DIFF( cbn   ), CMPSC_DIFF( cbn   ), test_cmpsc.cbn   );
+    FPRINTF( fRptFile, "    %cOperand-1 address               %c%0llX\n",   CMPSC_DIFF( pOp1  ), CMPSC_DIFF( pOp1  ), test_cmpsc.pOp1  );
+    FPRINTF( fRptFile, "    %cOperand-1 length:               %c%0llX\n",   CMPSC_DIFF( nLen1 ), CMPSC_DIFF( nLen1 ), test_cmpsc.nLen1 );
+    FPRINTF( fRptFile, "    %cOperand-2 address               %c%0llX\n",   CMPSC_DIFF( pOp2  ), CMPSC_DIFF( pOp2  ), test_cmpsc.pOp2  );
+    FPRINTF( fRptFile, "    %cOperand-2 length:               %c%0llX\n",   CMPSC_DIFF( nLen2 ), CMPSC_DIFF( nLen2 ), test_cmpsc.nLen2 );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Compare the original algorithm's results against the baseline algorithm's.
+// Returns TRUE if a difference was found (and shows where the difference
+// occurred) or else FALSE if both produced identical results.
+
+U8 DifferentResults( REGS* starting_regs, REGS* baseline_regs )
+{
+    CMPSCBLK start_cmpsc = {0};
+    const BYTE* pFirstDiff;
+    const BYTE* pLastDiff;
+    char* dump = NULL;
+    size_t nDisp, nLen, skp, adr;
+    U8 regdiff;
+
+    // Compare ending register values...
+
+    regdiff = (memcmp( &g_regs, baseline_regs, sizeof( REGS )) == 0)
+        ? FALSE : TRUE;
+
+    // Compare output buffers...
+
+    pFirstDiff = memcmp2( pOutBuffer, pOutBufferAfter, nOutBuffSize );
+
+    if (!pFirstDiff && !regdiff)
+        return FALSE;   // (results are identical)
+
+    if (pFirstDiff)
+    {
+        pLastDiff = rmemcmp2( pOutBuffer, pOutBufferAfter, nOutBuffSize );
+
+        nDisp = (pFirstDiff - pOutBuffer);
+        nLen  = (pLastDiff  - pFirstDiff) + 1;
+
+        if (nLen > MAX_SYMLEN)
+            nLen = MAX_SYMLEN;
+
+        if ((pFirstDiff + nLen) > (pOutBuffer + nOutBuffSize))
+            nLen = (pOutBuffer + nOutBuffSize) - pFirstDiff;
+    }
+
+    // DIFFERENCE DETECTED: report the error if quiet option not enabled...
+
+    if (!bQuiet)
+        FPRINTF( fRptFile, "\nERROR: Test results differ from baseline's%c\n\n",
+            bVerbose ? ':' : '.' );
+
+    // If the verbose option isn't enabled then we are done. Return now.
+
+    if (!bVerbose)
+        return TRUE;        // (results are different)
+
+    ARCH_DEP( cmpsc_SetCMPSC )( &start_cmpsc, starting_regs,
+        OPERAND_1_REGNUM, OPERAND_2_REGNUM );
+
+    // ------------------------------------------------------------------------
+    // Verbose option:  Show all values needed to reproduce the problem...
+
+    FPRINTF( fRptFile, "  Instruction:    B26300%d%d    CMPSC  %d,%d\n\n",
+        OPERAND_1_REGNUM, OPERAND_2_REGNUM,
+        OPERAND_1_REGNUM, OPERAND_2_REGNUM );
+
+    // ------------------------------------------------------------------------
+    // Show register values that were INPUT to the instruction...
+
+    FPRINTF( fRptFile, "  Register values input to instruction:\n\n" );
+    DumpRegs( starting_regs, starting_regs );
+    FPRINTF( fRptFile, "\n\n" );
+
+    // ------------------------------------------------------------------------
+    // Show where the o/p buffers differ, if applicable...
+    // Show ending register value differences, if applicable...
+
+    if (pFirstDiff)
+    {
+        adr = ((size_t) pOutBuffer + nDisp) & 0x0000000000FFFFF0ULL; // F0  (16 byte boundary)
+        skp = ((size_t) pOutBuffer + nDisp) & 0x000000000000000FULL; // 0F  (max 15 byte offset)
+
+        FPRINTF( fRptFile, "  \"%s\" baseline algorithm's op-1 output buffer results at +%d (0x%X) for %d bytes:\n\n",
+            algorithm_names[ !algorithm ], (U32) nDisp, (U32) nDisp, (U32) nLen );
+        hexdumpe24( "    ", &dump, pOutBufferAfter + nDisp, skp, nLen, adr, 4, 4 );
+        FPRINTF( fRptFile, "%s\n\n", dump ? dump : "(oops)" );
+        if (dump) free( dump ); dump = NULL;
+
+        FPRINTF( fRptFile, "  \"%s\" test algorithm's op-1 output buffer results at +%d (0x%X) for %d bytes:\n\n",
+            algorithm_names[ algorithm ], (U32) nDisp, (U32) nDisp, (U32) nLen );
+        hexdumpe24( "    ", &dump, pFirstDiff, skp, nLen, adr, 4, 4 );
+        FPRINTF( fRptFile, "%s\n\n", dump ? dump : "(oops)" );
+        if (dump) free( dump ); dump = NULL;
+
+        FPRINTF( fRptFile, "  \"%s\" test algorithm's results are DIFFERENT:\n\n",
+            algorithm_names[ algorithm ]);
+
+        if (!expand)
+        {
+            FPRINTF( fRptFile, "    Output at +%08X is:     0x%02X\n",
+                (U32)nDisp, *pFirstDiff );
+            FPRINTF( fRptFile, "    But it really SHOULD be:    0x%02X\n\n",
+                *(pOutBufferAfter + nDisp) );
+        }
+    }
+
+    if (expand)
+    {
+        CMPSCBLK  end_base_cmpsc  = {0};
+        CMPSCBLK  end_test_cmpsc  = {0};
+
+        U64  base_expanded_syms   =  0;
+        U64  test_expanded_syms   =  0;
+
+        ARCH_DEP( cmpsc_SetCMPSC )( &end_base_cmpsc, baseline_regs,
+            OPERAND_1_REGNUM, OPERAND_2_REGNUM );
+
+        ARCH_DEP( cmpsc_SetCMPSC )( &end_test_cmpsc, &g_regs,
+            OPERAND_1_REGNUM, OPERAND_2_REGNUM );
+
+        base_expanded_syms = ExpandedSymbols( start_cmpsc.cdss + 8,
+                                              start_cmpsc.cbn,
+                                              end_base_cmpsc.cbn,
+                                              start_cmpsc.nLen2 - end_base_cmpsc.nLen2
+                                            );
+
+        test_expanded_syms = ExpandedSymbols( start_cmpsc.cdss + 8,
+                                              start_cmpsc.cbn,
+                                              end_test_cmpsc.cbn,
+                                              start_cmpsc.nLen2 - end_test_cmpsc.nLen2
+                                            );
+
+        FPRINTF( fRptFile, "    Base algorithm expanded %lld symbols.\n",   base_expanded_syms );
+        FPRINTF( fRptFile, "    Test algorithm expanded %lld symbols.\n\n", test_expanded_syms );
+    }
+
+    if (regdiff)
+    {
+        if (pFirstDiff || expand)
+            FPRINTF( fRptFile, "\n" );
+
+        FPRINTF( fRptFile, "  \"%s\" baseline algorithm's ending REGS:\n\n",
+            algorithm_names[ !algorithm ]);
+        FPRINTF( fRptFile, "     (values flagged with '*' are DIFFERENT)\n\n" );
+        DumpRegs( baseline_regs, &g_regs );
+        FPRINTF( fRptFile, "\n\n" );
+
+        FPRINTF( fRptFile, "  \"%s\" test algorithm's ending REGS:\n\n",
+            algorithm_names[ algorithm ]);
+        FPRINTF( fRptFile, "     (values flagged with '*' are WRONG)\n\n" );
+        DumpRegs( &g_regs, baseline_regs );
+        FPRINTF( fRptFile, "\n\n" );
+    }
+
+    // ------------------------------------------------------------------------
+    // Show the i/p and o/p buffers and dictionary passed to the instruction...
+
+    adr = start_cmpsc.pOp2 & 0x0000000000FFFFE0ULL; // E0  (32 byte boundary)
+    skp = start_cmpsc.pOp2 & 0x000000000000001FULL; // 1F  (max 31 byte offset)
+
+    FPRINTF( fRptFile, "  Operand-2 input buffer passed to instruction:\n\n" );
+    hexdumpe24( "    ", &dump, pInBufferBefore, skp, nInBuffSize, adr, 4, 8 );
+    FPRINTF( fRptFile, "%s\n\n", dump ? dump : "(oops)" );
+    if (dump) free( dump ); dump = NULL;
+
+    adr = start_cmpsc.pOp1 & 0x0000000000FFFFE0ULL; // E0  (32 byte boundary)
+    skp = start_cmpsc.pOp1 & 0x000000000000001FULL; // 1F  (max 31 byte offset)
+
+    FPRINTF( fRptFile, "  Operand-1 output buffer passed to instruction:\n\n" );
+    hexdumpe24( "    ", &dump, pOutBufferBefore, skp, nOutBuffSize, adr, 4, 8 );
+    FPRINTF( fRptFile, "%s\n\n", dump ? dump : "(oops)" );
+    if (dump) free( dump ); dump = NULL;
+
+    adr = start_cmpsc.pDict & 0x0000000000FFFFE0ULL; // E0  (32 byte boundary)
+    skp = start_cmpsc.pDict & 0x000000000000001FULL; // 1F  (max 31 byte offset)
+
+    FPRINTF( fRptFile, "  %s dictionary passed to instruction:\n\n",
+        expand ? "Expansion" : "Compression" );
+    hexdumpe24( "    ", &dump, pDictBuffer, skp, expand ? nDictBuffSize >> 1 : nDictBuffSize, adr, 4, 8 );
+    FPRINTF( fRptFile, "%s\n", dump ? dump : "(oops)" );
+    if (dump) free( dump ); dump = NULL;
+
+    return TRUE;    // (results are different)
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // Non-Windows SIGSEGV __except handler...
 
 #ifndef _MSVC_
@@ -1465,7 +1840,8 @@ static void except_handler( int signo )     // (exception has occurred)
 
 void CallCMPSC()
 {
-    REGS regs;          // (retrieved starting values)
+    REGS regs;              // (retrieved starting values)
+    REGS baseline_regs;     // (preserved baseline values)
 
     ARCH_DEP( cmpsc_SetREGS )( &g_cmpsc, &g_regs,
         OPERAND_1_REGNUM, OPERAND_2_REGNUM );
@@ -1513,6 +1889,40 @@ void CallCMPSC()
                 }
 
                 memset( p, NO_ZERO_PAD_PATT, n );     // (catch CBN/ZP bugs)
+            }
+
+            if (cmp2base)
+            {
+                // Perform compression or expansion using one algorithm
+                // and then again using the other algorithm and compare
+                // results to ensure the second algorithm's results (the
+                // one being tested) matches the first algorithm's results
+                // (the baseline algorithm's). If they differ, set the
+                // 'different' variable to TRUE and show the differences.
+                // The caller should then fail the test run.
+
+                // Save starting values  (note: regs already saved)
+
+                memcpy( pInBufferBefore,  pInBuffer,  nInBuffSize  );
+                memcpy( pOutBufferBefore, pOutBuffer, nOutBuffSize );
+
+                // Call baseline algorithm
+
+                do algorithm_table[ !algorithm ]( &g_regs );
+                while (g_regs.psw.cc == 3);
+
+                // Save baseline algorithm's results
+
+                baseline_regs = g_regs;
+                memcpy( pInBufferAfter,  pInBuffer,  nInBuffSize  );
+                memcpy( pOutBufferAfter, pOutBuffer, nOutBuffSize );
+
+                // Restore original starting values
+
+                g_regs = regs;
+                g_regs.dat.keybyte = 0; // (reset storage key)
+                memcpy( pInBuffer,  pInBufferBefore,  nInBuffSize  );
+                memcpy( pOutBuffer, pOutBufferBefore, nOutBuffSize );
             }
 
             g_nAddrTransCtr = 0;    // (reset counter)
@@ -1592,6 +2002,9 @@ void CallCMPSC()
 
     if (g_nPIC)
         program_interrupt( &g_regs, g_nPIC );
+
+    if (cmp2base)
+        different = DifferentResults( &regs, &baseline_regs );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1779,6 +2192,20 @@ int main( int argc, char* argv[] )
 
     //-------------------------------------------------------------------------
 
+    if (cmp2base &&
+    (0
+        || !(pInBufferBefore  = my_offset_aligned_calloc( nInBuffSize,  0 ))
+        || !(pInBufferAfter   = my_offset_aligned_calloc( nInBuffSize,  0 ))
+        || !(pOutBufferBefore = my_offset_aligned_calloc( nOutBuffSize, 0 ))
+        || !(pOutBufferAfter  = my_offset_aligned_calloc( nOutBuffSize, 0 ))
+    ))
+    {
+        FPRINTF( stderr, "ERROR: Could not allocate 'save' buffers.\n" );
+        return -1;
+    }
+
+    //-------------------------------------------------------------------------
+
     if (!pDictBuffer && (!(nDictBuffSize = (g_nDictSize[ nSymbolSize - 1 ] << format1)) ||
         !calloc_buffer( expand ? 'x' : 'd', nDictBuffSize, 0, &pDictBuffer )))
         return -1;
@@ -1891,7 +2318,7 @@ int main( int argc, char* argv[] )
                 CallCMPSC();            // (expand it)
                 FlushOutput();          // (write expanded)
             }
-            while (!feof( fInFile ) || g_regs.psw.cc != 0);
+            while (!different && (!feof( fInFile ) || g_regs.psw.cc != 0));
         }
         else                            // Compress...
         {
@@ -1901,7 +2328,7 @@ int main( int argc, char* argv[] )
                 CallCMPSC();            // (compress it)
                 FlushOutput();          // (write compressed)
             }
-            while (!feof( fInFile ) || g_regs.psw.cc != 0);
+            while (!different && (!feof( fInFile ) || g_regs.psw.cc != 0));
 
             if (g_regs.gr[1] & 0x07)    // (any extra bits?)
             {
@@ -1940,12 +2367,23 @@ int main( int argc, char* argv[] )
     free_buffer( &pInBuffer    );
     free_buffer( &pOutBuffer   );
 
+    if (cmp2base)
+    {
+        free_buffer( &pInBufferBefore  );
+        free_buffer( &pInBufferAfter   );
+        free_buffer( &pOutBufferBefore );
+        free_buffer( &pOutBufferAfter  );
+    }
+
     if (pszOptions)          free( (void*) pszOptions );
     if (g_pNoZeroPadPattern) free( (void*) g_pNoZeroPadPattern );
     if (g_pZeroPaddingBytes) free( (void*) g_pZeroPaddingBytes );
 
     //-------------------------------------------------------------------------
     // Display results and exit
+
+    if (cmp2base && different)
+        rc = RC_CMP2BASE_ERROR;
 
     if (!bQuiet || rc != 0)
     {
@@ -1986,6 +2424,7 @@ int main( int argc, char* argv[] )
         else // (an error has occurred...)
         {
             if (1
+                && !cmp2base
                 && PGM_UTIL_FAILED != g_nPIC
                 && PGM_ZEROPAD_ERR != g_nPIC
                 && bVerbose
@@ -2020,7 +2459,7 @@ int main( int argc, char* argv[] )
             // succeed on a default (but non-elevated) Administrator
             // account. I have no idea whether or not it works on a
             // regular non-elevated NON-Administrator user account,
-            // but I suspect it would more than likely not work.
+            // but I suspect it would likely FAIL (i.e. NOT work).
 
             if (GetProcessTimes( GetCurrentProcess(),
                 (FILETIME*) &n64StartTime, (FILETIME*) &n64EndTime,

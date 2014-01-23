@@ -11,8 +11,8 @@
 
 \*****************************************************************************/
 
-  ver      = "2.5"              -- (version of this script)
-  ver_date = "December 2013"    -- (version of this script)
+  ver      = "2.6"              -- (version of this script)
+  ver_date = "January 2014"     -- (version of this script)
 
   Trace Off
   signal initialize
@@ -113,8 +113,8 @@ help:
   say ""
   say "    OPTIONS"
   say ""
+  say "        -a      Algorithm to be used               (see NOTES below)"
   say "        -t      Translate ASCII/EBCDIC             (default = no)"
-  say "        -a      Algorithm to be used               (default = 0)"
   say "        -r      Number of random tests             (default = "num_randoms")"
   say "        -r      Number of speed test repeats       (default = "num_randoms")"
   say "        -n      No hard-coded test cases           (default = all)"
@@ -131,17 +131,19 @@ help:
   say "        "_n0"  .\files\small  .\dicts  .\work  -r 0 -z -w 3 > VERY-long-non-random-test.log"
   say "        "_n0"  .\files\small  .\dicts  .\work  -n -r 3 -z 0:1 > short-randoms-test.log"
   say "        "_n0"  .\files\large  .\dicts  .\work  -speed -r 100 > speed-test.log"
+  say "        "_n0"  .\files\small\ebcdic\ .\dicts\ .\work\ -a 1:0 -r 1 -n -z 0:0 -bb 0:1  >  .\work\cmp2base.txt"
   say ""
   say "    NOTES"
   say ""
-  say "        Unless a timing run (speed test) is being done, "_n0
-  say "        repeatedly calls the CMPSCTST.EXE test tool for every test"
-  say "        file and dictionary found in the two specified directories"
-  say "        and all of their subdirectories first asking it to compress"
-  say "        the test file to a temporary work file, then expanding the"
-  say "        work file to a second work file, and finally comparing the"
-  say "        MD5 hash of the final expanded output to make sure that it"
-  say "        matches bit-for-bit with the original input file."
+  say "        Unless a timing run (speed test) or algorithm comparison"
+  say "        test (cmp2base) is being done, "_n0" repeatedly calls"
+  say "        the CMPSCTST.EXE tool for every test file and dictionary"
+  say "        found in the two specified directories and all of their"
+  say "        subdirectories, first asking it to compress a test file"
+  say "        to a temporary work file followed by expanding it to a"
+  say "        second work file before finally comparing the MD5 hash"
+  say "        of the expanded result to ensure it matches bit-for-bit"
+  say "        with the original input."
   say "  "
   say "        A series of several compress/expand cycles are performed,"
   say "        first using a hard-coded range of buffer size and offset"
@@ -164,7 +166,7 @@ help:
   say ""
   say "        It is therefore HIGHLY RECOMMENDED you redirect its stdout"
   say "        output to a log file. Redirecting stderr to a log file is"
-  say "        optional but not recommended since the volume of progress"
+  say "        optional but NOT recommended since the volume of progress"
   say "        messages written to stderr is quite small, being limited"
   say "        to notification when each new test is about to start and"
   say "        which dictionary it is using. It does NOT notify you when"
@@ -208,6 +210,17 @@ help:
   say "        offset values. To perform a custom timing/speed test using"
   say "        specific buffer size and offset values, you need to call the"
   say "        CMPSCTST.EXE tool yourself (i.e. don't use "_nx0")."
+  say ""
+  say "        "_nx0" can also compare one algorithm against another"
+  say "        by specifying the '-a' option as 'a:b', where 'a' identifies"
+  say "        the test algorithm (the one being tested) and 'b' identifies"
+  say "        the base algorithm (to compare the test algorithm's results"
+  say "        against). As each buffer is either compressed or expanded"
+  say "        the results are compared against the base algorithm's using"
+  say "        the same register and buffer values. If any differences are"
+  say "        found, the test immediately aborts (fails) and, if the '-v'"
+  say "        verbose option given, the differences and all information"
+  say "        needed to reproduce the error is then displayed."
   say ""
   say "        The '-z' (Zero Padding) option controls CMPSC-Enhancement"
   say "        Facility. Specify the option as two 0/1 values separated by"
@@ -260,7 +273,7 @@ help:
   say "            ...etc..."
   say ""
   say "        Each dictionary pair MUST have the same name and each MUST"
-  say "        be in raw binary format."
+  say "        be in the same directory and MUST be in raw binary format."
   say ""
   say "    EXIT STATUS"
   say ""
@@ -345,6 +358,7 @@ initialize:
   zp_bits     = 8         -- ("-w" padding alignment option)
   bb_cmp_opt  = 1         -- ("-bb" test buffer bits option)
   bb_exp_opt  = 1         -- ("-bb" test buffer bits option)
+  cmp2base    = 0         -- ("a:b" compare algorithms option)
 
   buffsizes   = bs1 || " " || bs2 || " " || bs3     -- (the complete set)
   offsets     = of1 || " " || of2                   -- (the complete set)
@@ -452,7 +466,7 @@ loadtools: procedure expose _rc rexxutil_dll cmpsctst_bin md5sum_bin
 
   /* Load REXX Utilities library */
 
-  If 0 ,
+  if 0 ,
      | RxFuncQuery("SysIsFile") ,
      | RxFuncQuery("SysFileDelete") ,
      | RxFuncQuery("SysIsFileDirectory") ,
@@ -599,8 +613,30 @@ parse_arguments:
           algorithm = 1     -- ("val" is really next option)
         else do
           i += 1            -- (the algorithm was specified)
-          if \isnum(val) then
-            call bad_option_value    -- (not a valid number)
+          if \isnum(val) then do
+            if length(val) \= 3 | substr(val,2,1) \= ":" then
+              call bad_option_value  -- (not a valid number)
+            else do   -- ("a:b" format = compare algorithms)
+              a = substr(val,1,1)
+              b = substr(val,3,1)
+              if 0                      ,
+                 | \isnum(a)            ,
+                 | \isnum(b)            ,
+                 | a < 0                , 
+                 | b < 0                , 
+                 | a >= num_algorithms  ,
+                 | b >= num_algorithms  ,
+                 | a = b                ,
+              then
+                call bad_option_value    -- (bad a:b format)
+              else if speed \= "" then
+                call speed_option_already_specified
+              else do
+                algorithm = val   -- (valid cmp2base format)
+                cmp2base = 1
+              end
+            end
+          end
           else do
             if val >= 0 & val < num_algorithms then
               algorithm = val
@@ -622,7 +658,9 @@ parse_arguments:
       
               /* Speed test: -r means #of repeats; must be > 0 */
       
-              if val <= 0 then
+              if cmp2base then
+                call cmp2base_already_specified
+              else if val <= 0 then
                 call bad_option_value   -- (negative or zero)
               else
                 repeat = "-r " || val + 0
@@ -694,6 +732,16 @@ parse_arguments:
 
   drop opt val
   signal validate_arguments
+
+cmp2base_already_specified:
+  call bad_option_value
+  call errmsg2 "-a "algorithm" already specified."
+  return
+
+speed_option_already_specified:
+  call bad_option_value
+  call errmsg2 "-speed already specified."
+  return
 
 bad_option_value:
   call errmsg "Invalid '"opt"' value " || '"'val'"'
@@ -796,7 +844,10 @@ begin:
 
   /* Now perform the test(s) using those files... */
 
-  call bothmsg "Starting CMPSC test; " || files.0 || " files and " || dicts.0 || " dictionaries selected."
+  if cmp2base then
+    call bothmsg "Starting CMPSC baseline comparison test using " || files.0 || " files and " || dicts.0 || " dictionaries."
+  else
+    call bothmsg "Starting CMPSC " || temp1 || "test; " || files.0 || " files and " || dicts.0 || " dictionaries selected."
   call bothmsg ""
 
   call progmsg sep
@@ -812,6 +863,8 @@ begin:
   rc7err.1 = 0; -- (Data Exception during Expansion)
   md5ok    = 0; -- (MD5 Hash Matches  after Expansion)
   md5err   = 0; -- (MD5 Hash Mismatch after Expansion)
+  c2berr.0 = 0; -- (Comparison failure during Compression)
+  c2berr.1 = 0; -- (Comparison failure during Expansion)
 
 
   /* Start timing... */
@@ -825,13 +878,13 @@ begin:
 
   /* For each file, for each dictionary... */
 
-  do file_num=1 for files.0           -- (for each test file)
+  do file_num=1 for files.0  while tsterr = 0 | \cmp2base -- (for each test file)
 
     infile = files.file_num
     call progmsg "Processing file: " || infile
     old_md5 = MD5(infile)
 
-    do dict_num=1 for dicts.0     -- (for each compression dict)
+    do dict_num=1 for dicts.0  while tsterr = 0 | \cmp2base -- (for each compression dict)
 
       cdict = dicts.dict_num
 
@@ -841,7 +894,6 @@ begin:
       cdss  = substr(cdict,n-1,1)         -- (dict symbol size)
 
       call progmsg "  ...with dictionary: " || cdict
-
 
       /* Perform speed test if requested... */
 
@@ -862,13 +914,13 @@ begin:
       if no_nonrand = "" then do
         if num_randoms > 0 then
           call progmsg "     ...(begin non-random tests)..."
-        do  ibn=1 for words(buffsizes)
+        do  ibn=1 for words(buffsizes) while tsterr = 0 | \cmp2base
             ib = word(buffsizes,ibn)
-            do  ion=1 for words(offsets)
+            do  ion=1 for words(offsets) while tsterr = 0 | \cmp2base
                 io = word(offsets,ion)
-                do  obn=1 for words(buffsizes)
+                do  obn=1 for words(buffsizes) while tsterr = 0 | \cmp2base
                     ob = word(buffsizes,obn)
-                    do  oon=1 for words(offsets)
+                    do  oon=1 for words(offsets) while tsterr = 0 | \cmp2base
                         oo = word(offsets,oon)
                         call dotest
                     end
@@ -883,13 +935,13 @@ begin:
       if num_randoms > 0 then do
         if no_nonrand = "" then
           call progmsg "     ...(begin random sized tests)..."
-        loop num_randoms
+        loop num_randoms while tsterr = 0 | \cmp2base
             ib = random(MIN_BUFFSIZE,MAX_BUFFSIZE)
-            loop num_randoms
+            loop num_randoms while tsterr = 0 | \cmp2base
                 io = random(MIN_OFFSET,MAX_OFFSET)
-                loop num_randoms
+                loop num_randoms while tsterr = 0 | \cmp2base
                     ob = random(MIN_BUFFSIZE,MAX_BUFFSIZE)
-                    loop num_randoms
+                    loop num_randoms while tsterr = 0 | \cmp2base
                         oo = random(MIN_OFFSET,MAX_OFFSET)
                         call dotest
                     end
@@ -913,33 +965,52 @@ begin:
     say         "End: "time()           -- (align HH of End: w/HH of Dur:)
   end; else say "End:    "time()        -- (align HH of End: w/HH of Dur:)
 
+  /* Quick sanity check */
+
+  if \cmp2base & (c2berr.0 > 0 | c2berr.1 > 0) then do
+    call bothmsg "** LOGIC ERROR! **"
+    call bothmsg "** cmp2base="cmp2base" but c2berr.0="c2berr.0" and c2berr.1="c2berr.1"!"
+    call oops
+  end
 
   /* Print TOTALS */
 
   n = length(format(tottst))
 
   call bothmsg sep
+  if totcmp <> 0 then do
   call bothmsg ""
   call bothmsg " " || format(totcmp,n) || " Compressions: " || format(cmpok,n) || " Pass, " || format(cmperr,n)   || " Fail = " || format((cmpok/totcmp)*100,3,1) || "% Success, " || format((cmperr/totcmp)*100,3,1) || "% Failure"
+  end
   if cmperr <> 0 then do
   call bothmsg ""
-  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc7err.0,n) || " Data Exceptions:       " || format((rc7err.0/cmperr)*100,3,1) || "%"
-  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc4err.0,n) || " Protection Exceptions: " || format((rc4err.0/cmperr)*100,3,1) || "%"
+  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc7err.0,n) || " Data Exceptions:          " || format((rc7err.0/cmperr)*100,3,1) || "%"
+  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc4err.0,n) || " Protection Exceptions:    " || format((rc4err.0/cmperr)*100,3,1) || "%"
+  if cmp2base then
+  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(c2berr.0,n) || " Compare to Base Failures: " || format((c2berr.0/cmperr)*100,3,1) || "%"
   end
+  if totexp <> 0 then do
   call bothmsg ""
   call bothmsg " " || format(totexp,n) || " Expansions:   " || format(expok,n) || " Pass, " || format(experr,n)   || " Fail = " || format((expok/totexp)*100,3,1) || "% Success, " || format((experr/totexp)*100,3,1) || "% Failure"
+  end
   if experr <> 0 then do
   call bothmsg ""
-  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc7err.1,n) || " Data Exceptions:       " || format((rc7err.1/experr)*100,3,1) || "%"
-  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc4err.1,n) || " Protection Exceptions: " || format((rc4err.1/experr)*100,3,1) || "%"
+  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc7err.1,n) || " Data Exceptions:          " || format((rc7err.1/experr)*100,3,1) || "%"
+  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(rc4err.1,n) || " Protection Exceptions:    " || format((rc4err.1/experr)*100,3,1) || "%"
+  if cmp2base then
+  call bothmsg " " || copies(" ",n)    || "               " || copies(" ",n)   || "       " || format(c2berr.1,n) || " Compare to Base Failures: " || format((c2berr.1/experr)*100,3,1) || "%"
   end
+  if expok <> 0 then do
   call bothmsg ""
   call bothmsg " " || format(expok,n)  || " MD5 Compares: " || format(md5ok,n) || " Pass, " || format(md5err,n)   || " Fail = " || format((md5ok/expok)*100,3,1)  || "% Success, " || format((md5err/expok)*100,3,1)  || "% Failure"
+  end
   call bothmsg ""
   call bothmsg sep
+  if tottst <> 0 then do
   call bothmsg ""
   call bothmsg " " || format(tottst,n) || " TOTAL TESTS:  " || format(tstok,n) || " PASS, " || format(tsterr,n)   || " FAIL = " || format((tstok/tottst)*100,3,1) || "% SUCCESS, " || format((tsterr/tottst)*100,3,1) || "% FAILURE"
   call bothmsg ""
+  end
   call bothmsg sep
   call bothmsg "Duration:  " || ddhhmmss || "  (" || dur_eng || ")"
   call bothmsg sep
@@ -1017,9 +1088,10 @@ dotest:
 
 count_errors:  -- (exp: 0=compression, 1=expansion, err: 4=prot, 7=data, 5=md5)
   select
-    when err=4 then rc4err.exp += 1    -- (Protection Exception)
-    when err=7 then rc7err.exp += 1    -- (Data Exception)
-    when err<0 then exit -1            -- (CMPSCTST.EXE failed)
+    when err=4    then rc4err.exp += 1    -- (Protection Exception)
+    when err=7    then rc7err.exp += 1    -- (Data Exception)
+    when err=8509 then c2berr.exp += 1    -- (Compare to Base failure)
+    when err<0 then exit -1               -- (CMPSCTST.EXE failed)
     otherwise do
       call bothmsg "** LOGIC ERROR in 'count_errors' routine!"
       call bothmsg "** Unexpected 'err' value: "err
@@ -1195,6 +1267,11 @@ errmsg: procedure
   call lineout stderr, "ERROR: " || arg(1)
   return
 
+errmsg2: procedure -- (second line with more information)
+
+  call lineout stderr, "       " || arg(1)
+  return
+
 warnmsg: procedure
 
   call lineout stderr, "WARNING: " || arg(1)
@@ -1251,9 +1328,11 @@ exit:
 
   /* Clean up... */
 
-  call delfile cmpout_bin
-  call delfile expout_txt
-  call delfile md5sum_txt
+  if \cmp2base | tsterr = 0 then do
+    call delfile cmpout_bin
+    call delfile expout_txt
+    call delfile md5sum_txt
+  end
 
   exit _rc
 
