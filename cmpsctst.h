@@ -59,7 +59,7 @@ extern void ALT_ALGORITHM( REGS* regs );
   #define likely(_c)                    ((_c) ? (__assume((_c)), 1) :                   0 )
   #define unlikely(_c)                  ((_c) ?                  1  : (__assume(!(_c)), 0))
 
-  #define INLINE                        __forceinline
+  #define INLINE                        __inline
   #define ATTR_REGPARM(n)               __fastcall
 
   typedef   signed __int8               S8;
