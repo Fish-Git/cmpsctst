@@ -112,13 +112,13 @@ void _hexdumpxn( const char *pfx, BYTE **buf, const BYTE *dat, size_t skp,
 {
     BYTE *p;
     size_t n = strlen(pfx);
-    size_t lines, bpl = (bpg * gpl);
+    size_t bpl = (bpg * gpl);
     size_t lbs = n + hxd + 2 + (bpl * 2) + gpl + 1 + bpl + 1;
     adr &= (0xFFFFFFFFFFFFFFFFULL >> (64 - (hxd * 4)));
     if (!buf || !dat || !amt || !bpg || !gpl || skp >= bpl)
         return;
     if (!(p = *buf)) {
-        lines = (skp + amt + bpl - 1) / bpl;
+        size_t lines = (skp + amt + bpl - 1) / bpl;
         if (!(p = *buf = (BYTE*) malloc( (lines * lbs) + 1 )))
             return;
     }
