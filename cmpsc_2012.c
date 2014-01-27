@@ -1144,7 +1144,7 @@ cmp16:
 DEF_INST( alt_cmpsc )
 {
     CMPSCBLK cmpsc;                     /* Compression Call parameters block */
-    int  r1, r2, rc;                    /* Operand reg numbers, return code  */
+    int  r1, r2;                        /* Operand register numbers          */
     RRE( inst, regs, r1, r2 );          /* Decode the instruction...         */
 
     /* Build our internal Compression Call parameters block */
@@ -1163,9 +1163,9 @@ DEF_INST( alt_cmpsc )
     {
         /* Perform the Compression or Expansion */
 
-        rc = (regs->GR_L(0) & 0x100)
-            ? ARCH_DEP( cmpsc_Expand   )( &cmpsc )
-            : ARCH_DEP( cmpsc_Compress )( &cmpsc );
+        int rc = (regs->GR_L(0) & 0x100)
+               ? ARCH_DEP( cmpsc_Expand   )( &cmpsc )
+               : ARCH_DEP( cmpsc_Compress )( &cmpsc );
 
         /* Update register context with results */
 

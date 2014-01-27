@@ -1157,9 +1157,6 @@ void ParseArgs( int argc, char* argv[] )
                     {
                         // ("a:b" -- compare one to another)
 
-                        char test_algorithm[2] = {0};  // "a"
-                        char base_algorithm[2] = {0};  // "b"
-
                         cmp2base = TRUE;    // (always!)
 
                         if (0
@@ -1171,6 +1168,9 @@ void ParseArgs( int argc, char* argv[] )
                         {
                             int test = -1;
                             int base = -1;
+
+                            char test_algorithm[2] = {0};  // "a"
+                            char base_algorithm[2] = {0};  // "b"
 
                             test_algorithm[0] = *(pszOptArg + 0);
                             base_algorithm[0] = *(pszOptArg + 2);
@@ -1649,7 +1649,6 @@ U8 DifferentResults( REGS* starting_regs, REGS* baseline_regs )
 {
     CMPSCBLK start_cmpsc = {0};
     const BYTE* pFirstDiff;
-    const BYTE* pLastDiff;
     char* dump = NULL;
     size_t nDisp, nLen, skp, adr;
     U8 regdiff;
@@ -1668,7 +1667,7 @@ U8 DifferentResults( REGS* starting_regs, REGS* baseline_regs )
 
     if (pFirstDiff)
     {
-        pLastDiff = rmemcmp2( pOutBuffer, pOutBufferAfter, nOutBuffSize );
+        const BYTE* pLastDiff = rmemcmp2( pOutBuffer, pOutBufferAfter, nOutBuffSize );
 
         nDisp = (pFirstDiff - pOutBuffer);
         nLen  = (pLastDiff  - pFirstDiff) + 1;
@@ -2393,7 +2392,6 @@ int main( int argc, char* argv[] )
         {
             struct stat instat;
             struct stat outstat;
-            double ratio;
 
             stat( pszInName, &instat );
             stat( pszOutName, &outstat );
@@ -2410,6 +2408,8 @@ int main( int argc, char* argv[] )
 
             if (instat.st_size && outstat.st_size)
             {
+                double ratio;
+
                 if (expand)
                     ratio = (double) instat.st_size / (double) outstat.st_size;
                 else
