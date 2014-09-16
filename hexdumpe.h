@@ -6,7 +6,7 @@
 
    COPYRIGHT        (C) 2014 Software Development Laboratories
 
-   VERSION          1.0     (6 Jan 2014)
+   VERSION          1.1     (16 Sep 2014)
 
    DESCRIPTION      Format a hex dump into the buffer provided
 

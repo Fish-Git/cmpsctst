@@ -6,7 +6,7 @@
 
    COPYRIGHT        (C) 2014 Software Development Laboratories
 
-   VERSION          1.0     (6 Jan 2014)
+   VERSION          1.1     (16 Sep 2014)
 
    DESCRIPTION      Format a hex dump into the buffer provided
 
@@ -153,7 +153,7 @@ void hexdumpew( const char *pfx, BYTE **buf, const BYTE *dat, size_t skp,
 
    COPYRIGHT        (C) 2014 Software Development Laboratories
 
-   VERSION          1.0     (6 Jan 2014)
+   VERSION          1.1     (16 Sep 2014)
 
    DESCRIPTION      hexdump helper to format a single dump line
 
@@ -223,7 +223,7 @@ void _hexlinex( BYTE *buf, const BYTE *dat, size_t skp, size_t amt,
             s--;
         } else {
             c = x2x[ dat[i-skp] ];
-            if (isgraph(c))
+            if (' ' == c || isgraph(c))
                 buf[n+i] = c;
             else
                 buf[n+i] = '.';
