@@ -40,11 +40,17 @@ CMPSCTST_SOURCE_FILES =   \
 CMPSCTST_HEADER_FILES =   \
   cmpsctst_stdinc.h       \
   cmpsctst.h              \
+  AutoBuildCount.h        \
+  CMPSCTSTPROD.h          \
+  CMPSCTSTVERS.h          \
   hstdinc.h
 
-ALL_OTHER_FILES = \
-  cmpsctst.cmd    \
-  cmpsctst.rexx   \
+ALL_OTHER_FILES =   \
+  cmpsctst.cmd      \
+  cmpsctst.rexx     \
+  CMPSCTST.rc       \
+  CMPSCTST.rc2      \
+  SpecialBuild.rc2  \
   makefile
 
 ALL_HEADER_FILES  = $(CMPSC_HEADER_FILES) $(CMPSC_2012_HEADER_FILES) $(CMPSCTST_HEADER_FILES)

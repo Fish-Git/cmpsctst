@@ -1,0 +1,79 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+//  CMPSCTST.RC2  --  resources Microsoft Visual C++ does not edit directly
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef APSTUDIO_INVOKED
+  #error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// PROGRAMMING NOTE: the Visual Studio build options for this project
+// are defined such that the definition of the TARGETFILENAME macro
+// is manually passed to the resource compiler on the command-line.
+
+#if !defined(TARGETFILENAME)
+  #error TARGETFILENAME undefined. Check project Resources build settings.
+#endif
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+//////////////////////////////////////////////////////////////////////////////////////////
+
+#include "WinVer.h"		    // std windows resource compiler #defines
+#include "CMPSCTSTPROD.h"   // our product #defines
+#include "CMPSCTSTVERS.h"	// our version #defines
+
+#ifndef _MAC
+//////////////////////////////////////////////////////////////////////////////////////////
+//   Version      (placed here for automatic version tracking purposes)
+//////////////////////////////////////////////////////////////////////////////////////////
+
+VS_VERSION_INFO  VERSIONINFO
+FILEFLAGSMASK    VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+FILEFLAGS        VS_FF_SPECIALBUILD | VS_FF_DEBUG
+#else
+FILEFLAGS        VS_FF_SPECIALBUILD
+#endif
+FILETYPE         VFT_APP
+FILESUBTYPE      VFT2_UNKNOWN
+FILEOS           VOS__WINDOWS32
+FILEVERSION      VERMAJOR_NUM,  VERINTER_NUM,  VERMINOR_NUM,  GITCTR_NUM
+PRODUCTVERSION   VERMAJOR_NUM,  VERINTER_NUM,  VERMINOR_NUM,  GITCTR_NUM
+{
+    //       0x0409 = "U.S. English",    0x04B0 (1200) = "Unicode"
+
+    BLOCK  "VarFileInfo"
+    {
+        VALUE "Translation", 0x409, 1200     // (English, Unicode)
+    }
+    BLOCK  "StringFileInfo"
+    {
+        BLOCK  "040904B0"                    // (English, Unicode)
+        {
+            // Standard/Required Attributes...
+
+            VALUE  "OriginalFilename",   TARGETFILENAME         "\0"
+            VALUE  "FileDescription",    PRODUCT_DESC           "\0"
+            VALUE  "ProductName",        PRODUCT_DESC           "\0"
+            VALUE  "FileVersion",        VERSION_STR            "\0"
+            VALUE  "ProductVersion",     VERSION_STR            "\0"
+            VALUE  "CompanyName",        COMPANY                "\0"
+            VALUE  "LegalCopyright",     COPYRIGHT " " COMPANY  "\0"
+
+         #include  "SpecialBuild.rc2" // "64-bit DEBUG version" "\0"
+
+            // Custom Attributes...
+
+            VALUE  "ProductURL",         PRODUCT_URL            "\0"
+            VALUE  "ProductEmail",       PRODUCT_EMAIL          "\0"
+            VALUE  "GIT Revision",       GITHASH_STR            "\0"    // (from AutoBuildCount.h)
+        }
+    }
+}
+
+#endif    // !_MAC
+
+//////////////////////////////////////////////////////////////////////////////////////////

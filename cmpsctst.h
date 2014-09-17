@@ -8,11 +8,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define PRODUCT_NAME        "CMPSCTST"
-#define PRODUCT_DESC        "CMPSC Instruction Testing Tool"
-#define VERSION_STR         "2.6.1"
-#define COPYRIGHT           "Copyright (C) 2012-2014"
-#define COMPANY             "Software Development Laboratories"
+#include "CMPSCTSTPROD.H"
+#include "CMPSCTSTVERS.H"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Supported algorithms

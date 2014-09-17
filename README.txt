@@ -1,4 +1,36 @@
 -------------------------------------------------------------------------------
+                              AutoBuildCount
+-------------------------------------------------------------------------------
+
+  I have my system setup so that the header file "AutoBuildCount.h" is auto-
+  matically updated by an external tool each time I rebuild. If you are not
+  me, you will need to manually create the "AutoBuildCount.h" header yourself.
+
+  It looks like this:
+
+
+      #ifndef AUTOBUILDCOUNT
+      #define AUTOBUILDCOUNT
+      #define BUILDCOUNT_NUM  44
+      #define BUILDCOUNT_STR "44"
+      #define GITCTR_NUM      32
+      #define GITHASH_STR    "32-g42fdec1-modified"
+      #endif
+
+
+  The values are the reformatted output of the following commands:
+
+
+      git log --pretty=format:'' | wc -l
+      git rev-parse --verify HEAD
+      git diff-index --quiet HEAD & echo %errorlevel%
+
+
+  (The BUILDCOUNT_NUM is simply an ever-increasing value I no longer use.)
+
+-------------------------------------------------------------------------------
+                            cmpsctst.rexx
+-------------------------------------------------------------------------------
 
     NAME
 
@@ -212,6 +244,8 @@
 
         2.6  (January 2014)
 
+-------------------------------------------------------------------------------
+                            CMPSCTST.EXE
 -------------------------------------------------------------------------------
 
 CMPSC Instruction Testing Tool, version 2.6.1

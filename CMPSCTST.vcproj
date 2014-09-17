@@ -411,6 +411,30 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CMPSCTST.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\CMPSCTST.rc2"
+				>
+			</File>
+			<File
+				RelativePath=".\CMPSCTSTPROD.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CMPSCTSTVERS.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SpecialBuild.rc2"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\cmpsctst.c"
 			>
