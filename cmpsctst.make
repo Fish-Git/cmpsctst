@@ -35,7 +35,8 @@ CMPSCTST_SOURCE_FILES =   \
   cmpsctst_cmpscdct.c     \
   cmpsctst_cmpscget.c     \
   cmpsctst_cmpscmem.c     \
-  cmpsctst_cmpscput.c
+  cmpsctst_cmpscput.c     \
+  hexdumpe.c
 
 CMPSCTST_HEADER_FILES =   \
   cmpsctst_stdinc.h       \
@@ -43,7 +44,8 @@ CMPSCTST_HEADER_FILES =   \
   AutoBuildCount.h        \
   CMPSCTSTPROD.h          \
   CMPSCTSTVERS.h          \
-  hstdinc.h
+  hstdinc.h               \
+  hexdumpe.h
 
 ALL_OTHER_FILES =   \
   cmpsctst.cmd      \

@@ -853,7 +853,7 @@ static void CheckZeroPadding()
 
     // Calculate how much room remains in the buffer.
 
-    if (!(nBufRem = (U32) ((pOutBuffer + nOutBuffSize) - pOp1)))
+    if (!(nBufRem = (U32)(ptrdiff_t)((pOutBuffer + nOutBuffSize) - pOp1)))
         return;                         // (zero == quick exit)
 
     if (1
@@ -1650,7 +1650,7 @@ U8 DifferentResults( REGS* starting_regs, REGS* baseline_regs )
     CMPSCBLK start_cmpsc = {0};
     const BYTE* pFirstDiff;
     char* dump = NULL;
-    size_t nDisp, nLen, skp, adr;
+    size_t nDisp = 0, nLen = 0, skp, adr;
     U8 regdiff;
 
     // Compare ending register values...
