@@ -1,12 +1,124 @@
 -------------------------------------------------------------------------------
-                              AutoBuildCount
+                                CMPSCTST
 -------------------------------------------------------------------------------
 
-  I have my system setup so that the header file "AutoBuildCount.h" is auto-
-  matically updated by an external tool each time I rebuild. If you are not
-  me, you will need to manually create the "AutoBuildCount.h" header yourself.
 
-  It looks like this:
+                           Overview and History
+
+
+The z/Architecture "cmpsc" instruction was designed to compress and expand
+data, and is a very complicated instruction. So complicated in fact it even
+has its own manual (SA22-7208-01).
+
+Hercules's original cmpsc instruction implementation was written by Bernard
+van der Helm and is very complicated. Several years ago a rather serious bug
+which I was unable to find/fix reared its head in Bernard's implementation
+for a paying client of mine.
+
+Due to the way Bernard designed his implementation however, the only way he
+could debug it was to first build a special debug version of Hercules which
+would, when run, spit out a zillion progress messages which then needed to
+be closely examined. This technique was unacceptable to the client since he
+was using Hercules for real work. Shutting his system down, installing a new
+"test" version of Hercules, bringing it up again, running a test to obtain
+the zillions of debug log messages, shutting the system down again, then re-
+installing the original non-debug (non-test) version of Hercules again and
+bringing his system back up again was simply too painful (too instrusive),
+especially since it was unknown how many times this would need to be done
+before the bug was finally located. He could not be bouncing his system so
+frequently nor installing test/debug versions of Hercules on the whim of a
+Hercules developer. He had a business to run.
+
+Since the compression and expansion algorithms were both clearly documented
+in the manuals, I managed to convince my client to let me try writing my own
+implementation if I could prove that it conformed to the archietcture without
+requiring any input from him (i.e. without requiring him to do anything).
+
+That meant I had to first write a program that would test evert aspect of
+the instruction which I could then use to unit test my new code "offline"
+by myself, outside of Hercules or a guest operating system itself. I.e. it
+was to thoroughly test the "cmpsc" instruction itself and nothing else.
+
+That is what CMPSCTST is: a program (and heler scripts) designed to test
+Hercules's "cmpsc" instruction implementation as thoroughly as possible
+for architectural compliance.
+
+I've written it to be as generic as possible so that ANY implementation
+can be quickly and easily tested. It's currently designed to test either
+Bernard's implementation called legacy, and/or my own called cmpsc_2012.
+
+The program (executable) performs just a single test according to whatever
+parameters you provide. The rexx helper script simply makes it easier to
+call the executable multiple times, each time with a different set of test
+parameters, thereby ensuring thorough test coverage.
+
+
+
+                                Building
+                                --------
+
+Windows:
+
+  Manually create your own "AutoBuildCount.h" header file (see the section
+  AutoBuildCount.h below) and then open the CMPSCTST.SLN file and click the
+  "Rebuild Solution" button.
+
+Linux:
+
+  Manually create your own "AutoBuildCount.h" header file (see the section
+  AutoBuildCount.h below) and then enter the "make all" command.
+
+Tested using Visual Studio 2008 Professional on Windows 7 x64 Ultimate and
+using gcc 4.4 within a CentOS 6.4 VMware virtual machine.
+
+
+
+                                Testing
+                                -------
+
+In addtion to the "cmpsctst.rexx" script and the "cmpsctst.exe" program,
+there is also a set of simple Windows batch files that automates calling
+the cmpsctst.rexx script for a certain set of high level parameters (ones
+known to cause problems). They are designed to make it trivially easy to
+test new or updated implementations via a single, simple command, without
+having to remember the syntax of the many parameter options each supports.
+
+The "herc" set of batch files tests Bernard's "legacy" implementation and
+the "me" set of batch files tests my own improved cmpsc_2012 implemention
+(and the "both" set of batch files of course test both implementations).
+
+The "errors" batch file parses the output of the given test(s) to produce
+a much simplified "condensed" test results summary file that just lists
+the percentage of tests each implementation PASSED or FAILED.
+
+
+
+                               TEST FILES
+                               ----------
+
+Testing the compression call instruction is only as thorough as the data
+used to test it with and the parameters used. Thus the CMPSCTST package
+comes delivered with a set of test files known to have caused problems in
+the past. All test files are organized under the "FILES" directory to make
+it easier for the "cmpsctst.rexx" script to choose which set of test files
+you wish to use. (Testing with more files and more dictionaries translates
+directly into a more thorough test.) Feel free to add your own set of test
+files and dictionaries, but be aware that doing so will increase the run
+time for certain tests depending on which set of test files (directories)
+you tell the cmpsctst.rexx script to use. (More files == longer test run)
+
+For more information refer to the "cmpsctst.rexx" section further below.
+
+
+-------------------------------------------------------------------------------
+                             AutoBuildCount.h
+-------------------------------------------------------------------------------
+
+  I have my Visual Studio installation setup so the "AutoBuildCount.h" header
+  file is automatically updated by an external tool each time I do a rebuild.
+
+  If you are not me (and you aren't!) then you will need to manually create
+  your own "AutoBuildCount.h" header. The header file should look like this:
 
 
       #ifndef AUTOBUILDCOUNT
@@ -18,7 +130,10 @@
       #endif
 
 
-  The values are the reformatted output of the following commands:
+  The two values "GITCTR_NUM" and "GITHASH_STR" are the number of commits
+  and the git hash value of the most recent commit (followed by a string
+  indicating whether any local changes exist or not) and are obtained via
+  the following git commands:
 
 
       git log --pretty=format:'' | wc -l
@@ -27,6 +142,7 @@
 
 
   (The BUILDCOUNT_NUM is simply an ever-increasing value I no longer use.)
+
 
 -------------------------------------------------------------------------------
                             cmpsctst.rexx
@@ -248,7 +364,7 @@
                             CMPSCTST.EXE
 -------------------------------------------------------------------------------
 
-CMPSC Instruction Testing Tool, version 2.6.1
+CMPSC Instruction Testing Tool, version 2.6.2
 Copyright (C) 2012-2014 Software Development Laboratories
 
 Options:

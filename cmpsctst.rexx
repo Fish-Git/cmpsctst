@@ -11,8 +11,8 @@
 
 \*****************************************************************************/
 
-  ver      = "2.6"              -- (version of this script)
-  ver_date = "January 2014"     -- (version of this script)
+  ver      = "2.6"            -- (version of this script)
+  ver_date = "December 2014"  -- (version of this script)
 
   Trace Off
   signal initialize
@@ -841,13 +841,30 @@ begin:
   call bothmsg cmdline    -- (show them the test they are running)
   call bothmsg ""
 
+  /* Determine test type */
+
+  if cmp2base then
+    test_type = "baseline comparison"
+  else if speed <> "" then
+      test_type = "speed"
+  else if no_nonrand = "" then do
+    if num_randoms > 0 then
+        test_type = "combined"
+      else
+        test_type = "built-ins"
+  end; else do
+    if num_randoms > 0 then
+        test_type = "random"
+      else
+        test_type = "custom"
+  end
 
   /* Now perform the test(s) using those files... */
 
   if cmp2base then
-    call bothmsg "Starting CMPSC baseline comparison test using " || files.0 || " files and " || dicts.0 || " dictionaries."
+    call bothmsg "Starting CMPSC " || test_type || " test using " || files.0 || " files and " || dicts.0 || " dictionaries."
   else
-    call bothmsg "Starting CMPSC " || temp1 || "test; " || files.0 || " files and " || dicts.0 || " dictionaries selected."
+    call bothmsg "Starting CMPSC " || test_type || " test; "      || files.0 || " files and " || dicts.0 || " dictionaries selected."
   call bothmsg ""
 
   call progmsg sep
