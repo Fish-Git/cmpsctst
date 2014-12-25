@@ -1,0 +1,33 @@
+
+CMPSC Instruction Testing Tool, version 2.6.2.35-gf0b2f19
+Copyright (C) 2012-2014 Software Development Laboratories
+
+
+cmpsctst.exe
+-c
+-a 1:0
+-v 
+-i 2228:3304:.\FILES\SMALL\EBCDIC\TSTCMPSC\TSTCMPSC-EBCDIC.txt
+-o 4353:1668:.\WORK\cmpout.bin
+-d .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15E
+-s 5
+-1
+-z 0:0
+-w 8
+-b 0:1
+
+Using algorithm "Legacy CMPSC".
+
+      2228 byte input  buffer (offset 3304 bytes)
+      4353 byte output buffer (offset 1668 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+     15120 bytes in
+      3600 bytes out
+    23.81% ratio
+       100 MADDRs
+
+Ready(0); T=0.00/0.02 14:44:44 12/24/14
+

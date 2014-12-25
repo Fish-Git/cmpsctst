@@ -1,0 +1,33 @@
+                 
+16:09:17   Searching log files for errors...
+                 
+                 
+16:09:17   ****  "ERROR"  ***        (i.e. any error)
+                 
+---------- .\WORK\CMPSCTST-LAR-A.LOG
+---------- .\WORK\CMPSCTST-LER-A.LOG
+---------- .\WORK\CMPSCTST-SAR-A.LOG
+---------- .\WORK\CMPSCTST-SER-A.LOG
+                 
+                 
+16:09:21   ****  "Code 0x0004"  ***        (i.e. Protection Exception)
+                 
+                 
+                 
+16:09:25   ****  "Code 0x0007"  ***        (i.e. Data Exception)
+                 
+---------- .\WORK\CMPSCTST-LAR-A.LOG
+---------- .\WORK\CMPSCTST-LER-A.LOG
+---------- .\WORK\CMPSCTST-SAR-A.LOG
+---------- .\WORK\CMPSCTST-SER-A.LOG
+                 
+                 
+16:09:29   ****  "Actual MD5"  ***        (i.e. Expanded file does not match original input file)
+                 
+---------- .\WORK\CMPSCTST-LAR-A.LOG
+---------- .\WORK\CMPSCTST-LER-A.LOG
+---------- .\WORK\CMPSCTST-SAR-A.LOG
+---------- .\WORK\CMPSCTST-SER-A.LOG
+                 
+                 
+16:09:32   DONE!  Errors log ".\work\_errors.log" created.
