@@ -42,6 +42,10 @@
 
 #include "hstdinc.h"    // (MUST be first #include in EVERY source file)
 
+#ifdef UNUSED_FUNCTION_WARNING
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+
 #if !defined(_HENGINE_DLL_)
 #define _HENGINE_DLL_
 #endif
@@ -50,8 +54,6 @@
 #include "hercules.h"
 #include "opcode.h"
 #include "inline.h"
-#else                                             // (building utility)
-#define alt_cmpsc           cmpsc_2012
 #endif
 #include "cmpsc.h"                                // (Master header for both)
 
@@ -71,7 +73,7 @@ struct SYMCTL                       // Symbol Cache Control Entry
 };
 typedef struct SYMCTL SYMCTL;
 
-#endif // CMPSC_SYMCACHE            // (Symbol caching option)
+#endif // CMPSC_SYMCACHE            // (we only need to define this once)
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXPAND Index Symbol parameters block
@@ -1141,7 +1143,7 @@ cmp16:
 /*---------------------------------------------------------------------------*/
 /* B263 CMPSC - Compression Call                                       [RRE] */
 /*---------------------------------------------------------------------------*/
-DEF_INST( alt_cmpsc )
+DEF_INST( cmpsc_2012 )
 {
     CMPSCBLK cmpsc;                     /* Compression Call parameters block */
     int  r1, r2;                        /* Operand register numbers          */
@@ -1217,34 +1219,5 @@ static const U32 g_nDictSize[ MAX_CDSS ] =
     #define _GEN_ARCH _ARCHMODE3
     #include "cmpsc_2012.c"
   #endif /* #ifdef _ARCHMODE3 */
-
-#if !defined( NOT_HERC )        // (building Hercules?)
-
-HDL_DEPENDENCY_SECTION;
-{
-    HDL_DEPENDENCY( HERCULES );
-    HDL_DEPENDENCY( REGS );
-}
-END_DEPENDENCY_SECTION;
-
-HDL_INSTRUCTION_SECTION;
-{
-    char info[256];
-    const char* fn = NULL;
-    if (!fn) fn = strrchr( __FILE__, '\\' );
-    if (!fn) fn = strrchr( __FILE__ , '/' );
-    if (!fn) fn =          __FILE__        ; else fn++;
-#ifdef __TIMESTAMP__
-    MSGBUF( info, "%s version %s last updated on %s", fn, VERSION, __TIMESTAMP__ );
-#else
-    MSGBUF( info, "%s version %s compiled on %s at %s", fn, VERSION, __DATE__, __TIME__ );
-#endif
-    WRMSG( HHC01417, "I", info );
-
-    HDL_DEFINST( HDL_INSTARCH_390 | HDL_INSTARCH_900, 0xB263, alt_cmpsc );
-}
-END_INSTRUCTION_SECTION;
-
-#endif // !defined( NOT_HERC )  // (building Hercules?)
 
 #endif /* #ifndef _GEN_ARCH */
