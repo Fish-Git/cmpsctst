@@ -53,7 +53,10 @@ ALL_OTHER_FILES =   \
   CMPSCTST.rc       \
   CMPSCTST.rc2      \
   SpecialBuild.rc2  \
-  makefile
+  cmpsctst.make     \
+  _TODO.txt         \
+  NOTES.txt         \
+  README.txt
 
 ALL_HEADER_FILES  = $(CMPSC_HEADER_FILES) $(CMPSC_2012_HEADER_FILES) $(CMPSCTST_HEADER_FILES)
 ALL_SOURCE_FILES  = $(CMPSC_SOURCE_FILES) $(CMPSC_2012_SOURCE_FILES) $(CMPSCTST_SOURCE_FILES)

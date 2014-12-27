@@ -25,7 +25,7 @@ static  const char*     algorithm_names [ NUM_ALGORITHMS ] =
 
 void showbanner( FILE* f )
 {
-    FPRINTF( f, "\n%s, version %s\n%s %s\n\n",
+    FPRINTF( f, "\n%s, version %s\n%s %s\n",
         PRODUCT_DESC, VERSION_STR, COPYRIGHT, COMPANY );
 }
 
@@ -36,7 +36,7 @@ void showhelp()
 {
     showbanner( stderr );
 
-    FPRINTF( stderr, "\
+    FPRINTF( stderr, "\n\
 Options:\n\
 \n\
   -c  Compress (default)\n\
@@ -296,6 +296,7 @@ int my_fprintf( FILE* file, const char* pszFormat, ... )
     fputs( str, file );
     OutputDebugStringA( str );    // i.e. 'TRACE' --> debugger o/p window
     free( str );
+    fflush( file );
     return rc;
 }
 
@@ -582,7 +583,11 @@ int GetOption
                             if (iArg+1 < argc)
                             {
                                 psz = &(argv[iArg+1][0]);
+#ifdef _MSVC_
                                 if (*psz == '-' || *psz == '/')
+#else
+                                if (*psz == '-')
+#endif
                                 {
                                     // next argv is a new option, so param
                                     // not given for current option
@@ -1515,6 +1520,8 @@ void ParseArgs( int argc, char* argv[] )
 
     if (syntax)
     {
+        if (pszOptions)
+            FPRINTF( stderr, "%s\n\n", pszOptions );
         showhelp();
         exit(-1);
     }
@@ -2149,7 +2156,7 @@ int main( int argc, char* argv[] )
     {
         showbanner( fRptFile );
 
-        FPRINTF( fRptFile, "%s\n\n",
+        FPRINTF( fRptFile, "%s\n\n",  // (Note: "pszOptions" starts with '\n')
             pszOptions );
 
         FPRINTF( fRptFile, "Using algorithm \"%s\".\n",

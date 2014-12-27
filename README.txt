@@ -66,7 +66,7 @@ Windows:
 Linux:
 
   Manually create your own "AutoBuildCount.h" header file (see the section
-  AutoBuildCount.h below) and then enter the "make all" command.
+  AutoBuildCount.h below) and enter the command "make -f cmpsctst.make all".
 
 Tested using Visual Studio 2008 Professional on Windows 7 x64 Ultimate and
 using gcc 4.4 within a CentOS 6.4 VMware virtual machine.

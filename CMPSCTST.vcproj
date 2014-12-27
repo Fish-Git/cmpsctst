@@ -347,30 +347,6 @@
 			<Filter
 				Name="_2012"
 				>
-				<File
-					RelativePath=".\cmpsctst_cmpsc_2012.c"
-					>
-				</File>
-				<File
-					RelativePath=".\cmpsctst_cmpscdbg.c"
-					>
-				</File>
-				<File
-					RelativePath=".\cmpsctst_cmpscdct.c"
-					>
-				</File>
-				<File
-					RelativePath=".\cmpsctst_cmpscget.c"
-					>
-				</File>
-				<File
-					RelativePath=".\cmpsctst_cmpscmem.c"
-					>
-				</File>
-				<File
-					RelativePath=".\cmpsctst_cmpscput.c"
-					>
-				</File>
 				<Filter
 					Name="Header Files"
 					>
@@ -400,6 +376,34 @@
 					</File>
 					<File
 						RelativePath=".\cmpscput.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Source Files"
+					>
+					<File
+						RelativePath=".\cmpsctst_cmpsc_2012.c"
+						>
+					</File>
+					<File
+						RelativePath=".\cmpsctst_cmpscdbg.c"
+						>
+					</File>
+					<File
+						RelativePath=".\cmpsctst_cmpscdct.c"
+						>
+					</File>
+					<File
+						RelativePath=".\cmpsctst_cmpscget.c"
+						>
+					</File>
+					<File
+						RelativePath=".\cmpsctst_cmpscmem.c"
+						>
+					</File>
+					<File
+						RelativePath=".\cmpsctst_cmpscput.c"
 						>
 					</File>
 				</Filter>

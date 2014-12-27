@@ -1,3 +1,5 @@
+#!/usr/bin/rexx
+
 /*****************************************************************************\
                               CMPSCTST.REXX
 
@@ -11,7 +13,7 @@
 
 \*****************************************************************************/
 
-  ver      = "2.6"            -- (version of this script)
+  ver      = "2.6.2"          -- (version of this script)
   ver_date = "December 2014"  -- (version of this script)
 
   Trace Off
@@ -763,37 +765,44 @@ validate_arguments:
      we did was syntax check them. Here we check whether their values
      actually make any sense to us (whether directory exists, etc).
   */
+  if work_dir = "" then
+      work_dir = directory()    -- (default to current directory)
 
-  if \SysIsFileDirectory(files_dir) then do
+  /* Make sure the specified directories actually exist and are valid */
+
+  if \isdir(files_dir) then do
     call errmsg 'Invalid directory or directory not found: "'files_dir'"'
     _rc = 1
   end
 
-  if \SysIsFileDirectory(dicts_dir) then do
+  if \isdir(dicts_dir) then do
     call errmsg 'Invalid directory or directory not found: "'dicts_dir'"'
     _rc = 1
   end
 
-  files_dir = dirnamefmt(files_dir)       -- (appends pathsep if needed)
-  dicts_dir = dirnamefmt(dicts_dir)       -- (appends pathsep if needed)
-  files_dir = reltodir(files_dir)         -- (make relative to curr dir)
-  dicts_dir = reltodir(dicts_dir)         -- (make relative to curr dir)
-
-  if work_dir <> "" then do
-    if \SysIsFileDirectory(work_dir) then do
-      call errmsg 'Invalid directory or directory not found: "'work_dir'"'
-      _rc = 1
-    end; else do
-      work_dir = dirnamefmt(work_dir)     -- (appends pathsep if needed)
-      work_dir = reltodir(work_dir)       -- (make relative to curr dir)
-      cmpout_bin = work_dir || cmpout_bin
-      expout_txt = work_dir || expout_txt
-      md5sum_txt = work_dir || md5sum_txt
-    end
+  if \isdir(work_dir) then do
+    call errmsg 'Invalid directory or directory not found: "'work_dir'"'
+    _rc = 1
   end
 
   if _rc <> 0 then
     signal exit
+
+  /* CRITICAL: Make sure all directories end with pathsep character! */
+
+  files_dir = dirnamefmt(files_dir)       -- (appends pathsep if needed)
+  dicts_dir = dirnamefmt(dicts_dir)       -- (appends pathsep if needed)
+  work_dir  = dirnamefmt(work_dir)        -- (appends pathsep if needed)
+
+  /* Now convert them all to be relative to the current directory */
+
+  files_dir = reltodir(files_dir)         -- (make relative to curr dir)
+  dicts_dir = reltodir(dicts_dir)         -- (make relative to curr dir)
+  work_dir  = reltodir(work_dir)          -- (make relative to curr dir)
+
+  cmpout_bin = work_dir || cmpout_bin
+  expout_txt = work_dir || expout_txt
+  md5sum_txt = work_dir || md5sum_txt
 
   /* Gather all of the files that we'll be using and convert all of their
      absolute path values to be relative to the current directory instead. */
@@ -1050,7 +1059,7 @@ dotest:
   /*--------------------------------------------------*/
   totcmp += 1
   exp = 0  -- (0 = compression)
-  qif(cmpsctst_bin)" -c -a "algorithm" "repeat" "trans" -v -i "qif(ib":"io":"infile)" -o "qif(ob":"oo":"cmpout_bin)" -d "qif(cdict)" -x "qif(edict)" -s "cdss" -"fmt" -z "zp_enable":"zp_request" -w "zp_bits" -b "bb_cmp_opt":"bb_exp_opt
+  cmdline("-c",qif(ib":"io":"infile),qif(ob":"oo":"cmpout_bin))
   if rc <> 0 then do
     err = rc
     call count_errors
@@ -1066,7 +1075,7 @@ dotest:
     /*--------------------------------------------------*/
     totexp += 1
     exp = 1  -- (1 = expansion)
-    qif(cmpsctst_bin)" -e -a "algorithm" "repeat" "trans" -v -i "qif(ib":"io":"cmpout_bin)" -o "qif(ob":"oo":"expout_txt)" -d "qif(cdict)" -x "qif(edict)" -s "cdss" -"fmt" -z "zp_enable":"zp_request" -w "zp_bits" -b "bb_cmp_opt":"bb_exp_opt
+    cmdline("-e",qif(ib":"io":"cmpout_bin),qif(ob":"oo":"expout_txt))
     if rc <> 0 then do
       err = rc
       call count_errors
@@ -1116,6 +1125,35 @@ count_errors:  -- (exp: 0=compression, 1=expansion, err: 4=prot, 7=data, 5=md5)
     end
   end
   return
+
+/*----------------------------------------------------------------------------
+                                cmdline
+ ----------------------------------------------------------------------------*/
+
+cmdline:               -- (helper subroutine)
+
+  cmdline = qif(cmpsctst_bin) || " -v"
+
+  cmdline ||= " "    || arg(1)
+  cmdline ||= " -i " || arg(2)
+  cmdline ||= " -o " || arg(3)
+
+  cmdline ||= " -z " || zp_enable  || ":" || zp_request
+  cmdline ||= " -b " || bb_cmp_opt || ":" || bb_exp_opt
+
+  cmdline ||= " -d " || qif(cdict)
+  cmdline ||= " -x " || qif(edict)
+
+  cmdline ||= " -a " || algorithm
+  cmdline ||= " -w " || zp_bits
+  cmdline ||= " -s " || cdss
+
+  cmdline ||= " -"   || fmt
+  cmdline ||= " "    || repeat
+  cmdline ||= " "    || trans
+
+
+  return cmdline
 
 /*----------------------------------------------------------------------------
                          CALCULATE MD5 HASH
@@ -1212,60 +1250,143 @@ duration: procedure expose ddhhmmss dur_eng
   return
 
 /*----------------------------------------------------------------------------
-      Return a path value that is relative to a specified directory
+       Ensure qualified directory name ends with pathsep character
+ ----------------------------------------------------------------------------*/
+
+dirnamefmt: procedure expose pathsep    -- (convert to dir format)
+
+  result = reducepath(arg(1))
+
+  /*
+      PROGRAMMING NOTE: the Rexx "qualify" builtin function behaves
+      quite differently on Linux than it does on Windows. On Linux,
+      it behaves quite consistently, always returning a value that
+      does NOT end with a pathsep character. On Windows however, it
+      only returns a value that does not end with a pathsep character
+      if the input value passed to the function does not end with a
+      pathsep character. When the input value passed to the function
+      ends with a pathsep character however, the function returns a
+      value that ALSO ends with a pathsep character.
+
+      ALSO NOTE that "qualify" also behaves quite differently on BOTH
+      platforms when the input value passed to the function consists
+      of a single pathsep character or is an empty string. On Windows
+      an empty string returns an empty string and a single pathsep
+      returns the root drive spec (e.g. "C:\"). On Linux, passing an
+      empty string returns a fully qualified current directory that
+      does not end with a pathsep (e.g. "/home/user"), and passing a
+      single pathsep returns a single pathsep (e.g. "/"). This is in
+      fact the ONLY case where Linux returns a value that ends with
+      a pathsep character. In all other casess the value returned
+      does NOT end with a pathsep character (whereas on Windows,
+      whether or not the value returned ends with a pathsep or not
+      depends on whether the value passed ended with one or not).
+  */
+
+  result = qualify(result)      /* (See above PROGRAMMING NOTE!) */
+
+  if right(result,1) <> pathsep then
+    result ||= pathsep
+
+  return result   -- (fully qualified directory ending with pathsep)
+
+/*----------------------------------------------------------------------------
+       Return a path value that is relative to a given directory
  ----------------------------------------------------------------------------*/
 
 reltodir: procedure expose pathsep
 
-  /* Convert both arguments to absolute path values... */
+  path    = arg(1)          -- (the path we want to make relative)
+  basedir = arg(2)          -- (directory to make it relative to)
 
-  if arg(1) = "" then return ""
-  result = qualify(arg(1))
-  absolute = result
+  if path = ""
+      then return ""        -- (return empty string if no input)
 
-  /* (note: dirnamefmt ensures values ENDS with a pathsep) */
+  if basedir = "" then
+    basedir = directory()   -- (default is to current directory)
 
-  if arg(2) <> "" then
-    other = qualify(dirnamefmt(arg(2)))       -- (always a directory)
-  else
-    other = qualify(dirnamefmt(directory()))  -- (current dir default)
+  /* Convert both arguments to fully qualified absolute paths. Note:
+     the path we're working with could be a file, not a directrory. */
 
-  /* Find where inequality begins... */
+  if isdir(path) then             -- (if path is a directory, then)
+    path = dirnamefmt(path)       -- (convert to fully qualified absolute dir)
+  else                            -- (otherwise...)
+    path = qualify(path)          -- (convert to fully qualified absolute file)
+  savepath = path                 -- (save fully qualified absolute path)
 
-  do i=1 by 1 while left(result,i) = left(other,i) & i <= length(other)
+  /* Make sure the directory we're to make our path relative to is
+     actually a valid directory and not a file or some else invalid
+  */
+  if \isdir(basedir) then         -- (valid base directory?)
+    return path                   -- (if not then abort now)
+  basedir = dirnamefmt(basedir)   -- (fully qualified absolute dir)
+
+  /* Determine how much path has in common with basedir */
+
+  shorter = length(basedir)
+  if length(path) < shorter then
+    shorter = length(path)
+
+  do n=1 by 1 while n <= shorter & left(path,n) = left(basedir,n)
     nop
   end
 
-  /* We're done if paths have everything or nothing in common */
+  n = n - 1         -- (minus-1 == length of similarity)
 
-  if i <= 1 then return arg(1)    -- (nothing in common)
-  if i >= length(other) then      -- (everything in common)
-    return "." || pathsep || substr(result,length(other)+1)
+  /* (sanity checks) */
 
-  /* Backup to start of directory where inequality was found.
-     (Needed in case inequality in middle of directory name) */
+  if n > shorter         then signal oops
+  if n > length(path)    then signal oops
+  if n > length(basedir) then signal oops
 
-  do i=i-1 by -1 while i >= 1 & substr(other,i,1) <> pathsep
-    nop
+   /* If nothing in common then just use path as-is */
+
+  if n <= 0 then    -- (if nothing in common)
+    return path     -- (then use path as-is)
+
+  /* Otherwise the two have SOMETHING in common. Backup to the directory
+     where the inequality was found (i.e. to where the first immediately
+     preceding pathsep character is). We do this because the similarity
+     may end in the middle of a subdirectory name (e.g. path=/xxx/dir1...
+     and basedir=/xxx/dir2... and n=8)
+  */
+  do n=n by -1
+    if substr(path,n,1) = pathsep then leave
+    if n <= 1 then signal oops
   end
 
-  /* Remove common portion from each, leaving just unequal part */
+  n = n + 1     -- (point to beg of subdir name where similarity ends)
 
-  other  = substr(other,i+1)
-  result = substr(result,i+1)
+  /* If difference is beyond the end of basedir then
+     the path is simply in a deeper subdir of basedir */
 
-  /* Prefix enough "up directory" sequences to the original path
-     based on how many directories remain in the other directory
-     that they wanted their path to be relative to. */
+  if n > length(basedir) then
+    return "." || pathsep || substr(path,n)
 
-  updirs = countstr(pathsep,other)
-  if updirs > 0 then
-    result = copies(".."||pathsep,updirs) || result
+  /* Othwerwise the dissimilarity exists in a subdir above basedir,
+     so we'll need to do some "updirs". First, remove the leading
+     common portion, thereby leaving just what's unequal/dissimilar.
+  */
+  basedir = substr(basedir,n)
+  if n > length(path) then
+    path = ""
   else
-    result = "." || pathsep || result
-  if length(result) > length(absolute) then
-    result = absolute
-  return result
+    path = substr(path,n)
+
+  /* Now prefix enough "up directory" sequences to the adjusted path
+     value based on how many directories (pathsep characters) remain
+     in the adjusted "basedir" value (i.e. how far "up" do we need to
+     go to reach the dissimilarity?)
+  */
+  updirs = countstr(pathsep,basedir)
+  if updirs <= 0 then signal oops
+  path = reducepath(copies(".." || pathsep, updirs) || path)
+
+  /* Return whichever is shorter: the relative path or the full path */
+
+  if length(path) < length(savepath) then
+    return path
+  return savepath
 
 /*----------------------------------------------------------------------------
                          ( helper functions )
@@ -1311,14 +1432,24 @@ qif: procedure  -- (quote if needed)
     result = '"' || result || '"'
   return result
 
-dirnamefmt: procedure expose pathsep  -- (convert to dir format)
+isdir: procedure expose pathsep  -- (Is path a directory? Or a file?)
+
+  test = arg(1)
+  if SysIsFileDirectory(test) then do
+    if right(test,1) = pathsep then
+      return .TRUE
+    return SysIsFileDirectory(test||pathsep)
+  end
+  if right(test,1) = pathsep then
+    return .FALSE
+  return SysIsFileDirectory(test||pathsep)
+
+reducepath: procedure expose pathsep  -- (remove double pathsep)
 
   result = arg(1)
   do while pos(pathsep||pathsep,result) > 0
     result = changestr(pathsep||pathsep,result,pathsep)
   end
-  if qualify(result) <> qualify(result||pathsep) then
-    result ||= pathsep
   return result
 
 fullpath: procedure   -- (locate file or dir, return full path or null)
