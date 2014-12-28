@@ -3,7 +3,7 @@
   OPATH=$PATH
   PATH=.:./Linux:$OPATH
 
-  clear && cmpsctst.rexx  ./FILES/SMALL/EBCDIC  ./DICTS  ./WORK  -a    -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-sen-b00-a.log
-  clear && cmpsctst.rexx  ./FILES/LARGE/EBCDIC  ./DICTS  ./WORK  -a    -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-len-b00-a.log
-  clear && cmpsctst.rexx  ./FILES/SMALL/ASCII   ./DICTS  ./WORK  -a -t -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-san-b00-a.log
-  clear && cmpsctst.rexx  ./FILES/LARGE/ASCII   ./DICTS  ./WORK  -a -t -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-lan-b00-a.log
+  clear && rexx cmpsctst.rexx  ./FILES/SMALL/EBCDIC  ./DICTS  ./WORK  -a    -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-sen-b00-a.log
+  clear && rexx cmpsctst.rexx  ./FILES/LARGE/EBCDIC  ./DICTS  ./WORK  -a    -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-len-b00-a.log
+  clear && rexx cmpsctst.rexx  ./FILES/SMALL/ASCII   ./DICTS  ./WORK  -a -t -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-san-b00-a.log
+  clear && rexx cmpsctst.rexx  ./FILES/LARGE/ASCII   ./DICTS  ./WORK  -a -t -o1 -r 0 -z  -bb 0:0  >  ./WORK/cmpsctst-lan-b00-a.log
