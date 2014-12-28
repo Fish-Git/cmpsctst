@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#---------------------------------------------------
+# VERY light wrapper for:   "grep -i -l"
+#
+# Searches for a string in the specified file(s)
+# and prints only the file name(s) it was found in
+#---------------------------------------------------
+
+  grep -i -l "$1" $2 | while read -r LINE; do
+    echo "---------- $LINE"
+  done

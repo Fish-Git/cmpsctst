@@ -1,6 +1,122 @@
+-------------------------------------------------------------------------------
+SA22-7832-08 zArchitecture Principles of Operation:
+
+[...]
+
+The contents of bit
+positions 61-63 of the register are the compressed-
+data bit number (CBN). At the beginning of the oper-
+ation, the CBN designates the leftmost bit within the
+leftmost byte of the compressed-data operand.
+
+[...]
+
+During compression when bit 47 is
+zero, the operation produces indexes, called index
+symbols, to compression-dictionary entries that rep-
+resent character strings, and the operation then
+places the index symbols in the compressed-data
+operand. During compression when bit 47 is one, the
+operation still produces index symbols but then trans-
+lates the index symbols to other symbols, called
+interchange symbols, that it then places in the com-
+pressed-data operand.
+
+[...]
+
+During a compression operation, the end of the first
+operand is considered to be reached when the num-
+ber of unused bit positions remaining in the first-oper-
+and location is not sufficient to contain additional
+compressed data.
+
+During an expansion operation, the end of the first-
+operand location is considered to be reached when
+either of the following two conditions is met: 
+
+  1. The number of unused byte positions remaining
+in the first-operand location is not sufficient to
+contain all the characters that would result from
+expansion of the next index symbol. 
+
+  2. Immediately when the number of unused byte
+positions is zero, that is, immediately when the
+expansion of an index symbol completely fills the
+first-operand location.
+
+[...]
+
+If the operation is ended because the end of the sec-
+ond operand is reached, condition code 0 is set. If
+the operation is ended because the end of the first
+operand is reached, condition code 1 is set, except
+that condition code 0 is set if the end of the second
+operand is also reached.
+
+[...]
+
+(page 7-154, middle of second column):
+
+During
+compression when the first bit of compressed data
+stored is not in bit position 0 of a byte, the bits in the
+byte to the left of the first bit of compressed data
+remain unchanged. During compression if the last
+byte stored does not completely contain compressed
+data, the bits in the byte to the right of the rightmost
+bit of compressed data in the byte either are
+unchanged or are set to zeros.
+
+[...]
+
+Resulting Condition Code:
+
+  0 End of second operand reached 
+  1 End of first operand reached and end of second
+operand not reached 
+  2-- 
+  3 CPU-determined amount of data processed 
+
+
+-------------------------------------------------------------------------------
+SA22-7208-01 ESA/390 Data Compression:
+
+[...]
+
+The
+operation proceeds until the end of either operand is reached or a
+CPU-determined amount of data has been processed, whichever occurs first.
+
+[...]
+
+The operation is ended when the end of
+either operand is reached or when a CPU-determined amount of data has been processed, whichever occurs first.
+During a compression operation, the end of the first operand is considered to be reached when the number of unused
+bit positions remaining in the first-operand location is not sufficient to contain additional compressed data. During an
+expansion operation, the end of the first-operand location is considered to be reached when the number of unused byte
+positions remaining in the first-operation location is not sufficient to contain all the characters that would result from
+expansion of the next index symbol.
+
+[...]
+
+(section 1.2.1):
+
+During compression when the first bit of compressed data stored is not in bit position 0 of a byte, the
+bits in the byte to the left of the first bit of compressed data remain unchanged. During compression if the last byte
+stored does not completely contain compressed data, the bits in the byte to the right of the rightmost bit of compressed
+data in the byte either are unchanged or are set to zeros.
+
+[...]
+
+(index):
+
+  bits to left of compressed data     1.2.1
+  bits to right of compressed data    1.2.1
+
+-------------------------------------------------------------------------------
+
 http://publib.boulder.ibm.com/infocenter/zvm/v6r1/topic/com.ibm.zvm.v610.dmsa6/dup0054.htm
 
---------------------------------------------------------------------------------
 
 CSRYCMPS
 
@@ -199,4 +315,4 @@ Usage Notes
                                           work area should begin on a
                                           doubleword boundary.
 
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------

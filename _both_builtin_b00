@@ -1,0 +1,6 @@
+#!/bin/bash
+
+  ./_me_builtin_b00
+  ./_herc_builtin_b00
+
+  ./_errors

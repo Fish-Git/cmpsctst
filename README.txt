@@ -56,7 +56,6 @@ parameters, thereby ensuring thorough test coverage.
 
                                 Building
                                 --------
-
 Windows:
 
   Manually create your own "AutoBuildCount.h" header file (see the section
@@ -75,6 +74,7 @@ using gcc 4.4 within a CentOS 6.4 VMware virtual machine.
 
                                 Testing
                                 -------
+Windows:
 
 In addtion to the "cmpsctst.rexx" script and the "cmpsctst.exe" program,
 there is also a set of simple Windows batch files that automates calling
@@ -91,6 +91,10 @@ The "errors" batch file parses the output of the given test(s) to produce
 a much simplified "condensed" test results summary file that just lists
 the percentage of tests each implementation PASSED or FAILED.
 
+Linux:
+
+Bash scripts exist with the same names as the previously mentioned Windows
+batch files. Tested on CentOS 6.4 VMware virtual machine.
 
 
                                TEST FILES

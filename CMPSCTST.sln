@@ -26,14 +26,107 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Legacy", "_Legacy", "{00F3
 		cmpsc.c = cmpsc.c
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{12CB6854-992C-465E-A95E-3D697D264FB0}"
+	ProjectSection(SolutionItems) = preProject
+		_errors = _errors
+		_quick = _quick
+		_quick_herc = _quick_herc
+		_quick_me = _quick_me
+		ff = ff
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "both", "both", "{539BE54A-FA13-40BA-A113-3676A20FA1A6}"
+	ProjectSection(SolutionItems) = preProject
+		_both = _both
+		_both_builtin = _both_builtin
+		_both_random = _both_random
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{30C04DA5-5B5D-4869-B9E4-AF1EC346AA71}"
+	ProjectSection(SolutionItems) = preProject
+		_both_b00 = _both_b00
+		_both_builtin_b00 = _both_builtin_b00
+		_both_random_b00 = _both_random_b00
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "herc", "herc", "{6B64BC6A-AAAB-496A-80DC-9E53BB14DE68}"
+	ProjectSection(SolutionItems) = preProject
+		_herc = _herc
+		_herc_builtin = _herc_builtin
+		_herc_random = _herc_random
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{A5792EFD-8DA9-4B77-A60C-AF2C9E44EE36}"
+	ProjectSection(SolutionItems) = preProject
+		_herc_b00 = _herc_b00
+		_herc_builtin_b00 = _herc_builtin_b00
+		_herc_random_b00 = _herc_random_b00
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "me", "me", "{925E1684-9271-40D6-BAFD-10EA72CB8437}"
+	ProjectSection(SolutionItems) = preProject
+		_me = _me
+		_me_builtin = _me_builtin
+		_me_random = _me_random
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{51034DAE-5586-403C-9D66-656D94EF8B69}"
+	ProjectSection(SolutionItems) = preProject
+		_me_b00 = _me_b00
+		_me_builtin_b00 = _me_builtin_b00
+		_me_random_b00 = _me_random_b00
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{B3450B1C-632D-4166-AF69-17E32C9195C7}"
 	ProjectSection(SolutionItems) = preProject
 		_errors.cmd = _errors.cmd
-		cmpsctst.cmd = cmpsctst.cmd
-		ff.cmd = ff.cmd
 		_quick.cmd = _quick.cmd
 		_quick_herc.cmd = _quick_herc.cmd
 		_quick_me.cmd = _quick_me.cmd
+		cmpsctst.cmd = cmpsctst.cmd
+		ff.cmd = ff.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "both", "both", "{E10918C5-BE81-4523-A504-160A3F37EA63}"
+	ProjectSection(SolutionItems) = preProject
+		_both.cmd = _both.cmd
+		_both_builtin.cmd = _both_builtin.cmd
+		_both_random.cmd = _both_random.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{2ACBFC65-4876-4151-87FB-28587F2CCC81}"
+	ProjectSection(SolutionItems) = preProject
+		_both_b00.cmd = _both_b00.cmd
+		_both_builtin_b00.cmd = _both_builtin_b00.cmd
+		_both_random_b00.cmd = _both_random_b00.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "herc", "herc", "{A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19}"
+	ProjectSection(SolutionItems) = preProject
+		_herc.cmd = _herc.cmd
+		_herc_builtin.cmd = _herc_builtin.cmd
+		_herc_random.cmd = _herc_random.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{96998E5F-A4E7-43A0-B5D7-DBAFBC52211F}"
+	ProjectSection(SolutionItems) = preProject
+		_herc_b00.cmd = _herc_b00.cmd
+		_herc_builtin_b00.cmd = _herc_builtin_b00.cmd
+		_herc_random_b00.cmd = _herc_random_b00.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "me", "me", "{FAC45E0C-FD3D-4F25-9B0B-686A7A050F56}"
+	ProjectSection(SolutionItems) = preProject
+		_me.cmd = _me.cmd
+		_me_builtin.cmd = _me_builtin.cmd
+		_me_random.cmd = _me_random.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{0A0012FE-97D9-43B8-9EC1-98824DBEA1E9}"
+	ProjectSection(SolutionItems) = preProject
+		_me_b00.cmd = _me_b00.cmd
+		_me_builtin_b00.cmd = _me_builtin_b00.cmd
+		_me_random_b00.cmd = _me_random_b00.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source Files", "Source Files", "{06BCF646-6E08-4E6D-8378-E903AE100A43}"
@@ -62,48 +155,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{5D227652
 		cmpsctst.make = cmpsctst.make
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "herc", "herc", "{A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19}"
-	ProjectSection(SolutionItems) = preProject
-		_quick.cmd = _quick.cmd
-		_herc_builtin.cmd = _herc_builtin.cmd
-		_herc_random.cmd = _herc_random.cmd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{96998E5F-A4E7-43A0-B5D7-DBAFBC52211F}"
-	ProjectSection(SolutionItems) = preProject
-		_herc_b00.cmd = _herc_b00.cmd
-		_herc_builtin_b00.cmd = _herc_builtin_b00.cmd
-		_herc_random_b00.cmd = _herc_random_b00.cmd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "me", "me", "{FAC45E0C-FD3D-4F25-9B0B-686A7A050F56}"
-	ProjectSection(SolutionItems) = preProject
-		_me.cmd = _me.cmd
-		_me_builtin.cmd = _me_builtin.cmd
-		_me_random.cmd = _me_random.cmd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{0A0012FE-97D9-43B8-9EC1-98824DBEA1E9}"
-	ProjectSection(SolutionItems) = preProject
-		_me_b00.cmd = _me_b00.cmd
-		_me_builtin_b00.cmd = _me_builtin_b00.cmd
-		_me_random_b00.cmd = _me_random_b00.cmd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "both", "both", "{E10918C5-BE81-4523-A504-160A3F37EA63}"
-	ProjectSection(SolutionItems) = preProject
-		_both.cmd = _both.cmd
-		_both_builtin.cmd = _both_builtin.cmd
-		_both_random.cmd = _both_random.cmd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "b00", "b00", "{2ACBFC65-4876-4151-87FB-28587F2CCC81}"
-	ProjectSection(SolutionItems) = preProject
-		_both_b00.cmd = _both_b00.cmd
-		_both_builtin_b00.cmd = _both_builtin_b00.cmd
-		_both_random_b00.cmd = _both_random_b00.cmd
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -125,18 +176,24 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{12CB6854-992C-465E-A95E-3D697D264FB0} = {902B2E95-0323-404D-9287-07D392BE9F2F}
 		{B3450B1C-632D-4166-AF69-17E32C9195C7} = {902B2E95-0323-404D-9287-07D392BE9F2F}
 		{5D227652-2DED-4049-B5B2-C4B77EF4A450} = {64D2910A-ECF2-4DE2-A15E-72D87497B850}
 		{DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A} = {86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}
 		{00F359F9-6090-4D6B-850F-52BD57D250D8} = {86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}
 		{06BCF646-6E08-4E6D-8378-E903AE100A43} = {DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}
 		{1DB192B9-F9A5-4726-8BFB-98C06B4619B2} = {DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}
+		{539BE54A-FA13-40BA-A113-3676A20FA1A6} = {12CB6854-992C-465E-A95E-3D697D264FB0}
+		{6B64BC6A-AAAB-496A-80DC-9E53BB14DE68} = {12CB6854-992C-465E-A95E-3D697D264FB0}
+		{925E1684-9271-40D6-BAFD-10EA72CB8437} = {12CB6854-992C-465E-A95E-3D697D264FB0}
+		{30C04DA5-5B5D-4869-B9E4-AF1EC346AA71} = {539BE54A-FA13-40BA-A113-3676A20FA1A6}
+		{A5792EFD-8DA9-4B77-A60C-AF2C9E44EE36} = {6B64BC6A-AAAB-496A-80DC-9E53BB14DE68}
+		{51034DAE-5586-403C-9D66-656D94EF8B69} = {925E1684-9271-40D6-BAFD-10EA72CB8437}
 		{E10918C5-BE81-4523-A504-160A3F37EA63} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
 		{A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
 		{FAC45E0C-FD3D-4F25-9B0B-686A7A050F56} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
-		{8F7D8D62-0581-4A3C-9AA3-0975F8B2E848} = {B3450B1C-632D-4166-AF69-17E32C9195C7}
+		{2ACBFC65-4876-4151-87FB-28587F2CCC81} = {E10918C5-BE81-4523-A504-160A3F37EA63}
 		{96998E5F-A4E7-43A0-B5D7-DBAFBC52211F} = {A2FA3BDB-D44E-4DDF-8D83-57EEA12E2F19}
 		{0A0012FE-97D9-43B8-9EC1-98824DBEA1E9} = {FAC45E0C-FD3D-4F25-9B0B-686A7A050F56}
-		{2ACBFC65-4876-4151-87FB-28587F2CCC81} = {E10918C5-BE81-4523-A504-160A3F37EA63}
 	EndGlobalSection
 EndGlobal

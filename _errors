@@ -1,0 +1,45 @@
+#!/bin/bash
+
+logmsg()
+{
+  if [ "$*" == "." ]; then
+    printf "\n"          >>  $ERRORS_LOG
+  else
+    local HHMMSS=$(date +"%T")
+    echo "$HHMMSS   $*"  >>  $ERRORS_LOG
+  fi
+}
+
+#------------------------------------------------------------------------------
+
+find_str()
+{
+  logmsg  .
+  logmsg  "***  \"$1\"  ***         (i.e. $2)"
+  logmsg  .
+  ff  "$1"  "$CMP_LOGS"  >>  $ERRORS_LOG
+  logmsg  .
+}
+
+#------------------------------------------------------------------------------
+
+  WORK_DIR="./WORK"
+  ERRORS_LOG="${WORK_DIR}/_errors.log"
+  CMP_LOGS="${WORK_DIR}/cmp*.log"
+
+  [ -f "$ERRORS_LOG" ] && rm "$ERRORS_LOG"
+
+  logmsg  .
+  logmsg  "Searching log files for errors..."
+  logmsg  .
+
+  find_str  "ERROR"          "any error"
+  find_str  "Code 0x0004"    "Protection Exception"
+  find_str  "Code 0x0007"    "Data Exception"
+  find_str  "Actual MD5"     "Expanded file does not match original input file"
+
+  logmsg  .
+  logmsg  "DONE!  Errors log \"${ERRORS_LOG}\" created."
+
+#------------------------------------------------------------------------------
+

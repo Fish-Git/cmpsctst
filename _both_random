@@ -1,0 +1,6 @@
+#!/bin/bash
+
+  ./_me_random
+  ./_herc_random
+
+  ./_errors

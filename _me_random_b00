@@ -1,0 +1,9 @@
+#!/bin/bash
+
+  OPATH=$PATH
+  PATH=.:./Linux:$OPATH
+
+  clear && cmpsctst.rexx  ./FILES/SMALL/EBCDIC  ./DICTS  ./WORK        -n      -r 4 -z  -bb 0:0  >  ./WORK/cmpsctst-ser-b00.log
+  clear && cmpsctst.rexx  ./FILES/LARGE/EBCDIC  ./DICTS  ./WORK        -n      -r 4 -z  -bb 0:0  >  ./WORK/cmpsctst-ler-b00.log
+  clear && cmpsctst.rexx  ./FILES/SMALL/ASCII   ./DICTS  ./WORK     -t -n      -r 4 -z  -bb 0:0  >  ./WORK/cmpsctst-sar-b00.log
+  clear && cmpsctst.rexx  ./FILES/LARGE/ASCII   ./DICTS  ./WORK     -t -n      -r 4 -z  -bb 0:0  >  ./WORK/cmpsctst-lar-b00.log

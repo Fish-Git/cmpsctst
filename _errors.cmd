@@ -34,7 +34,7 @@
 
   (call :echo .)                                        >> "%errors_log%"
   set "@=%~1"
-  set "@=****  "%find_str%"  ***        ^^^(i.e. %@%^^^)"
+  set "@=***  "%find_str%"  ***         ^^^(i.e. %@%^^^)"
   (call :echo %@%)                                      >> "%errors_log%"
   (call :echo .)                                        >> "%errors_log%"
   (ff.cmd /i "%find_str%" "%cmp_logs%" | find /i "---") >> "%errors_log%"

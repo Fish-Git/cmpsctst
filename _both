@@ -1,0 +1,6 @@
+#!/bin/bash
+
+  ./_both_random
+  ./_both_builtin
+
+  ./_errors
