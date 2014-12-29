@@ -898,7 +898,7 @@ begin:
   call random MIN_OFFSET, MAX_OFFSET, time("Seconds")   -- (seed PRNG)
   call time("Reset")  -- START TIMING
   say sep
-  say "Begin: "time()
+  say "Begin: " || datetime()
   say sep
 
 
@@ -988,8 +988,8 @@ begin:
 
   if left(ddhhmmss,3) = "00:" then do   -- (any days of duration?)
     ddhhmmss = substr(ddhhmmss,4)       -- (no then remove DD: days)
-    say         "End: "time()           -- (align HH of End: w/HH of Dur:)
-  end; else say "End:    "time()        -- (align HH of End: w/HH of Dur:)
+    say         "End: "    || datetime()
+  end; else say "End:    " || datetime()
 
   /* Quick sanity check */
 
@@ -1391,6 +1391,10 @@ reltodir: procedure expose pathsep
 /*----------------------------------------------------------------------------
                          ( helper functions )
  ----------------------------------------------------------------------------*/
+
+datetime: procedure    -- (return datetime in format "YYYY/MM/DD  HH:MM:SS")
+
+  return left(date("s"),4) || "/" || substr(date("s"),5,2) || "/" || substr(date("s"),7) || "  " || time()
 
 isnum: procedure    -- (is it a number?)
 

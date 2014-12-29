@@ -25,8 +25,16 @@ static  const char*     algorithm_names [ NUM_ALGORITHMS ] =
 
 void showbanner( FILE* f )
 {
-    FPRINTF( f, "\n%s, version %s\n%s %s\n",
-        PRODUCT_DESC, VERSION_STR, COPYRIGHT, COMPANY );
+    FPRINTF
+    (
+        f,  "\n%s, %s-bit version %s\n%s, %s\n"
+
+        , PRODUCT_DESC
+        , sizeof(void*) == sizeof(U64) ? "64" : "32"
+        , VERSION_STR
+        , COPYRIGHT
+        , COMPANY
+    );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
