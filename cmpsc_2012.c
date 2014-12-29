@@ -577,7 +577,7 @@ U8 (CMPSC_FASTCALL ARCH_DEP( cmpsc_Compress ))( CMPSCBLK* pCMPSCBLK )
     U16         max_index;          // Maximum Index value
     U16         children;           // Counts children
     U8          ccnum, scnum, byt;  // (work variables)
-    U8          eodst, equal;       // (work flags)
+    U8          eodst, flag;        // (work flags)
     U8          bits;               // Number of bits per index
     U8          wrk[ MAX_SYMLEN ];  // (work buffer)
 
@@ -713,7 +713,7 @@ cmp3:
 
     // Set flag=1.
 
-    equal = 1;
+    flag = TRUE;
 
     // Another SRC char exists?
     // No, goto cmp13;
@@ -736,7 +736,7 @@ cmp5:
         goto cmp10;
 
     // Set flag=0;
-    equal = 0;
+    flag = FALSE;
 
     // Another CC?
     // Yes, goto cmp5;
@@ -753,7 +753,7 @@ cmp5:
         goto cmp10;
 
     // Set flag=0;
-//  equal = 0;      // (already done by UNROLL #1)
+//  flag = FALSE;   // (already done by UNROLL #1)
 
     // Another CC?
     // Yes, goto cmp5;
@@ -770,7 +770,7 @@ cmp5:
         goto cmp10;
 
     // Set flag=0;
-//  equal = 0;      // (already done by UNROLL #1)
+//  flag = FALSE;   // (already done by UNROLL #1)
 
     // Another CC?
     // Yes, goto cmp5;
@@ -787,7 +787,7 @@ cmp5:
         goto cmp10;
 
     // Set flag=0;
-//  equal = 0;      // (already done by UNROLL #1)
+//  flag = FALSE;   // (already done by UNROLL #1)
 
     // Another CC?
     // Yes, goto cmp5;
@@ -804,7 +804,7 @@ cmp5:
         goto cmp10;
 
     // Set flag=0;
-//  equal = 0;      // (already done by UNROLL #1)
+//  flag = FALSE;   // (already done by UNROLL #1)
 
     // Another CC?
     // Yes, goto cmp5;
@@ -1050,7 +1050,7 @@ cmp11:
     // Flag=1?
     // No, goto cmp8;
 
-    if (equal != 1)
+    if (!flag)
         goto cmp8;
 
     // Another CC?
