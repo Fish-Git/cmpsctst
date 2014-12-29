@@ -31,8 +31,14 @@ typedef struct PIBLK PIBLK; // Returns TRUE/FALSE (no more room/room remains)
 typedef U8 (CMPSC_FASTCALL PutIndex)( PIBLK* pPIBLK );
 
 ///////////////////////////////////////////////////////////////////////////////
+// Function to derive CBN value based on PutIndex function pointer
+
+typedef U8 (CMPSC_FASTCALL PutGetCBN)( PutIndex* pPutIndex );
+
+///////////////////////////////////////////////////////////////////////////////
 #endif // _CMPSCPUT_H_     // Place all 'ARCH_DEP' code after this statement
 
+extern PutGetCBN* ARCH_DEP( PutGetCBNTab    )[5];  // (ptrs to PutGetCBN table by CDSS)
 extern PutIndex** ARCH_DEP( PutIndexCDSSTab )[5];  // (ptrs to CBN jump tables by CDSS)
 extern PutIndex*  ARCH_DEP( PutIndexCBNTab  )[8];  // (ptrs to PutIndex functions by CBN)
 

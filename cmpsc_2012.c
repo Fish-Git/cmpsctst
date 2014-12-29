@@ -556,6 +556,7 @@ U8 (CMPSC_FASTCALL ARCH_DEP( cmpsc_Compress ))( CMPSCBLK* pCMPSCBLK )
 {
     U64         nCPUAmt;            // CPU determined processing limit
     U64         pBegOp2;            // Ptr to beginning of operand-2
+    PutGetCBN*  pPutGetCBN;         // Ptr to PutGetCBN function for this CDSS-1
     PutIndex**  ppPutIndex;         // Ptr to PutNextIndex table for this CDSS-1
     PutIndex*   pPutIndex;          // Ptr to PutNextIndex function for this CBN
     U64         pSymTab;            // Symbol-Translation Table
@@ -582,10 +583,13 @@ U8 (CMPSC_FASTCALL ARCH_DEP( cmpsc_Compress ))( CMPSCBLK* pCMPSCBLK )
 
     bits       = 8 + pCMPSCBLK->cdss;
     max_index  = (0xFFFF >> (16 - bits));
+    pPutGetCBN = ARCH_DEP( PutGetCBNTab    )[ pCMPSCBLK->cdss - 1 ];
     ppPutIndex = ARCH_DEP( PutIndexCDSSTab )[ pCMPSCBLK->cdss - 1 ];
     pPutIndex  = ppPutIndex[ pCMPSCBLK->cbn ];
     pSymTab    = pCMPSCBLK->st ? pCMPSCBLK->pDict + ((U32)pCMPSCBLK->stt << 7) : 0;
     pGetSD     = pCMPSCBLK->f1 ? ARCH_DEP( GetSD1 ) : ARCH_DEP( GetSD0 );
+
+#define PUTSETCBN()     pCMPSCBLK->cbn = pPutGetCBN( pPutIndex )
 
     memset( &dctblk,  0, sizeof( dctblk ) );
     memset( &dctblk2, 0, sizeof( dctblk ) );
@@ -651,7 +655,10 @@ cmp1:
     // No, set CC0 and endop.
 
     if (unlikely( !pCMPSCBLK->nLen2 ))
+    {
+        PUTSETCBN();
         RETCC0( &op1blk );
+    }
 
 cmp2:
 
@@ -659,10 +666,16 @@ cmp2:
     // No, set CC1 and endop.
 
     if (unlikely( eodst ))
+    {
+        PUTSETCBN();
         RETCC1( &op1blk );
+    }
 
     if (unlikely( nCPUAmt >= (U64) pCMPSCBLK->nCPUAmt ))  // (max bytes processed?)
+    {
+        PUTSETCBN();
         RETCC3( &op1blk );                                // (return cc3 to caller)
+    }
 
     children = 0;
 
@@ -674,7 +687,10 @@ cmp2:
 
     cceblk.pCCE = &parent;
     if (unlikely( !ARCH_DEP( GetCCE )( parent_index, &cceblk )))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
 
     nCPUAmt++;
     pCMPSCBLK->pOp2++;
@@ -812,7 +828,10 @@ cmp5E:
 
     sdeblk.pCCE = &parent;
     if (unlikely( !pGetSD( sibling_index, &sdeblk )))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
     scnum = 0;
 
     // (REPEAT FOR EACH SC IN SD)...
@@ -933,7 +952,10 @@ cmp7E:
 
     sdeblk.pCCE = NULL;
     if (unlikely( !pGetSD( sibling_index, &sdeblk )))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
     scnum = 0;
 
     // goto cmp7;
@@ -947,7 +969,10 @@ cmp8:
     // goto cmp2;
 
     if (unlikely( (pCMPSCBLK->pOp2 - pBegOp2) > MAX_SYMLEN ))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
     pBegOp2  =  pCMPSCBLK->pOp2;
 
     piblk.index = (!pCMPSCBLK->st) ? parent_index
@@ -962,7 +987,10 @@ cmp9:
     // goto cmp1;
 
     if (unlikely( (pCMPSCBLK->pOp2 - pBegOp2) > MAX_SYMLEN ))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
     pBegOp2  =  pCMPSCBLK->pOp2;
 
     piblk.index = (!pCMPSCBLK->st) ? parent_index
@@ -973,7 +1001,10 @@ cmp9:
 cmp10:
 
     if (unlikely( ++children > MAX_CHILDREN ))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
 
     // Set child index = CPTR + CC number (0-origin numbering).
 
@@ -990,7 +1021,10 @@ cmp10:
 
     cceblk.pCCE = &child;
     if (unlikely( !ARCH_DEP( GetCCE )( child_index, &cceblk )))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
 
     if (!child.act)
         goto cmp15;
@@ -1032,7 +1066,10 @@ cmp11:
 cmp12:
 
     if (unlikely( ++children > MAX_CHILDREN ))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
 
     // Set child index = SD index + SC number (1-origin numbering).
 
@@ -1049,7 +1086,10 @@ cmp12:
 
     cceblk.pCCE = &child;
     if (unlikely( !ARCH_DEP( GetCCE )( child_index, &cceblk )))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
 
     if (!child.act)
         goto cmp15;
@@ -1081,12 +1121,16 @@ cmp13:
     // Set CC0 and endop.
 
     if (unlikely( (pCMPSCBLK->pOp2 - pBegOp2) > MAX_SYMLEN ))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
     pBegOp2  =  pCMPSCBLK->pOp2;
 
     piblk.index = (!pCMPSCBLK->st) ? parent_index
           : fetch_dct_hw( pSymTab + (parent_index << 1), pCMPSCBLK );
     pPutIndex( &piblk );
+    PUTSETCBN();
     RETCC0( &op1blk );
 
 cmp14:
@@ -1101,7 +1145,10 @@ cmp14:
     pCMPSCBLK->nLen2--;
 
     if (unlikely( (pCMPSCBLK->pOp2 - pBegOp2) > MAX_SYMLEN ))
+    {
+        PUTSETCBN();
         RETERR( &op1blk );
+    }
     pBegOp2  =  pCMPSCBLK->pOp2;
 
     piblk.index = (!pCMPSCBLK->st) ? child_index
