@@ -203,11 +203,11 @@ For more information refer to the "cmpsctst.rexx" section further below.
 
     EXAMPLES
 
-        cmpsctst  .\files        .\dicts  .\work  -z > EXTREMELY-long-test.log
-        cmpsctst  .\files\small  .\dicts  .\work  -r 0 -z -w 3 > VERY-long-non-random-test.log
-        cmpsctst  .\files\small  .\dicts  .\work  -n -r 3 -z 0:1 > short-randoms-test.log
-        cmpsctst  .\files\large  .\dicts  .\work  -speed -r 100 > speed-test.log
-        cmpsctst  .\files\small\ebcdic\ .\dicts\ .\work\ -a 1:0 -r 1 -n -z 0:0 -bb 0:1  >  .\work\cmp2base.txt
+        cls && rexx cmpsctst.rexx .\FILES\              .\DICTS\ .\WORK\ -z                            > .\WORK\EONS-long-test.log
+        cls && rexx cmpsctst.rexx .\FILES\SMALL\        .\DICTS\ .\WORK\ -r 0 -z -w 3                  > .\WORK\EONS-long-non-random-test.log
+        cls && rexx cmpsctst.rexx .\FILES\SMALL\EBCDIC\ .\DICTS\ .\WORK\ -n -r 3 -z 0:1                > .\WORK\short-randoms-test.log
+        cls && rexx cmpsctst.rexx .\FILES\LARGE\        .\DICTS\ .\WORK\ -speed -r 100                 > .\WORK\speed-test.log
+        cls && rexx cmpsctst.rexx .\FILES\SMALL\EBCDIC\ .\DICTS\ .\WORK\ -a 1:0 -r 1 -n -z 0:0 -bb 0:1 > .\WORK\cmp2base.txt
 
     NOTES
 
