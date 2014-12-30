@@ -442,61 +442,61 @@ U8  (CMPSC_FASTCALL ARCH_DEP( PutIndex713 )) ( PIBLK* pPIBLK )
 
 U8  (CMPSC_FASTCALL ARCH_DEP( PutGetCBN09 )) ( PutIndex* pPutIndex )
 {
-         if (&PutIndex009 == pPutIndex) return 0;
-    else if (&PutIndex109 == pPutIndex) return 1;
-    else if (&PutIndex209 == pPutIndex) return 2;
-    else if (&PutIndex309 == pPutIndex) return 3;
-    else if (&PutIndex409 == pPutIndex) return 4;
-    else if (&PutIndex509 == pPutIndex) return 5;
-    else if (&PutIndex609 == pPutIndex) return 6;
+         if (&ARCH_DEP( PutIndex009 ) == pPutIndex) return 0;
+    else if (&ARCH_DEP( PutIndex109 ) == pPutIndex) return 1;
+    else if (&ARCH_DEP( PutIndex209 ) == pPutIndex) return 2;
+    else if (&ARCH_DEP( PutIndex309 ) == pPutIndex) return 3;
+    else if (&ARCH_DEP( PutIndex409 ) == pPutIndex) return 4;
+    else if (&ARCH_DEP( PutIndex509 ) == pPutIndex) return 5;
+    else if (&ARCH_DEP( PutIndex609 ) == pPutIndex) return 6;
     else                                return 7;
 }
 
 U8  (CMPSC_FASTCALL ARCH_DEP( PutGetCBN10 )) ( PutIndex* pPutIndex )
 {
-         if (&PutIndex010 == pPutIndex) return 0;
-    else if (&PutIndex110 == pPutIndex) return 1;
-    else if (&PutIndex210 == pPutIndex) return 2;
-    else if (&PutIndex310 == pPutIndex) return 3;
-    else if (&PutIndex410 == pPutIndex) return 4;
-    else if (&PutIndex510 == pPutIndex) return 5;
-    else if (&PutIndex610 == pPutIndex) return 6;
+         if (&ARCH_DEP( PutIndex010 ) == pPutIndex) return 0;
+    else if (&ARCH_DEP( PutIndex110 ) == pPutIndex) return 1;
+    else if (&ARCH_DEP( PutIndex210 ) == pPutIndex) return 2;
+    else if (&ARCH_DEP( PutIndex310 ) == pPutIndex) return 3;
+    else if (&ARCH_DEP( PutIndex410 ) == pPutIndex) return 4;
+    else if (&ARCH_DEP( PutIndex510 ) == pPutIndex) return 5;
+    else if (&ARCH_DEP( PutIndex610 ) == pPutIndex) return 6;
     else                                return 7;
 }
 
 U8  (CMPSC_FASTCALL ARCH_DEP( PutGetCBN11 )) ( PutIndex* pPutIndex )
 {
-         if (&PutIndex011 == pPutIndex) return 0;
-    else if (&PutIndex111 == pPutIndex) return 1;
-    else if (&PutIndex211 == pPutIndex) return 2;
-    else if (&PutIndex311 == pPutIndex) return 3;
-    else if (&PutIndex411 == pPutIndex) return 4;
-    else if (&PutIndex511 == pPutIndex) return 5;
-    else if (&PutIndex611 == pPutIndex) return 6;
+         if (&ARCH_DEP( PutIndex011 ) == pPutIndex) return 0;
+    else if (&ARCH_DEP( PutIndex111 ) == pPutIndex) return 1;
+    else if (&ARCH_DEP( PutIndex211 ) == pPutIndex) return 2;
+    else if (&ARCH_DEP( PutIndex311 ) == pPutIndex) return 3;
+    else if (&ARCH_DEP( PutIndex411 ) == pPutIndex) return 4;
+    else if (&ARCH_DEP( PutIndex511 ) == pPutIndex) return 5;
+    else if (&ARCH_DEP( PutIndex611 ) == pPutIndex) return 6;
     else                                return 7;
 }
 
 U8  (CMPSC_FASTCALL ARCH_DEP( PutGetCBN12 )) ( PutIndex* pPutIndex )
 {
-         if (&PutIndex012 == pPutIndex) return 0;
-    else if (&PutIndex112 == pPutIndex) return 1;
-    else if (&PutIndex212 == pPutIndex) return 2;
-    else if (&PutIndex312 == pPutIndex) return 3;
-    else if (&PutIndex412 == pPutIndex) return 4;
-    else if (&PutIndex512 == pPutIndex) return 5;
-    else if (&PutIndex612 == pPutIndex) return 6;
+         if (&ARCH_DEP( PutIndex012 ) == pPutIndex) return 0;
+    else if (&ARCH_DEP( PutIndex112 ) == pPutIndex) return 1;
+    else if (&ARCH_DEP( PutIndex212 ) == pPutIndex) return 2;
+    else if (&ARCH_DEP( PutIndex312 ) == pPutIndex) return 3;
+    else if (&ARCH_DEP( PutIndex412 ) == pPutIndex) return 4;
+    else if (&ARCH_DEP( PutIndex512 ) == pPutIndex) return 5;
+    else if (&ARCH_DEP( PutIndex612 ) == pPutIndex) return 6;
     else                                return 7;
 }
 
 U8  (CMPSC_FASTCALL ARCH_DEP( PutGetCBN13 )) ( PutIndex* pPutIndex )
 {
-         if (&PutIndex013 == pPutIndex) return 0;
-    else if (&PutIndex113 == pPutIndex) return 1;
-    else if (&PutIndex213 == pPutIndex) return 2;
-    else if (&PutIndex313 == pPutIndex) return 3;
-    else if (&PutIndex413 == pPutIndex) return 4;
-    else if (&PutIndex513 == pPutIndex) return 5;
-    else if (&PutIndex613 == pPutIndex) return 6;
+         if (&ARCH_DEP( PutIndex013 ) == pPutIndex) return 0;
+    else if (&ARCH_DEP( PutIndex113 ) == pPutIndex) return 1;
+    else if (&ARCH_DEP( PutIndex213 ) == pPutIndex) return 2;
+    else if (&ARCH_DEP( PutIndex313 ) == pPutIndex) return 3;
+    else if (&ARCH_DEP( PutIndex413 ) == pPutIndex) return 4;
+    else if (&ARCH_DEP( PutIndex513 ) == pPutIndex) return 5;
+    else if (&ARCH_DEP( PutIndex613 ) == pPutIndex) return 6;
     else                                return 7;
 }
 
