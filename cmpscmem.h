@@ -24,75 +24,67 @@ typedef struct MEMBLK MEMBLK;
 ///////////////////////////////////////////////////////////////////////////////
 // (simple helper macros with more descriptive names)
 
-#define U16_ALIGNED( addr )     likely(!((addr) & 1))
-#define U32_ALIGNED( addr )     likely(!((addr) & 3))
-#define U64_ALIGNED( addr )     likely(!((addr) & 7))
+#ifndef PTR_IS_ALIGNED              // (machdep.h may have already defined it)
+#define PTR_IS_ALIGNED( p, n )      (!(((uintptr_t)(p))&((n)-1)))
+#define PTR_IS_HW_ALIGNED( p )      PTR_IS_ALIGNED( (p), 2 )
+#define PTR_IS_FW_ALIGNED( p )      PTR_IS_ALIGNED( (p), 4 )
+#define PTR_IS_DW_ALIGNED( p )      PTR_IS_ALIGNED( (p), 8 )
+#endif
+
+#define U16_ALIGNED( addr )         likely( PTR_IS_HW_ALIGNED( addr ))
+#define U32_ALIGNED( addr )         likely( PTR_IS_FW_ALIGNED( addr ))
+#define U64_ALIGNED( addr )         likely( PTR_IS_DW_ALIGNED( addr ))
 
 ///////////////////////////////////////////////////////////////////////////////
 // fetch/store hw/fw/dw/noswap compatibility macros for utility
 
 #if defined( NOT_HERC )             // (building tool utility not Hercules?)
 
-  #if defined( OPTION_STRICT_ALIGNMENT )
-    static INLINE U16 fetch_hw_noswap( void* ptr )
-    {
-      U16 value;
-      memcpy( &value, (U8*)ptr, 2 );
-      return value;
+  #define FETCH_XX_NOSWAP( UXX, XW, xw, n )                                 \
+                                                                            \
+    static INLINE UXX fetch_ ## xw ## _noswap( void* ptr )                  \
+    {                                                                       \
+        if (UXX ## _ALIGNED( ptr ))                                         \
+            return *(UXX*)ptr;                                              \
+        else                                                                \
+        {                                                                   \
+            UXX value;                                                      \
+            memcpy( &value, (BYTE*)ptr, n );                                \
+            return value;                                                   \
+        }                                                                   \
     }
-    static INLINE void store_hw_noswap( void* ptr, U16 value )
-    {
-      memcpy( (U8*)ptr, (U8*)&value, 2 );
+
+  #define STORE_XX_NOSWAP( UXX, XW, xw, n )                                 \
+                                                                            \
+    static INLINE void store_ ## xw ## _noswap( void* ptr, UXX value )      \
+    {                                                                       \
+        if (UXX ## _ALIGNED( ptr ))                                         \
+            *(UXX*)ptr = value;                                             \
+        else                                                                \
+            memcpy( (BYTE*)ptr, (BYTE*)&value, n );                         \
     }
-  #else
-    #define fetch_hw_noswap( p )        (*(U16*)(uintptr_t)(p))
-    #define store_hw_noswap( p, v )     (*(U16*)(uintptr_t)(p) = (U16)(v))
-  #endif
 
-  #define   fetch_hw( p )               CSWAP16(fetch_hw_noswap((void*)(uintptr_t)(p)))
-  #define   store_hw( p, v )            store_hw_noswap((void*)(uintptr_t)(p),CSWAP16((v)))
+    // ----------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
+    FETCH_XX_NOSWAP( U16, HW, hw, 2 )
+    STORE_XX_NOSWAP( U16, HW, hw, 2 )
 
-  #if defined( OPTION_STRICT_ALIGNMENT )
-    static INLINE U32 fetch_fw_noswap( void* ptr )
-    {
-      U32 value;
-      memcpy( &value, (U8*)ptr, 4 );
-      return value;
-    }
-    static INLINE void store_fw_noswap( void* ptr, U32 value )
-    {
-      memcpy( (U8*)ptr, (U8*)&value, 4 );
-    }
-  #else
-    #define fetch_fw_noswap( p )        (*(U32*)(uintptr_t)(p))
-    #define store_fw_noswap( p, v )     (*(U32*)(uintptr_t)(p) = (U32)(v))
-  #endif
+    FETCH_XX_NOSWAP( U32, FW, fw, 4 )
+    STORE_XX_NOSWAP( U32, FW, fw, 4 )
 
-  #define   fetch_fw( p )               CSWAP32(fetch_fw_noswap((p)))
-  #define   store_fw( p, v )            store_fw_noswap((p),CSWAP32((v)))
+    FETCH_XX_NOSWAP( U64, DW, dw, 8 )
+    STORE_XX_NOSWAP( U64, DW, dw, 8 )
 
-// ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------
 
-  #if defined( OPTION_STRICT_ALIGNMENT )
-    static INLINE U64 fetch_dw_noswap( void* ptr )
-    {
-      U64 value;
-      memcpy( &value, (U8*)ptr, 8 );
-      return value;
-    }
-    static INLINE void store_dw_noswap( void* ptr, U64 value )
-    {
-      memcpy( (U8*)ptr, (U8*)&value, 8 );
-    }
-  #else
-    #define fetch_dw_noswap( p )        (*(U64*)(uintptr_t)(p))
-    #define store_dw_noswap( p, v )     (*(U64*)(uintptr_t)(p) = (U64)(v))
-  #endif
+    #define  fetch_hw( p )      CSWAP16(fetch_hw_noswap(p))
+    #define  store_hw( p, v )   store_hw_noswap((p),CSWAP16(v))
 
-  #define   fetch_dw( p )               CSWAP64(fetch_dw_noswap((p)))
-  #define   store_dw( p, v )            store_dw_noswap((p),CSWAP64((v)))
+    #define  fetch_fw( p )      CSWAP32(fetch_fw_noswap(p))
+    #define  store_fw( p, v )   store_fw_noswap((p),CSWAP32(v))
+
+    #define  fetch_dw( p )      CSWAP64(fetch_dw_noswap(p))
+    #define  store_dw( p, v )   store_dw_noswap((p),CSWAP64(v))
 
 #endif // defined( NOT_HERC )
 
@@ -143,12 +135,12 @@ typedef struct MEMBLK MEMBLK;
 
 #define vfetchb(           addr, arn, regs )   (*(U8*)(uintptr_t)(addr))
 #define vstoreb( byt,      addr, arn, regs )   (*(U8*)(uintptr_t)(addr)) = ((U8)byt)
-#define vfetch2(           addr, arn, regs )   fetch_hw((addr))
-#define vstore2( val,      addr, arn, regs )   store_hw((addr),(val))
-#define vfetch4(           addr, arn, regs )   fetch_fw((addr))
-#define vstore4( val,      addr, arn, regs )   store_fw((addr),(val))
-#define vfetch8(           addr, arn, regs )   fetch_dw((addr))
-#define vstore8( val,      addr, arn, regs )   store_dw((addr),(val))
+#define vfetch2(           addr, arn, regs )   fetch_hw((U16*)(addr))
+#define vstore2( val,      addr, arn, regs )   store_hw((U16*)(addr),(val))
+#define vfetch4(           addr, arn, regs )   fetch_fw((U32*)(addr))
+#define vstore4( val,      addr, arn, regs )   store_fw((U32*)(addr),(val))
+#define vfetch8(           addr, arn, regs )   fetch_dw((U64*)(addr))
+#define vstore8( val,      addr, arn, regs )   store_dw((U64*)(addr),(val))
 #define vfetchc( dst, len, addr, arn, regs )   memcpy( (U8*)(uintptr_t)(dst),  (U8*)(uintptr_t)(addr), (len)+1 )
 #define vstorec( src, len, addr, arn, regs )   memcpy( (U8*)(uintptr_t)(addr), (U8*)(uintptr_t)(src),  (len)+1 )
 
