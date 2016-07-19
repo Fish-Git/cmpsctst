@@ -44,47 +44,39 @@ typedef struct MEMBLK MEMBLK;
                                                                             \
     static INLINE UXX fetch_ ## xw ## _noswap( void* ptr )                  \
     {                                                                       \
-        if (UXX ## _ALIGNED( ptr ))                                         \
-            return *(UXX*)ptr;                                              \
-        else                                                                \
-        {                                                                   \
-            UXX value;                                                      \
-            memcpy( &value, (BYTE*)ptr, n );                                \
-            return value;                                                   \
-        }                                                                   \
+        UXX value;                                                          \
+        memcpy( &value, (BYTE*)ptr, n );                                    \
+        return value;                                                       \
     }
 
   #define STORE_XX_NOSWAP( UXX, XW, xw, n )                                 \
                                                                             \
     static INLINE void store_ ## xw ## _noswap( void* ptr, UXX value )      \
     {                                                                       \
-        if (UXX ## _ALIGNED( ptr ))                                         \
-            *(UXX*)ptr = value;                                             \
-        else                                                                \
-            memcpy( (BYTE*)ptr, (BYTE*)&value, n );                         \
+        memcpy( (BYTE*)ptr, (BYTE*)&value, n );                             \
     }
 
-    // ----------------------------------------------------------------------
+  //---------------------------------------------------------------------------
 
-    FETCH_XX_NOSWAP( U16, HW, hw, 2 )
-    STORE_XX_NOSWAP( U16, HW, hw, 2 )
+  FETCH_XX_NOSWAP( U16, HW, hw, 2 )
+  STORE_XX_NOSWAP( U16, HW, hw, 2 )
 
-    FETCH_XX_NOSWAP( U32, FW, fw, 4 )
-    STORE_XX_NOSWAP( U32, FW, fw, 4 )
+  FETCH_XX_NOSWAP( U32, FW, fw, 4 )
+  STORE_XX_NOSWAP( U32, FW, fw, 4 )
 
-    FETCH_XX_NOSWAP( U64, DW, dw, 8 )
-    STORE_XX_NOSWAP( U64, DW, dw, 8 )
+  FETCH_XX_NOSWAP( U64, DW, dw, 8 )
+  STORE_XX_NOSWAP( U64, DW, dw, 8 )
 
-    // ----------------------------------------------------------------------
+  // --------------------------------------------------------------------------
 
-    #define  fetch_hw( p )      CSWAP16(fetch_hw_noswap(p))
-    #define  store_hw( p, v )   store_hw_noswap((p),CSWAP16(v))
+  #define  fetch_hw( p )      CSWAP16(fetch_hw_noswap(p))
+  #define  store_hw( p, v )   store_hw_noswap((p),CSWAP16(v))
 
-    #define  fetch_fw( p )      CSWAP32(fetch_fw_noswap(p))
-    #define  store_fw( p, v )   store_fw_noswap((p),CSWAP32(v))
+  #define  fetch_fw( p )      CSWAP32(fetch_fw_noswap(p))
+  #define  store_fw( p, v )   store_fw_noswap((p),CSWAP32(v))
 
-    #define  fetch_dw( p )      CSWAP64(fetch_dw_noswap(p))
-    #define  store_dw( p, v )   store_dw_noswap((p),CSWAP64(v))
+  #define  fetch_dw( p )      CSWAP64(fetch_dw_noswap(p))
+  #define  store_dw( p, v )   store_dw_noswap((p),CSWAP64(v))
 
 #endif // defined( NOT_HERC )
 

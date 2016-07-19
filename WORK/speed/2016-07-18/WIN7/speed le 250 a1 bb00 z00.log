@@ -1,0 +1,663 @@
+
+.\cmpsctst.rexx .\files\large\ebcdic\ .\dicts\ .\work\ -speed -r 250 -z 0:0 -bb 0:0 -a 1
+
+Starting CMPSC speed test; 3 files and 3 dictionaries selected.
+
+---------------------------------------------------------------------------------------------------
+Begin: 2016/07/19  03:59:54
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\SMP-E_0C4\SMPE-0C4.bin
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-2\FishTest\DICT.12C
+-x .\dicts\FMT-1\CDSS-2\FishTest\DICT.12E
+-a 1
+-w 8
+-s 2
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+     16384 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3663840 bytes in
+   2413937 bytes out
+    65.89% ratio
+    743750 MADDRs
+
+Ready(0); T=15.77/15.77 04:00:09 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-2\FishTest\DICT.12C
+-x .\dicts\FMT-1\CDSS-2\FishTest\DICT.12E
+-a 1
+-w 8
+-s 2
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+     16384 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   2413937 bytes in
+   3663840 bytes out
+    65.89% ratio
+    742750 MADDRs
+
+Ready(0); T=5.96/5.99 04:00:15 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\SMP-E_0C4\SMPE-0C4.bin
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3663840 bytes in
+   3100907 bytes out
+    84.64% ratio
+    828750 MADDRs
+
+Ready(0); T=17.02/17.02 04:00:33 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3100907 bytes in
+   3663840 bytes out
+    84.64% ratio
+    827250 MADDRs
+
+Ready(0); T=6.16/6.19 04:00:39 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\SMP-E_0C4\SMPE-0C4.bin
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C
+-x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3663840 bytes in
+   1243281 bytes out
+    33.93% ratio
+    614000 MADDRs
+
+Ready(0); T=32.17/32.18 04:01:11 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C
+-x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   1243281 bytes in
+   3663840 bytes out
+    33.93% ratio
+    607000 MADDRs
+
+Ready(0); T=4.13/4.18 04:01:15 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\SUPA\SUPA-EBCDIC.txt
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-2\FishTest\DICT.12C
+-x .\dicts\FMT-1\CDSS-2\FishTest\DICT.12E
+-a 1
+-w 8
+-s 2
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+     16384 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3973960 bytes in
+   2373583 bytes out
+    59.73% ratio
+    776750 MADDRs
+
+Ready(0); T=24.85/24.85 04:01:40 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-2\FishTest\DICT.12C
+-x .\dicts\FMT-1\CDSS-2\FishTest\DICT.12E
+-a 1
+-w 8
+-s 2
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+     16384 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   2373583 bytes in
+   3973960 bytes out
+    59.73% ratio
+    775750 MADDRs
+
+Ready(0); T=7.49/7.52 04:01:48 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\SUPA\SUPA-EBCDIC.txt
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3973960 bytes in
+   2926658 bytes out
+    73.65% ratio
+    845500 MADDRs
+
+Ready(0); T=27.36/27.36 04:02:15 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   2926658 bytes in
+   3973960 bytes out
+    73.65% ratio
+    844000 MADDRs
+
+Ready(0); T=7.71/7.74 04:02:23 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\SUPA\SUPA-EBCDIC.txt
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C
+-x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3973960 bytes in
+   2354887 bytes out
+    59.26% ratio
+    782750 MADDRs
+
+Ready(0); T=37.33/37.36 04:03:00 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C
+-x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   2354887 bytes in
+   3973960 bytes out
+    59.26% ratio
+    777750 MADDRs
+
+Ready(0); T=6.75/6.77 04:03:07 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\TSTCMPSC\LARGE-TSTCMPSC-EBCDIC.txt
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-2\FishTest\DICT.12C
+-x .\dicts\FMT-1\CDSS-2\FishTest\DICT.12E
+-a 1
+-w 8
+-s 2
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+     16384 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3967488 bytes in
+    911040 bytes out
+    22.96% ratio
+    597500 MADDRs
+
+Ready(0); T=23.81/23.82 04:03:31 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-2\FishTest\DICT.12C
+-x .\dicts\FMT-1\CDSS-2\FishTest\DICT.12E
+-a 1
+-w 8
+-s 2
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+     16384 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+    911040 bytes in
+   3967488 bytes out
+    22.96% ratio
+    596500 MADDRs
+
+Ready(0); T=4.41/4.45 04:03:35 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\TSTCMPSC\LARGE-TSTCMPSC-EBCDIC.txt
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3967488 bytes in
+   1114464 bytes out
+    28.09% ratio
+    623500 MADDRs
+
+Ready(0); T=24.23/24.24 04:04:00 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C
+-x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   1114464 bytes in
+   3967488 bytes out
+    28.09% ratio
+    622000 MADDRs
+
+Ready(0); T=4.12/4.15 04:04:04 07/19/16
+
+---------------------------------------------------------------------------------------------------
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-c
+-i 0:0:.\files\large\ebcdic\TSTCMPSC\LARGE-TSTCMPSC-EBCDIC.txt
+-o 0:0:.\work\cmpout.bin
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C
+-x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   3967488 bytes in
+   2025088 bytes out
+    51.04% ratio
+    740250 MADDRs
+
+Ready(0); T=33.67/33.70 04:04:38 07/19/16
+
+
+CMPSC Instruction Testing Tool, 64-bit version 2.6.2.65-g4919a93-modified
+Copyright (C) 2012-2016, Software Development Laboratories
+
+cmpsctst.exe
+-v 
+-e
+-i 0:0:.\work\cmpout.bin
+-o 0:0:.\work\expout.txt
+-z 0:0
+-b 0:0
+-d .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15C
+-x .\dicts\FMT-1\CDSS-5\SMP-E_0C4\SMPE-0C4.15E
+-a 1
+-w 8
+-s 5
+-1
+-r 250
+
+Using algorithm "Legacy CMPSC".
+Increasing process and thread priority.
+
+  16777216 byte input  buffer (offset    0 bytes)
+  16777216 byte output buffer (offset    0 bytes)
+    131072 byte dictionary buffer
+        No Enable CMPSC-Enhancement Facility
+        No Request Zero Padding
+       250 repetitions
+   2025088 bytes in
+   3967488 bytes out
+    51.04% ratio
+    736500 MADDRs
+
+Ready(0); T=5.77/5.80 04:04:43 07/19/16
+
+---------------------------------------------------------------------------------------------------
+End: 2016/07/19  04:04:44
+---------------------------------------------------------------------------------------------------
+
+ 9 Compressions: 9 Pass, 0 Fail = 100.0% Success,   0.0% Failure
+
+ 9 Expansions:   9 Pass, 0 Fail = 100.0% Success,   0.0% Failure
+
+ 9 MD5 Compares: 9 Pass, 0 Fail = 100.0% Success,   0.0% Failure
+
+---------------------------------------------------------------------------------------------------
+
+ 9 TOTAL TESTS:  9 PASS, 0 FAIL = 100.0% SUCCESS,   0.0% FAILURE
+
+---------------------------------------------------------------------------------------------------
+Duration:  00:04:49.942  (4 minutes, 49.942 seconds)
+---------------------------------------------------------------------------------------------------

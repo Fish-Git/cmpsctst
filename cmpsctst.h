@@ -160,39 +160,14 @@ extern void ALT_ALGORITHM( REGS* regs );
 // Endian
 
 #ifdef _MSVC_
-
-  #if defined(_M_IX86) || defined(_M_X64)
-
-    #undef    WORDS_BIGENDIAN
-    #undef    OPTION_STRICT_ALIGNMENT
-
-  #elif defined(_M_MPPC) || defined(_M_PPC)
-
-    #define   WORDS_BIGENDIAN
-    #define   OPTION_STRICT_ALIGNMENT
-
-  #elif defined(_M_IA64) || defined(_M_MRX000)
-
-    #undef    WORDS_BIGENDIAN
-    #define   OPTION_STRICT_ALIGNMENT
-
-  #else
-    #error Unknown/unsupported host processor type
-  #endif
-
-//-----------------------------------------------------------------------------
+  // Microsoft Windows only supports Intel which is little endian
+  #undef    WORDS_BIGENDIAN
 #else // !_MSVC_
-
   #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-    #undef    WORDS_BIGENDIAN
+    #undef  WORDS_BIGENDIAN
   #else
-    #define   WORDS_BIGENDIAN
+    #define WORDS_BIGENDIAN
   #endif
-
-  #if !defined(__i386__) && !defined(__x86_64__)
-    #define OPTION_STRICT_ALIGNMENT
-  #endif
-
 #endif // _MSVC_
 
 ///////////////////////////////////////////////////////////////////////////////
