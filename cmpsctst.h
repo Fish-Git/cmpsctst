@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2014, Software Development Laboratories, "Fish" (David B. Trout)
+// Copyright (C) 2012-2018, Software Development Laboratories, "Fish" (David B. Trout)
 ///////////////////////////////////////////////////////////////////////////////
 // CMPSCTST.h  --  CMPSC Instruction Testing Tool
 ///////////////////////////////////////////////////////////////////////////////

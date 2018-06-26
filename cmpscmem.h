@@ -1,4 +1,4 @@
-/* CMPSCMEM.H   (c) Copyright "Fish" (David B. Trout), 2012-2014     */
+/* CMPSCMEM.H   (c) Copyright "Fish" (David B. Trout), 2012-2018     */
 /*              Compression Call Memory Access Functions             */
 /*                                                                   */
 /*   Released under "The Q Public License Version 1"                 */
