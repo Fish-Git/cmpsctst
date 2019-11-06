@@ -421,6 +421,10 @@
 			Name="Resource Files"
 			>
 			<File
+				RelativePath=".\.gitattributes"
+				>
+			</File>
+			<File
 				RelativePath=".\CMPSCTST.rc"
 				>
 			</File>
