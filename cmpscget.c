@@ -1,4 +1,4 @@
-/* CMPSCGET.C   (c) Copyright "Fish" (David B. Trout), 2012-2014     */
+/* CMPSCGET.C   (C) Copyright "Fish" (David B. Trout), 2012-2014     */
 /*              Compression Call Get Next Index Functions            */
 /*                                                                   */
 /*   Released under "The Q Public License Version 1"                 */
@@ -7,13 +7,8 @@
 
 #include "hstdinc.h"    // (MUST be first #include in EVERY source file)
 
-#if !defined(_HENGINE_DLL_)
-#define _HENGINE_DLL_
-#endif
-
-#if !defined(_CMPSCGET_C_)
 #define _CMPSCGET_C_
-#endif
+#define _HENGINE_DLL_
 
 #if !defined( NOT_HERC )        // (building Hercules?)
 #include "hercules.h"
@@ -22,7 +17,7 @@
 #endif
 #include "cmpsc.h"              // (Master header)
 
-#ifdef FEATURE_COMPRESSION
+#ifdef FEATURE_CMPSC
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXPANSION: Get Next input SRC Index.
@@ -595,16 +590,16 @@ GetIndex** ARCH_DEP( Get8IndexCDSSTab )[5] = { ARCH_DEP( Get8IndexTab09 ),
                                                ARCH_DEP( Get8IndexTab13 ) };
 
 ///////////////////////////////////////////////////////////////////////////////
-#endif /* FEATURE_COMPRESSION */
+#endif /* FEATURE_CMPSC */
 
 #ifndef _GEN_ARCH
-  #ifdef _ARCHMODE2
-    #define _GEN_ARCH _ARCHMODE2
+  #ifdef _ARCH_NUM_1
+    #define _GEN_ARCH _ARCH_NUM_1
     #include "cmpscget.c"
-  #endif /* #ifdef _ARCHMODE2 */
-  #ifdef _ARCHMODE3
+  #endif /* #ifdef _ARCH_NUM_1 */
+  #ifdef _ARCH_NUM_2
     #undef _GEN_ARCH
-    #define _GEN_ARCH _ARCHMODE3
+    #define _GEN_ARCH _ARCH_NUM_2
     #include "cmpscget.c"
-  #endif /* #ifdef _ARCHMODE3 */
+  #endif /* #ifdef _ARCH_NUM_2 */
 #endif /* #ifndef _GEN_ARCH */

@@ -1,4 +1,4 @@
-/* CMPSCMEM.C   (c) Copyright "Fish" (David B. Trout), 2012-2014     */
+/* CMPSCMEM.C   (C) Copyright "Fish" (David B. Trout), 2012-2014     */
 /*              Compression Call Memory Access Functions             */
 /*                                                                   */
 /*   Released under "The Q Public License Version 1"                 */
@@ -7,13 +7,8 @@
 
 #include "hstdinc.h"    // (MUST be first #include in EVERY source file)
 
-#if !defined(_HENGINE_DLL_)
-#define _HENGINE_DLL_
-#endif
-
-#if !defined(_CMPSCMEM_C_)
 #define _CMPSCMEM_C_
-#endif
+#define _HENGINE_DLL_
 
 #if !defined( NOT_HERC )        // (building Hercules?)
 #include "hercules.h"
@@ -22,7 +17,7 @@
 #endif
 #include "cmpsc.h"              // (Master header)
 
-#ifdef FEATURE_COMPRESSION
+#ifdef FEATURE_CMPSC
 /*-------------------------------------------------------------------*/
 /* Fetch a one byte value from operand virtual storage               */
 /*-------------------------------------------------------------------*/
@@ -713,10 +708,10 @@ void (CMPSC_FASTCALL ARCH_DEP( cmpsc_SetCMPSC ))( CMPSCBLK* pCMPSCBLK, REGS* reg
     pCMPSCBLK->f1       = (GR0 >>  9) & 0x01;
     pCMPSCBLK->cdss     = (GR0 >> 12) & 0x0F;
     pCMPSCBLK->st       = (GR0 >> 16) & 0x01;
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
-    if (FACILITY_ENABLED( CMPSC_ENH, regs ))
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
+    if (FACILITY_ENABLED( 047_CMPSC_ENH, regs ))
     pCMPSCBLK->zp       = (GR0 >> 17) & 0x01; else
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif
     pCMPSCBLK->zp       = FALSE;
 
     pCMPSCBLK->cbn      = (GR1 &  0x007);
@@ -731,16 +726,16 @@ void (CMPSC_FASTCALL ARCH_DEP( cmpsc_SetCMPSC ))( CMPSCBLK* pCMPSCBLK, REGS* reg
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-#endif /* FEATURE_COMPRESSION */
+#endif /* FEATURE_CMPSC */
 
 #ifndef _GEN_ARCH
-  #ifdef _ARCHMODE2
-    #define _GEN_ARCH _ARCHMODE2
+  #ifdef _ARCH_NUM_1
+    #define _GEN_ARCH _ARCH_NUM_1
     #include "cmpscmem.c"
-  #endif /* #ifdef _ARCHMODE2 */
-  #ifdef _ARCHMODE3
+  #endif /* #ifdef _ARCH_NUM_1 */
+  #ifdef _ARCH_NUM_2
     #undef _GEN_ARCH
-    #define _GEN_ARCH _ARCHMODE3
+    #define _GEN_ARCH _ARCH_NUM_2
     #include "cmpscmem.c"
-  #endif /* #ifdef _ARCHMODE3 */
+  #endif /* #ifdef _ARCH_NUM_2 */
 #endif /* #ifndef _GEN_ARCH */

@@ -1,4 +1,4 @@
-/* CMPSCDBG.C   (c) Copyright "Fish" (David B. Trout), 2012-2014     */
+/* CMPSCDBG.C   (C) Copyright "Fish" (David B. Trout), 2012-2014     */
 /*              Compression Call Debugging Functions                 */
 /*                                                                   */
 /*   Released under "The Q Public License Version 1"                 */
@@ -7,13 +7,8 @@
 
 #include "hstdinc.h"    // (MUST be first #include in EVERY source file)
 
-#if !defined(_HENGINE_DLL_)
-#define _HENGINE_DLL_
-#endif
-
-#if !defined(_CMPSCDBG_C_)
 #define _CMPSCDBG_C_
-#endif
+#define _HENGINE_DLL_
 
 #if !defined( NOT_HERC )        // (building Hercules?)
 #include "hercules.h"
@@ -22,7 +17,7 @@
 #endif
 #include "cmpsc.h"              // (Master header)
 
-#ifdef FEATURE_COMPRESSION
+#ifdef FEATURE_CMPSC
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -143,16 +138,16 @@ int (CMPSC_FASTCALL ARCH_DEP( cmpsc_Report ))( void* dbg )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-#endif /* FEATURE_COMPRESSION */
+#endif /* FEATURE_CMPSC */
 
 #ifndef _GEN_ARCH
-  #ifdef _ARCHMODE2
-    #define _GEN_ARCH _ARCHMODE2
+  #ifdef _ARCH_NUM_1
+    #define _GEN_ARCH _ARCH_NUM_1
     #include "cmpscdbg.c"
-  #endif /* #ifdef _ARCHMODE2 */
-  #ifdef _ARCHMODE3
+  #endif /* #ifdef _ARCH_NUM_1 */
+  #ifdef _ARCH_NUM_2
     #undef _GEN_ARCH
-    #define _GEN_ARCH _ARCHMODE3
+    #define _GEN_ARCH _ARCH_NUM_2
     #include "cmpscdbg.c"
-  #endif /* #ifdef _ARCHMODE3 */
+  #endif /* #ifdef _ARCH_NUM_2 */
 #endif /* #ifndef _GEN_ARCH */

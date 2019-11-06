@@ -10,19 +10,40 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef _HSTDINC_H          // MUST BE SAME AS Hercules's "hstdinc.h" switch!!
-#define _HSTDINC_H          // MUST BE SAME AS Hercules's "hstdinc.h" switch!!
+/*-------------------------------------------------------------------*/
+/* This file contains #include statements for all of the header      */
+/* files which are not dependent on the mainframe architectural      */
+/* features selected and thus are eligible for precompilation        */
+/*-------------------------------------------------------------------*/
 
-#define NOT_HERC            // This is the utility, not Hercules
+#ifndef _HSTDINC_H
+#define _HSTDINC_H
+
+#define SDL_HYPERION            /* Distinguish ourselves from others */
+#define NOT_HERC                /* This is the utility, not Hercules */
+
+#ifdef HAVE_CONFIG_H
+  #ifndef    _CONFIG_H
+  #define    _CONFIG_H
+    #include <config.h>         /* Hercules build configuration      */
+  #endif /*  _CONFIG_H*/
+#endif
+  #include "hqainc.h"           /* User build settings overrides     */
+#ifdef WIN32
+  #include "vsvers.h"           /* Visual Studio compiler constants  */
+  #include "targetver.h"        /* Minimum Windows platform          */
+#endif
+
+/*-------------------------------------------------------------------*/
+/* Required system headers...           (these we must ALWAYS have)  */
+/*-------------------------------------------------------------------*/
+
+#include "ccnowarn.h"           /* suppress compiler warning support */
 
 #ifdef _MSVC_
 ///////////////////////////////////////////////////////////////////////////////
 // Windows system headers...
 
-#define VC_EXTRALEAN                // (exclude rarely-used stuff)
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT    0x0600      // (Vista or greater target platform)
-#endif
 #define _CRT_SECURE_NO_WARNINGS     // (I know what I'm doing thankyouverymuch)
 
 #include <Windows.h>        // (Master include file for Windows applications)

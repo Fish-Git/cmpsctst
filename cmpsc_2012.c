@@ -1,4 +1,4 @@
-/* CMPSC_2012.C (c) Copyright "Fish" (David B. Trout), 2012-2014     */
+/* CMPSC_2012.C (C) Copyright "Fish" (David B. Trout), 2012-2014     */
 /*              (c) Bernard van der Helm, 2000-2012                  */
 /*              S/390 Compression Call Instruction Functions         */
 /*                                                                   */
@@ -42,13 +42,10 @@
 
 #include "hstdinc.h"    // (MUST be first #include in EVERY source file)
 
-#ifdef UNUSED_FUNCTION_WARNING
-#pragma GCC diagnostic ignored "-Wunused-function"
-#endif
+DISABLE_GCC_UNUSED_FUNCTION_WARNING;
 
-#if !defined(_HENGINE_DLL_)
+#define _CMPSC_C_
 #define _HENGINE_DLL_
-#endif
 
 #if !defined( NOT_HERC )                          // (building Hercules?)
 #include "hercules.h"
@@ -57,7 +54,7 @@
 #endif
 #include "cmpsc.h"                                // (Master header for both)
 
-#ifdef FEATURE_COMPRESSION
+#ifdef FEATURE_CMPSC
 ///////////////////////////////////////////////////////////////////////////////
 // Symbols Cache Control Entry
 
@@ -102,25 +99,25 @@ typedef struct EXPBLK EXPBLK;
 ///////////////////////////////////////////////////////////////////////////////
 // ZeroPadOp1 only if facility was enabled for this build architecture...
 
-#if defined( FEATURE_CMPSC_ENHANCEMENT_FACILITY )
+#if defined( FEATURE_047_CMPSC_ENH_FACILITY )
 
   #undef  ZERO_PAD_OP1
   #define ZERO_PAD_OP1( pCMPSCBLK, pOp1MemBlk )   \
     if (pCMPSCBLK->zp)  /* (do zero padding?) */  \
         ARCH_DEP( ZeroPadOp1 )( pCMPSCBLK, pOp1MemBlk );
 
-#else // !defined( FEATURE_CMPSC_ENHANCEMENT_FACILITY )
+#else // !defined( FEATURE_047_CMPSC_ENH_FACILITY )
 
   #undef  ZERO_PAD_OP1
   #define ZERO_PAD_OP1( pCMPSCBLK, pOp1MemBlk )   \
         UNREFERENCED( pOp1MemBlk );
 
-#endif // defined( FEATURE_CMPSC_ENHANCEMENT_FACILITY )
+#endif // defined( FEATURE_047_CMPSC_ENH_FACILITY )
 
 ///////////////////////////////////////////////////////////////////////////////
 // Zero-padding
 
-#if defined( FEATURE_CMPSC_ENHANCEMENT_FACILITY )
+#if defined( FEATURE_047_CMPSC_ENH_FACILITY )
 
 static CMPSC_INLINE void (CMPSC_FASTCALL ARCH_DEP( ZeroPadOp1 ))( CMPSCBLK* pCMPSCBLK, MEMBLK* pOp1MemBlk )
 {
@@ -151,7 +148,7 @@ static CMPSC_INLINE void (CMPSC_FASTCALL ARCH_DEP( ZeroPadOp1 ))( CMPSCBLK* pCMP
         }
     }
 }
-#endif // defined( FEATURE_CMPSC_ENHANCEMENT_FACILITY )
+#endif // defined( FEATURE_047_CMPSC_ENH_FACILITY )
 
 ///////////////////////////////////////////////////////////////////////////////
 // Separate return functions for easier debugging... (it's much easier to
@@ -164,6 +161,9 @@ static CMPSC_INLINE void (CMPSC_FASTCALL ARCH_DEP( ZeroPadOp1 ))( CMPSCBLK* pCMP
 
 #ifndef CMPSC_RETFUNCS              // (one time if Utility, each time if Herc)
 #define CMPSC_RETFUNCS              // (one time if Utility, each time if Herc)
+
+PUSH_GCC_WARNINGS()
+DISABLE_GCC_UNUSED_FUNCTION_WARNING;
 
 static CMPSC_INLINE U8 (CMPSC_FASTCALL ARCH_DEP( ERR ))( CMPSCBLK* pCMPSCBLK, MEMBLK* pOp1MemBlk )
 {
@@ -216,6 +216,8 @@ static CMPSC_INLINE U8 (CMPSC_FASTCALL ARCH_DEP( EXPCC0 ))( CMPSCBLK* pCMPSCBLK,
 {
     pEXPBLK->rc = ARCH_DEP( CC0 )( pCMPSCBLK, &pEXPBLK->op1blk ); return FALSE; // (break)
 }
+
+POP_GCC_WARNINGS()
 
 //-----------------------------------------------------------------------------
 // (define simpler macros to make calling the return functions much easier)
@@ -1254,17 +1256,17 @@ static const U32 g_nDictSize[ MAX_CDSS ] =
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* FEATURE_COMPRESSION */
+#endif /* FEATURE_CMPSC */
 
 #ifndef _GEN_ARCH
-  #ifdef _ARCHMODE2
-    #define _GEN_ARCH _ARCHMODE2
+  #ifdef _ARCH_NUM_1
+    #define _GEN_ARCH _ARCH_NUM_1
     #include "cmpsc_2012.c"
-  #endif /* #ifdef _ARCHMODE2 */
-  #ifdef _ARCHMODE3
+  #endif /* #ifdef _ARCH_NUM_1 */
+  #ifdef _ARCH_NUM_2
     #undef _GEN_ARCH
-    #define _GEN_ARCH _ARCHMODE3
+    #define _GEN_ARCH _ARCH_NUM_2
     #include "cmpsc_2012.c"
-  #endif /* #ifdef _ARCHMODE3 */
+  #endif /* #ifdef _ARCH_NUM_2 */
 
 #endif /* #ifndef _GEN_ARCH */

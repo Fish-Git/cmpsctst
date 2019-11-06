@@ -61,11 +61,11 @@ Options:\n\
   -0  Format-0 (default)\n\
   -1  Format-1\n\
   -s  Symbol Size  (1-5 or 9-13; default = %d)\n"
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 "\n\
   -z  Zero Padding (enabled:requested; see NOTES)\n\
   -w  Zero Padding Alignment (default = %d bit)\n"
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 "\n\
   -t  Translate (ASCII <-> EBCDIC as needed)\n\
   -b  Test proper cmp:exp out:input buffer CBN bit handling\n\
@@ -107,7 +107,7 @@ NOTES:\n\
   page aligned. To the contrary it will most likely *not* be aligned.\n\
   If you want your buffers to always be page aligned then you need to\n\
   specify 0 for the offset. Dictionaries will always be page aligned.\n"
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 "\n\
   The '-z' (Zero Padding) option controls CMPSC-Enhancement Facility.\n\
   Specify the option as two 0/1 values separated by a single colon.\n\
@@ -123,7 +123,7 @@ NOTES:\n\
   The '-w' (Zero Padding Alignment) option allows adjusting the model-\n\
   dependent integral storage boundary for zero padding. The value is\n\
   specified as a power of 2 number of bytes ranging from %d to %d.\n"
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 "\n\
   Use the '-t' (Translate) option when testing using ASCII test files\n\
   since most dictionaries are intended for EBCDIC data. If specified,\n\
@@ -176,18 +176,18 @@ NOTES:\n\
 \n" // (end of string)
 
     , DEF_CDSS
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
     , DEF_CMPSC_ZP_BITS
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
     , PRODUCT_NAME
     , PRODUCT_NAME
     , PRODUCT_NAME
     , DEF_BUFFSIZE / (1024*1024)
     , MAX_OFFSET
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
     , MIN_CMPSC_ZP_BITS
     , MAX_CMPSC_ZP_BITS
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
     , algorithm_names[0]
     , algorithm_names[1]
     );
@@ -842,7 +842,7 @@ static void EtoA( U8* p, U32 n ) // ASCII <-- EBCDIC
 
 static void CheckZeroPadding()
 {
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 
     static BYTE bDidPIC = FALSE;        // (only throw PIC once)
 
@@ -961,7 +961,7 @@ ZeroPaddingError:
     FPRINTF( fRptFile, "ERROR: Improper output buffer zero padding.\n" );
     UTIL_PROGRAM_INTERRUPT( PGM_ZEROPAD_ERR );
 
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1136,7 +1136,7 @@ void ParseArgs( int argc, char* argv[] )
 
     // Available option chars:       fgh jklmn p    u   y   23456789
 
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
   #define  CMPSC_ENHANCEMENT_OPTIONS    "z:w:"
 #else
   #define  CMPSC_ENHANCEMENT_OPTIONS    ""
@@ -1417,7 +1417,7 @@ void ParseArgs( int argc, char* argv[] )
             }
             break;
 
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
             case 'z': // (zeropad option)
             {
                 if (!pszOptArg)
@@ -1468,7 +1468,7 @@ void ParseArgs( int argc, char* argv[] )
                     sysblk.zpbits = zeropad_bits;
             }
             break;
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 
             case '?': // (display help)
             {
@@ -2232,7 +2232,7 @@ int main( int argc, char* argv[] )
 
     //-------------------------------------------------------------------------
 
-#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
     if (bVerbose)
     {
         FPRINTF( fRptFile, "%10s Enable CMPSC-Enhancement Facility\n",
@@ -2243,7 +2243,7 @@ int main( int argc, char* argv[] )
         FPRINTF( fRptFile, "%10s Request Zero Padding\n",
             zeropad_wanted ? "Yes" : "No" );
     }
-#endif // defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+#endif // defined(_FEATURE_047_CMPSC_ENH_FACILITY)
 
     //-------------------------------------------------------------------------
     // Load dictionaries...

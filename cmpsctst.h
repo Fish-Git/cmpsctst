@@ -27,14 +27,14 @@ extern void ALT_ALGORITHM( REGS* regs );
 
 #define NUM_ALGORITHMS          2       // (only supported value right now)
 
-#define  FEATURE_COMPRESSION
-#define  FEATURE_CMPSC_ENHANCEMENT_FACILITY
+#define  FEATURE_CMPSC
+#define  FEATURE_047_CMPSC_ENH_FACILITY
 
-#if defined(FEATURE_COMPRESSION)
+#if defined(FEATURE_CMPSC)
  #define   _FEATURE_COMPRESSION
 #endif
-#if defined(FEATURE_CMPSC_ENHANCEMENT_FACILITY)
- #define   _FEATURE_CMPSC_ENHANCEMENT_FACILITY
+#if defined(FEATURE_047_CMPSC_ENH_FACILITY)
+ #define   _FEATURE_047_CMPSC_ENH_FACILITY
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -464,7 +464,7 @@ extern void ALT_ALGORITHM( REGS* regs );
 
 struct SYSBLK           // System configuration block
 {
-//#if defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY)
+//#if defined(_FEATURE_047_CMPSC_ENH_FACILITY)
         BYTE    zpbits;                 /* Zeropad alignment bits    */
 #define MIN_CMPSC_ZP_BITS   1           /* align to half word bndry  */
 #define DEF_CMPSC_ZP_BITS   8           /* align to  256 byte bndry  */
@@ -472,7 +472,7 @@ struct SYSBLK           // System configuration block
 #define CMPSC_ZP_BITS       ((U8)sysblk.zpbits)
 #define CMPSC_ZP_BYTES      ((U16)1 << CMPSC_ZP_BITS)
 #define CMPSC_ZP_MASK       (((U64)-1) >> (64 - CMPSC_ZP_BITS))
-//#endif /* defined(_FEATURE_CMPSC_ENHANCEMENT_FACILITY) */
+//#endif /* defined(_FEATURE_047_CMPSC_ENH_FACILITY) */
 };
 typedef struct SYSBLK SYSBLK;
 

@@ -39,7 +39,7 @@
 #include "inline.h"
 #endif
 
-#ifdef FEATURE_COMPRESSION
+#ifdef FEATURE_CMPSC
 /*============================================================================*/
 /* Common                                                                     */
 /*============================================================================*/
@@ -1964,18 +1964,18 @@ static int ARCH_DEP(cmpsc_vstore)(struct ec *ec, BYTE *buf, unsigned len)
 }
 
 #define NO_2ND_COMPILE
-#endif /* FEATURE_COMPRESSION */
+#endif /* FEATURE_CMPSC */
 
 #ifndef _GEN_ARCH
-  #ifdef _ARCHMODE2
-    #define _GEN_ARCH _ARCHMODE2
+  #ifdef _ARCH_NUM_1
+    #define _GEN_ARCH _ARCH_NUM_1
     #include "cmpsc.c"
-  #endif /* #ifdef _ARCHMODE2 */
-  #ifdef _ARCHMODE3
+  #endif /* #ifdef _ARCH_NUM_1 */
+  #ifdef _ARCH_NUM_2
     #undef _GEN_ARCH
-    #define _GEN_ARCH _ARCHMODE3
+    #define _GEN_ARCH _ARCH_NUM_2
     #include "cmpsc.c"
-  #endif /* #ifdef _ARCHMODE3 */
+  #endif /* #ifdef _ARCH_NUM_2 */
 
 
 #if !defined( NOT_HERC )        // (building Hercules?)
