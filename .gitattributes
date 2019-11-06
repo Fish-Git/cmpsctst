@@ -1,0 +1,65 @@
+#******************************************************************************
+#
+#   .gitattributes - Set default attributes for files controlled by Git.
+#
+#******************************************************************************
+#
+#   Note:  The handling of files here is to handle cases of files which
+#          may be part of a Git repository.  File ignore specifications
+#          in .gitignore may render part or all of these definitions mute.
+#
+#******************************************************************************
+
+
+#---------------------------------------------------------------
+# All dictionary files, input files and work files are BINARY!
+# (i.e. absolutely NO CR/LF line-ending conversion whatsoever!)
+#---------------------------------------------------------------
+
+DICTS/*                           binary
+DICTS/FMT-1/*                     binary
+DICTS/FMT-1/CDSS-2/*              binary
+DICTS/FMT-1/CDSS-5/*              binary
+DICTS/FMT-1/CDSS-2/FishTest/*     binary
+DICTS/FMT-1/CDSS-5/FishTest/*     binary
+DICTS/FMT-1/CDSS-5/SMP-E_0C4/*    binary
+
+#------------------------------------------
+
+FILES/*                           binary
+FILES/LARGE/*                     binary
+FILES/SMALL/*                     binary
+FILES/LARGE/ASCII/*               binary
+FILES/LARGE/EBCDIC/*              binary
+FILES/LARGE/ASCII/SUPA/*          binary
+FILES/LARGE/ASCII/TSTCMPSC/*      binary
+FILES/LARGE/EBCDIC/SUPA/*         binary
+FILES/LARGE/EBCDIC/TSTCMPSC/*     binary
+FILES/LARGE/EBCDIC/SMP-E_0C4/*    binary
+FILES/SMALL/ASCII/*               binary
+FILES/SMALL/EBCDIC/*              binary
+FILES/SMALL/ASCII/TSTCMPSC/*      binary
+FILES/SMALL/EBCDIC/TSTCMPSC/*     binary
+FILES/SMALL/EBCDIC/SMP-E_0C4/*    binary
+
+#------------------------------------------
+
+WORK/*                            binary
+WORK/cmp2base/*                   binary
+WORK/normal/*                     binary
+WORK/speed/*                      binary
+WORK/speed/2014-01-23/*           binary
+WORK/speed/2014-01-23/WIN7/*      binary
+WORK/speed/2014-01-23/AURORA/*    binary
+WORK/speed/2014-12-28/*           binary
+WORK/speed/2014-12-28/WIN7/*      binary
+WORK/speed/2016-07-18/*           binary
+WORK/speed/2016-07-18/WIN7/*      binary
+
+
+#---------------------------------------------------------------------
+# Default automatic CR/LF line-end handling for all OTHER file types.
+#---------------------------------------------------------------------
+
+*     text=auto
+
