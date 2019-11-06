@@ -11,55 +11,120 @@
 #******************************************************************************
 
 
-#---------------------------------------------------------------
-# All dictionary files, input files and work files are BINARY!
-# (i.e. absolutely NO CR/LF line-ending conversion whatsoever!)
-#---------------------------------------------------------------
+#---------------------------------------------------------------------
+#   All dictionary files, input files and work files are BINARY!
+#   (i.e. absolutely NO CR/LF line-ending conversion whatsoever!)
+#---------------------------------------------------------------------
+# directories...
 
-DICTS/*                           binary
-DICTS/FMT-1/*                     binary
-DICTS/FMT-1/CDSS-2/*              binary
-DICTS/FMT-1/CDSS-5/*              binary
-DICTS/FMT-1/CDSS-2/FishTest/*     binary
-DICTS/FMT-1/CDSS-5/FishTest/*     binary
-DICTS/FMT-1/CDSS-5/SMP-E_0C4/*    binary
+DICTS/*                                                         binary
+DICTS/FMT-1/*                                                   binary
+DICTS/FMT-1/CDSS-2/*                                            binary
+DICTS/FMT-1/CDSS-5/*                                            binary
+DICTS/FMT-1/CDSS-2/FishTest/*                                   binary
+DICTS/FMT-1/CDSS-5/FishTest/*                                   binary
+DICTS/FMT-1/CDSS-5/SMP-E_0C4/*                                  binary
 
-#------------------------------------------
+#---------------------------------------------------------------------
+# individual files...
 
-FILES/*                           binary
-FILES/LARGE/*                     binary
-FILES/SMALL/*                     binary
-FILES/LARGE/ASCII/*               binary
-FILES/LARGE/EBCDIC/*              binary
-FILES/LARGE/ASCII/SUPA/*          binary
-FILES/LARGE/ASCII/TSTCMPSC/*      binary
-FILES/LARGE/EBCDIC/SUPA/*         binary
-FILES/LARGE/EBCDIC/TSTCMPSC/*     binary
-FILES/LARGE/EBCDIC/SMP-E_0C4/*    binary
-FILES/SMALL/ASCII/*               binary
-FILES/SMALL/EBCDIC/*              binary
-FILES/SMALL/ASCII/TSTCMPSC/*      binary
-FILES/SMALL/EBCDIC/TSTCMPSC/*     binary
-FILES/SMALL/EBCDIC/SMP-E_0C4/*    binary
+DICTS/_README.txt
+DICTS/FMT-1/CDSS-2/FishTest/DICT.12C                            binary
+DICTS/FMT-1/CDSS-2/FishTest/DICT.12E                            binary
+DICTS/FMT-1/CDSS-5/FishTest/DICT.15C                            binary
+DICTS/FMT-1/CDSS-5/FishTest/DICT.15E                            binary
+DICTS/FMT-1/CDSS-5/SMP-E_0C4/SMPE-0C4.15C                       binary
+DICTS/FMT-1/CDSS-5/SMP-E_0C4/SMPE-0C4.15E                       binary
 
-#------------------------------------------
+#---------------------------------------------------------------------
+# directories...
 
-WORK/*                            binary
-WORK/cmp2base/*                   binary
-WORK/normal/*                     binary
-WORK/speed/*                      binary
-WORK/speed/2014-01-23/*           binary
-WORK/speed/2014-01-23/WIN7/*      binary
-WORK/speed/2014-01-23/AURORA/*    binary
-WORK/speed/2014-12-28/*           binary
-WORK/speed/2014-12-28/WIN7/*      binary
-WORK/speed/2016-07-18/*           binary
-WORK/speed/2016-07-18/WIN7/*      binary
+FILES/*                                                         binary
+FILES/LARGE/*                                                   binary
+FILES/SMALL/*                                                   binary
+FILES/LARGE/ASCII/*                                             binary
+FILES/LARGE/EBCDIC/*                                            binary
+FILES/LARGE/ASCII/SUPA/*                                        binary
+FILES/LARGE/ASCII/TSTCMPSC/*                                    binary
+FILES/LARGE/EBCDIC/SUPA/*                                       binary
+FILES/LARGE/EBCDIC/TSTCMPSC/*                                   binary
+FILES/LARGE/EBCDIC/SMP-E_0C4/*                                  binary
+FILES/SMALL/ASCII/*                                             binary
+FILES/SMALL/EBCDIC/*                                            binary
+FILES/SMALL/ASCII/TSTCMPSC/*                                    binary
+FILES/SMALL/EBCDIC/TSTCMPSC/*                                   binary
+FILES/SMALL/EBCDIC/SMP-E_0C4/*                                  binary
+
+#---------------------------------------------------------------------
+# individual files...
+
+FILES/_README.txt
+FILES/LARGE/ASCII/SUPA/SUPA-ASCII.txt                           binary
+FILES/LARGE/ASCII/TSTCMPSC/LARGE-TSTCMPSC-ASCII.txt             binary
+FILES/LARGE/EBCDIC/SMP-E_0C4/SMPE-0C4.bin                       binary
+FILES/LARGE/EBCDIC/SUPA/SUPA-EBCDIC.txt                         binary
+FILES/LARGE/EBCDIC/TSTCMPSC/LARGE-TSTCMPSC-EBCDIC.txt           binary
+FILES/SMALL/ASCII/TSTCMPSC/TSTCMPSC-ASCII.txt                   binary
+FILES/SMALL/EBCDIC/SMP-E_0C4/SMPE-0C4.bin                       binary
+FILES/SMALL/EBCDIC/TSTCMPSC/TSTCMPSC-EBCDIC.txt                 binary
+
+#---------------------------------------------------------------------
+# directories...
+
+WORK/*                                                          binary
+WORK/cmp2base/*                                                 binary
+WORK/normal/*                                                   binary
+WORK/speed/*                                                    binary
+WORK/speed/2014-01-23/*                                         binary
+WORK/speed/2014-01-23/WIN7/*                                    binary
+WORK/speed/2014-01-23/AURORA/*                                  binary
+WORK/speed/2014-12-28/*                                         binary
+WORK/speed/2014-12-28/WIN7/*                                    binary
+WORK/speed/2016-07-18/*                                         binary
+WORK/speed/2016-07-18/WIN7/*                                    binary
+
+#---------------------------------------------------------------------
+# individual files...
+
+WORK/cmp2base/c-cmp2base.txt                                    binary
+WORK/cmp2base/cmpout.bin                                        binary
+WORK/cmp2base/e-cmp2base.txt                                    binary
+WORK/cmp2base/expout.txt                                        binary
+WORK/normal/cmpsctst-lar-a.log                                  binary
+WORK/normal/cmpsctst-lar-b00-a.log                              binary
+WORK/normal/cmpsctst-lar-b00.log                                binary
+WORK/normal/cmpsctst-lar.log                                    binary
+WORK/normal/cmpsctst-ler-a.log                                  binary
+WORK/normal/cmpsctst-ler-b00-a.log                              binary
+WORK/normal/cmpsctst-ler-b00.log                                binary
+WORK/normal/cmpsctst-ler.log                                    binary
+WORK/normal/cmpsctst-sar-a.log                                  binary
+WORK/normal/cmpsctst-sar-b00-a.log                              binary
+WORK/normal/cmpsctst-sar-b00.log                                binary
+WORK/normal/cmpsctst-sar.log                                    binary
+WORK/normal/cmpsctst-ser-a.log                                  binary
+WORK/normal/cmpsctst-ser-b00-a.log                              binary
+WORK/normal/cmpsctst-ser-b00.log                                binary
+WORK/normal/cmpsctst-ser.log                                    binary
+WORK/normal/_errors.log                                         binary
+WORK/speed/2014-01-23/Speed.txt                                 binary
+WORK/speed/2014-01-23/AURORA/speedtst le 500 a0 bb00 z00.txt    binary
+WORK/speed/2014-01-23/AURORA/speedtst le 500 a1 bb00 z00.txt    binary
+WORK/speed/2014-01-23/WIN7/speed le 250 a0 bb00 z00.txt         binary
+WORK/speed/2014-01-23/WIN7/speed le 250 a1 bb00 z00.txt         binary
+WORK/speed/2014-12-28/Speed.txt                                 binary
+WORK/speed/2014-12-28/WIN7/speed le 250 a0 bb00 z00.log         binary
+WORK/speed/2014-12-28/WIN7/speed le 250 a1 bb00 z00.log         binary
+WORK/speed/2016-07-18/Speed.txt                                 binary
+WORK/speed/2016-07-18/WIN7/speed le 250 a0 bb00 z00.log         binary
+WORK/speed/2016-07-18/WIN7/speed le 250 a1 bb00 z00.log         binary
 
 
 #---------------------------------------------------------------------
 # Default automatic CR/LF line-end handling for all OTHER file types.
+# (i.e. all source files, script files, resource files, etc...)
 #---------------------------------------------------------------------
 
 *     text=auto
 
+#---------------------------------------------------------------------
