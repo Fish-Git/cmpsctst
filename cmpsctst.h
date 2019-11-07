@@ -443,7 +443,7 @@ extern void ALT_ALGORITHM( REGS* regs );
 // The only facility we support is the CMPSC-Enhancement Facility.
 // All other facility checks will return false.
 #define FACILITY_ENABLED( faci, regs )  \
-    (strcmp( "CMPSC_ENH", #faci ) == 0 && (regs)->zeropad)
+    (strcmp( "047_CMPSC_ENH", #faci ) == 0 && (regs)->zeropad)
 
 #define PGM_SPECIFICATION_EXCEPTION     6
 #define PGM_PROTECTION_EXCEPTION        4
