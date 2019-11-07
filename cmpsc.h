@@ -32,7 +32,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Dictionary sizes in bytes by CDSS
 
-static const U32 g_nDictSize[ MAX_CDSS ];   // (table of dict sizes in bytes)
+extern const U32 g_nDictSize[ MAX_CDSS ];   // (table of dict sizes in bytes)
 
 ///////////////////////////////////////////////////////////////////////////////
 // CMPSCBLK: Compression Call parameters block

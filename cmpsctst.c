@@ -217,15 +217,6 @@ U8*  g_pZeroPaddingBytes = NULL;    // Ptr to 0x00 array...
 ///////////////////////////////////////////////////////////////////////////////
 // Working storage...
 
-static const U32 g_nDictSize[5] =
-{                 //  ------------- Dictionary sizes by CDSS -------------
-      512 * 8,    //  cdss 1:   512  8-byte entries =    4K   (4096 bytes)
-     1024 * 8,    //  cdss 2:  1024  8-byte entries =    8K   (2048 bytes)
-     2048 * 8,    //  cdss 3:  2048  8-byte entries =   16K  (16384 bytes)
-     4096 * 8,    //  cdss 4:  4096  8-byte entries =   32K  (32768 bytes)
-     8192 * 8,    //  cdss 5:  8192  8-byte entries =   64K  (65536 bytes)
-};
-
 static       char* pszOptions   = NULL;
 static const char* pszInName    = NULL;
 static const char* pszOutName   = NULL;
