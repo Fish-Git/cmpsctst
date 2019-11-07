@@ -1,4 +1,4 @@
-/* CMPSC.H      (C) Copyright "Fish" (David B. Trout), 2012-2014     */
+/* CMPSC.H      (C) Copyright "Fish" (David B. Trout), 2012-2019     */
 /*              S/390 Compression Call Instruction Functions         */
 /*                                                                   */
 /*   Released under "The Q Public License Version 1"                 */

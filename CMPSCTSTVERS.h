@@ -12,11 +12,11 @@
 #define VERMAJOR_NUM     2          // MAJOR Release (program radically changed)
 #define VERMAJOR_STR    "2"
                        
-#define VERINTER_NUM     6          // Minor Enhancements (new features, etc)
-#define VERINTER_STR    "6" 
+#define VERINTER_NUM     7          // Minor Enhancements (new features, etc)
+#define VERINTER_STR    "7" 
                        
-#define VERMINOR_NUM     2          // Bug Fix or rebuild/relink, etc.
-#define VERMINOR_STR    "2"
+#define VERMINOR_NUM     0          // Bug Fix or rebuild/relink, etc.
+#define VERMINOR_STR    "0"
 
 #ifdef _DEBUG
 #define VERSION_STR     VERMAJOR_STR "." VERINTER_STR "." VERMINOR_STR "." GITHASH_STR "-D"
