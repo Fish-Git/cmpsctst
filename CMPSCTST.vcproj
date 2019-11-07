@@ -337,11 +337,27 @@
 			Name="CMPSC"
 			>
 			<File
-				RelativePath=".\cmpsctst_stdinc.h"
+				RelativePath=".\ccfixme.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ccnowarn.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hqainc.h"
 				>
 			</File>
 			<File
 				RelativePath=".\hstdinc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\vsvers.h"
 				>
 			</File>
 			<Filter
@@ -483,6 +499,10 @@
 		</File>
 		<File
 			RelativePath=".\cmpsctst.h"
+			>
+		</File>
+		<File
+			RelativePath=".\cmpsctst_stdinc.h"
 			>
 		</File>
 		<File

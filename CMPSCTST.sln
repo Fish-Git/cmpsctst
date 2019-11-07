@@ -19,6 +19,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{64D2910A-ECF2-4DE2-A15E-72D87497B850}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMPSC", "CMPSC", "{86B6DA9D-CECE-4569-AAEB-8DF51FFA9722}"
+	ProjectSection(SolutionItems) = preProject
+		ccfixme.h = ccfixme.h
+		ccnowarn.h = ccnowarn.h
+		hqainc.h = hqainc.h
+		hstdinc.h = hstdinc.h
+		targetver.h = targetver.h
+		vsvers.h = vsvers.h
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_2012", "_2012", "{DC3411E6-C6F0-4BB7-8D08-D8C6A18E012A}"
 EndProject

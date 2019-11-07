@@ -1,7 +1,11 @@
 -------------------------------------------------------------------------------
+(quick tests)
 
--c -a 1:0 -v -i 2228:3304:.\FILES\SMALL\EBCDIC\TSTCMPSC\TSTCMPSC-EBCDIC.txt -o 4353:1668:.\WORK\cmpout.bin -d .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15C -x .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15E -s 5 -1 -z 0:0 -w 8 -b 0:1  >  .\WORK\c-cmp2base.txt
--e -a 1:0 -v -i 2228:3304:.\WORK\cmpout.bin                                 -o 4353:1668:.\WORK\expout.txt -d .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15C -x .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15E -s 5 -1 -z 0:0 -w 8 -b 0:1  >  .\WORK\e-cmp2base.txt
+-c  -z 0:0  -b 0:0  -v -a 0 -w 8 -i .\FILES\SMALL\EBCDIC\SMP-E_0C4\SMPE-0C4.bin -o .\WORK\cmpout.bin -d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C -x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E -1 -s 5
+-e  -z 0:0  -b 0:0  -v -a 0 -w 8 -i .\WORK\cmpout.bin                           -o .\WORK\expout.txt -d .\dicts\FMT-1\CDSS-5\FishTest\DICT.15C -x .\dicts\FMT-1\CDSS-5\FishTest\DICT.15E -1 -s 5
+
+-c -a 1:0 -v -i 2228:3304:.\FILES\SMALL\EBCDIC\TSTCMPSC\TSTCMPSC-EBCDIC.txt -o 4353:1668:.\WORK\cmpout.bin -d .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15C -x .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15E -1 -s 5 -z 0:0 -w 8 -b 0:1  >  .\WORK\c-cmp2base.txt
+-e -a 1:0 -v -i 2228:3304:.\WORK\cmpout.bin                                 -o 4353:1668:.\WORK\expout.txt -d .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15C -x .\DICTS\FMT-1\CDSS-5\FishTest\DICT.15E -1 -s 5 -z 0:0 -w 8 -b 0:1  >  .\WORK\e-cmp2base.txt
 
 -------------------------------------------------------------------------------
 
