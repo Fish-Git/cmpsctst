@@ -24,6 +24,7 @@ DICTS/FMT-1/CDSS-5/*                                            binary
 DICTS/FMT-1/CDSS-2/FishTest/*                                   binary
 DICTS/FMT-1/CDSS-5/FishTest/*                                   binary
 DICTS/FMT-1/CDSS-5/SMP-E_0C4/*                                  binary
+DICTS/FMT-1/CDSS-5/BOB-TEST/*                                   binary
 
 #---------------------------------------------------------------------
 # individual files...
@@ -35,6 +36,8 @@ DICTS/FMT-1/CDSS-5/FishTest/DICT.15C                            binary
 DICTS/FMT-1/CDSS-5/FishTest/DICT.15E                            binary
 DICTS/FMT-1/CDSS-5/SMP-E_0C4/SMPE-0C4.15C                       binary
 DICTS/FMT-1/CDSS-5/SMP-E_0C4/SMPE-0C4.15E                       binary
+DICTS/FMT-1/CDSS-5/BOB-TEST/SMPE-BOB.15C                        binary
+DICTS/FMT-1/CDSS-5/BOB-TEST/SMPE-BOB.15E                        binary
 
 #---------------------------------------------------------------------
 # directories...
@@ -54,6 +57,7 @@ FILES/SMALL/EBCDIC/*                                            binary
 FILES/SMALL/ASCII/TSTCMPSC/*                                    binary
 FILES/SMALL/EBCDIC/TSTCMPSC/*                                   binary
 FILES/SMALL/EBCDIC/SMP-E_0C4/*                                  binary
+FILES/SMALL/EBCDIC/BOB-TEST/*                                   binary
 
 #---------------------------------------------------------------------
 # individual files...
@@ -67,6 +71,7 @@ FILES/LARGE/EBCDIC/TSTCMPSC/LARGE-TSTCMPSC-EBCDIC.txt           binary
 FILES/SMALL/ASCII/TSTCMPSC/TSTCMPSC-ASCII.txt                   binary
 FILES/SMALL/EBCDIC/SMP-E_0C4/SMPE-0C4.bin                       binary
 FILES/SMALL/EBCDIC/TSTCMPSC/TSTCMPSC-EBCDIC.txt                 binary
+FILES/SMALL/EBCDIC/BOB-TEST/BOB-TEST.bin                        binary
 
 #---------------------------------------------------------------------
 # directories...
