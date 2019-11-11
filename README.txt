@@ -48,9 +48,19 @@ can be quickly and easily tested. It's currently designed to test either
 Bernard's implementation ("legacy"), and/or my own ("cmpsc_2012").
 
 The program (executable) performs just a single test according to whatever
-parameters you provide. The rexx helper script simply makes it easier to
-call the executable multiple times, each time with a different set of test
-parameters, thereby ensuring thorough test coverage.
+parameters you provide.
+
+
+                             Helper-scripts
+
+
+The 'cmpsctst.rexx' helper script simply makes it easier to call the
+executable multiple times, each time with a different set of test parameters,
+thereby ensuring thorough test coverage.
+
+The various batch files (e.g. '_quick_me.cmd') simply makes it easier to call
+call the 'cmpsctst.rexx' script. For normal testing it is recommended to use
+the '_quick_me' script, or else execute a very specific cmpsctst.exe test.
 
 
 

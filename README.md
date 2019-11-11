@@ -54,9 +54,17 @@ can be quickly and easily tested. It's currently designed to test either
 Bernard's implementation ("legacy"), and/or my own ("cmpsc_2012").
 
 The program (executable) performs just a single test according to whatever
-parameters you provide. The **rexx** helper script simply makes it easier to
+parameters you provide.
+
+### _Helper-scripts:_
+
+_The **`cmpsctst.rexx`** helper script simply makes it easier to
 call the executable multiple times, each time with a different set of test
-parameters, thereby ensuring thorough test coverage.
+parameters, thereby ensuring thorough test coverage._
+
+_The various batch files (e.g. **`_quick_me.cmd`**) simply makes it easier to
+call the **`cmpsctst.rexx`** script. For normal testing it is recommended to
+use the **`_quick_me`** script, or else execute a very specific `cmpsctst.exe` test._
 
 
 
@@ -102,11 +110,11 @@ the percentage of tests each implementation PASSED or FAILED.
 Bash scripts exist with the same names as the previously mentioned Windows
 batch files. Tested on CentOS 6.4 VMware virtual machine.
 
-### Example:
+### _Example:_
 
-To perform a "quick" test of the default "cmpsc_2012" algorithm, execute the
+_To perform a "quick" test of the default "cmpsc_2012" algorithm, execute the
 **`_quick_me`** script. Note that even though test is called a "quick" test it
-will still run for several minutes. This is the quickest test there is.
+will still run for several minutes. This is the quickest test there is._
 
 
 
