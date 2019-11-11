@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DOC", "_DOC", "{6AE95C89-3
 		_TODO.txt = _TODO.txt
 		LICENSE.txt = LICENSE.txt
 		NOTES.txt = NOTES.txt
+		README.md = README.md
 		README.txt = README.txt
 	EndProjectSection
 EndProject

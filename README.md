@@ -1,9 +1,15 @@
--------------------------------------------------------------------------------
-                                CMPSCTST
--------------------------------------------------------------------------------
+# CMPSCTST &nbsp; -- &nbsp; CMPSC Instruction Testing Tool
+## Contents
 
+1. [Overview and History](#Overview-and-History)
+2. [Building](#Building)
+3. [Testing](#Testing)
+4. [Test files](#Test-files)
+5. [AutoBuildCount.h](#AutoBuildCount-h)
+6. [cmpsctst.rexx](#cmpsctst-rexx)
+7. [cmpsctst.exe](#cmpsctst-exe)
 
-                           Overview and History
+## Overview-and-History
 
 
 The z/Architecture "cmpsc" instruction was designed to compress and expand
@@ -39,7 +45,7 @@ the instruction which I could then use to unit test my new code "offline"
 by myself, outside of Hercules or a guest operating system itself. I.e. it
 was to thoroughly test the "cmpsc" instruction itself and nothing else.
 
-That is what CMPSCTST is: a program (and helper scripts) designed to test
+That is what **CMPSCTST** is: a program (and helper scripts) designed to test
 Hercules's "cmpsc" instruction implementation as thoroughly as possible
 for architectural compliance.
 
@@ -48,21 +54,21 @@ can be quickly and easily tested. It's currently designed to test either
 Bernard's implementation ("legacy"), and/or my own ("cmpsc_2012").
 
 The program (executable) performs just a single test according to whatever
-parameters you provide. The rexx helper script simply makes it easier to
+parameters you provide. The **rexx** helper script simply makes it easier to
 call the executable multiple times, each time with a different set of test
 parameters, thereby ensuring thorough test coverage.
 
 
 
-                                Building
-                                --------
-Windows:
+## Building
+
+### Windows:
 
   Manually create your own "AutoBuildCount.h" header file (see the section
   AutoBuildCount.h below) and then open the Visual Studio .SLN Solution file
   and click the "Rebuild Solution" button.
 
-Linux:
+### Linux:
 
   Manually create your own "AutoBuildCount.h" header file (see the section
   AutoBuildCount.h below) and enter the command "make -f cmpsctst.make all".
@@ -72,11 +78,11 @@ using gcc 4.4 within a CentOS 6.4 VMware virtual machine.
 
 
 
-                                Testing
-                                -------
-Windows:
+## Testing
 
-In addtion to the "cmpsctst.rexx" script and the "cmpsctst.exe" program,
+### Windows:
+
+In addtion to the `cmpsctst.rexx` script and the `cmpsctst.exe` program,
 there is also a set of simple Windows batch files that automates calling
 the cmpsctst.rexx script for a certain set of high level parameters (ones
 known to cause problems). They are designed to make it trivially easy to
@@ -91,26 +97,27 @@ The "errors" batch file parses the output of the given test(s) to produce
 a much simplified "condensed" test results summary file that just lists
 the percentage of tests each implementation PASSED or FAILED.
 
-Linux:
+### Linux:
 
 Bash scripts exist with the same names as the previously mentioned Windows
 batch files. Tested on CentOS 6.4 VMware virtual machine.
 
-Example:
+### Example:
 
 To perform a "quick" test of the default "cmpsc_2012" algorithm, execute the
-'_quick_me' script. Note that even though test is called a "quick" test it
+**`_quick_me`** script. Note that even though test is called a "quick" test it
 will still run for several minutes. This is the quickest test there is.
 
 
-                               TEST FILES
-                               ----------
+
+
+## Test-files
 
 Testing the compression call instruction is only as thorough as the data
 used to test it with and the parameters used. Thus the CMPSCTST package
 comes delivered with a set of test files known to have caused problems in
 the past. All test files are organized under the "FILES" directory to make
-it easier for the "cmpsctst.rexx" script to choose which set of test files
+it easier for the `cmpsctst.rexx` script to choose which set of test files
 you wish to use. (Testing with more files and more dictionaries translates
 directly into a more thorough test.)
 
@@ -119,12 +126,12 @@ that doing so will increase the run time for certain tests depending on which
 set of test files (directories) you tell the cmpsctst.rexx script to use.
 (More files == longer test run)
 
-For more information refer to the "cmpsctst.rexx" section further below.
+For more information refer to the **cmpsctst.rexx** section further below.
 
 
--------------------------------------------------------------------------------
-                             AutoBuildCount.h
--------------------------------------------------------------------------------
+
+
+## AutoBuildCount-h
 
   I have my Visual Studio installation setup so the "AutoBuildCount.h" header
   file is automatically updated by an external tool each time I do a rebuild.
@@ -133,13 +140,15 @@ For more information refer to the "cmpsctst.rexx" section further below.
   your own "AutoBuildCount.h" header. The header file should look like this:
 
 
+```C
       #ifndef AUTOBUILDCOUNT
       #define AUTOBUILDCOUNT
-      #define BUILDCOUNT_NUM  44
-      #define BUILDCOUNT_STR "44"
-      #define GITCTR_NUM      32
-      #define GITHASH_STR    "32-g42fdec1-modified"
+      #define BUILDCOUNT_NUM  49
+      #define BUILDCOUNT_STR "49"
+      #define GITCTR_NUM      79
+      #define GITHASH_STR    "79-gfcbebde"
       #endif
+```
 
 
   The two values "GITCTR_NUM" and "GITHASH_STR" are the number of commits
@@ -148,68 +157,71 @@ For more information refer to the "cmpsctst.rexx" section further below.
   the following git commands:
 
 
+```bash
       git log --pretty=format:'' | wc -l
       git rev-parse --verify HEAD
       git diff-index --quiet HEAD & echo %errorlevel%
+```
 
 
   (The BUILDCOUNT_NUM is simply an ever-increasing value I no longer use.)
 
 
--------------------------------------------------------------------------------
-                            cmpsctst.rexx
--------------------------------------------------------------------------------
 
-    NAME
+
+## cmpsctst-rexx
+<pre>
+
+    <b>NAME</b>
 
         cmpsctst  -  CMPSC Instruction Testing Tool helper script.
 
-    SYNOPSIS
+    <b>SYNOPSIS</b>
 
         cmpsctst.rexx    filesdir  dictsdir  [workdir]  [options]
 
-    DESCRIPTION
+    <b>DESCRIPTION</b>
 
         Uses the "CMPSCTST.EXE" Instruction Test Tool to verify
         the sanity of the given compression algorithm to within
         an acceptably high degree of confidence depending on the
         number and variety of files and dictionaries used.
 
-    ARGUMENTS
+    <b>ARGUMENTS</b>
 
-        filesdir   The name of the directory tree where the set of
+        <i>filesdir</i>   The name of the directory tree where the set of
                    test files reside. All of the test files in the
                    specified directory and all subdirectories will
                    be processed against all dictionaries found in
                    the dictsdir directory.
 
-        dictsdir   The name of the directory tree where the set of
+        <i>dictsdir</i>   The name of the directory tree where the set of
                    test dictionaries reside. All of the dictionaries
                    in the specified directory and all subdirectories
                    will be processed against all of the test files
                    found in the filesdir directory.
 
-        workdir    The name of a directory where temporary files
+        <i>workdir</i>    The name of a directory where temporary files
                    created during processing should be written. If
                    not specified the current directory is used. The
                    work files created during processing are called
                    "cmpout.bin", "expout.txt" and "md5sum.txt".
 
-    OPTIONS
+    <b>OPTIONS</b>
 
-        -a      Algorithm to be used               (see NOTES below)
-        -t      Translate ASCII/EBCDIC             (default = no)
-        -r      Number of random tests             (default = 4)
-        -r      Number of speed test repeats       (default = 4)
-        -n      No hard-coded test cases           (default = all)
-        -bn     Use only buffer sizes set 'n'      (default = all)
-        -on     Use only buffer offsets set 'n'    (default = all)
-        -speed  Speed test; -r = repeats           (see NOTES below)
-        -z      Zero Padding [enabled:requested]   (see NOTES below)
-        -w      Zero Padding Alignment             (default = 8 bit)
-        -bb     Test Buffer Bits option            (default = 1:1)
+        <b>-a</b>        Algorithm to be used              (see NOTES below)
+        <b>-t</b>        Translate ASCII/EBCDIC            (default = no)
+        <b>-r</b>        Number of random tests            (default = 4)
+        <b>-r</b>        Number of speed test repeats      (default = 4)
+        <b>-n</b>        No hard-coded test cases          (default = all)
+        <b>-bn</b>       Use only buffer sizes set 'n'     (default = all)
+        <b>-on</b>       Use only buffer offsets set 'n'   (default = all)
+        <b>-speed</b>    Speed test; -r = repeats          (see NOTES below)
+        <b>-z</b>        Zero Padding [enabled:requested]  (see NOTES below)
+        <b>-w</b>        Zero Padding Alignment            (default = 8 bit)
+        <b>-bb</b>       Test Buffer Bits option           (default = 1:1)
 
-    EXAMPLES
+    <b>EXAMPLES</b>
 
         cls && rexx cmpsctst.rexx .\FILES\              .\DICTS\ .\WORK\ -z                            > .\WORK\EONS-long-test.log
         cls && rexx cmpsctst.rexx .\FILES\SMALL\        .\DICTS\ .\WORK\ -r 0 -z -w 3                  > .\WORK\EONS-long-non-random-test.log
@@ -217,7 +229,7 @@ For more information refer to the "cmpsctst.rexx" section further below.
         cls && rexx cmpsctst.rexx .\FILES\LARGE\        .\DICTS\ .\WORK\ -speed -r 100                 > .\WORK\speed-test.log
         cls && rexx cmpsctst.rexx .\FILES\SMALL\EBCDIC\ .\DICTS\ .\WORK\ -a 1:0 -r 1 -n -z 0:0 -bb 0:1 > .\WORK\cmp2base.txt
 
-    NOTES
+    <b>NOTES</b>
 
         Unless a timing run (speed test) or algorithm comparison
         test (cmp2base) is being done, cmpsctst repeatedly calls
@@ -242,11 +254,11 @@ For more information refer to the "cmpsctst.rexx" section further below.
         are made against all files and dictionaries using all of
         of the previously mentioned buffer size and offset values.
 
-                             ** WARNING! **
+                             <b>** WARNING! **</b>
 
         cmpsctst.rexx produces a VERY large number of messages
         as it runs since the CMPSCTST.EXE tool is always called
-        with the '-v' verbose option specified.
+        with the '<b>-v</b>' verbose option specified.
 
         It is therefore HIGHLY RECOMMENDED you redirect its stdout
         output to a log file. Redirecting stderr to a log file is
@@ -256,39 +268,39 @@ For more information refer to the "cmpsctst.rexx" section further below.
         which dictionary it is using. It does NOT notify you when
         each new buffer size and offset value is used however.
 
-                               - Note -
+                               <b>- Note -</b>
 
         Because a default test using the many built-in (hard-coded)
         buffer size and offset values can cause cmpsctst to run for
-        a *VERY* long time since there are so many of them (33124
+        a <i><b>*VERY*</b></i> long time since there are so many of them (33124
         times #of test files, times #of test dictionaries = total
         number of tests, each of which does a full compression and
-        expansion) the -n (no-non-random) option allows you to skip
+        expansion) the <b>-n</b> (no-non-random) option allows you to skip
         these tests to allow cmpsctst to finish much more quickly.
 
-        You can also use the -bn and -on options to choose a smaller
+        You can also use the <b>-bn</b> and <b>-on</b> options to choose a smaller
         subset of buffer size and/or offset values too. There are 3
         buffer size sets with 3, 6 and 4 values in each of their
         respective sets, and 2 sets of offset values with 9 and 5
-        values in each of their respective sets. Specifying -b3 -o2
+        values in each of their respective sets. Specifying <b>-b3 -o2</b>
         for example, will cause 400 total tests to be performed for
         each file/dictionary pair. Thus for a set of 2 files and 3
         dictionaries, a grand total of 2400 tests will be performed.
 
-        The -r value defines either the number of random buffer size
+        The <b>-r</b> value defines either the number of random buffer size
         and offset tests to perform or else the number of repeats to
-        perform when the -speed option is specified.
+        perform when the <b>-speed</b> option is specified.
 
-        If the -speed option is not specified (default) the -r value
+        If the <b>-speed</b> option is not specified (default) the <b>-r</b> value
         defines the number of random generated buffer size and offset
         tests to perform for each file and dictionary pair. Specify 0
         to skip all randomly generated buffer size and offset tests
         and do only the built-in (non-random) tests instead.
 
-        When the -speed option is specified it forces all hard-coded
+        When the <b>-speed</b> option is specified it forces all hard-coded
         built-in and randomly generated buffer size and offset tests
-        to be skipped, thereby altering the meaning of the -r option.
-        When -speed is specified, the -r option instead defines the
+        to be skipped, thereby altering the meaning of the <b>-r</b> option.
+        When <b>-speed</b> is specified, the <b>-r</b> option instead defines the
         number of repeated compress and expand cycles to perform for
         each file, each of which always uses default buffer size and
         offset values. To perform a custom timing/speed test using
@@ -296,122 +308,123 @@ For more information refer to the "cmpsctst.rexx" section further below.
         CMPSCTST.EXE tool yourself (i.e. don't use cmpsctst.rexx).
 
         cmpsctst.rexx can also compare one algorithm against another
-        by specifying the '-a' option as 'a:b', where 'a' identifies
+        by specifying the '<b>-a</b>' option as '<b>a:b</b>', where '<b>a</b>' identifies
         the test algorithm (the one being tested) and 'b' identifies
         the base algorithm (to compare the test algorithm's results
         against). As each buffer is either compressed or expanded
         the results are compared against the base algorithm's using
         the same register and buffer values. If any differences are
-        found, the test immediately aborts (fails) and, if the '-v'
+        found, the test immediately aborts (fails) and, if the '<b>-v</b>'
         verbose option given, the differences and all information
         needed to reproduce the error is then displayed.
 
-        The '-z' (Zero Padding) option controls CMPSC-Enhancement
+        The '<b>-z</b>' (Zero Padding) option controls CMPSC-Enhancement
         Facility. Specify the option as two 0/1 values separated by
         a single colon. The first 0/1 defines whether the facility
         should be simulated as being enabled or not. The second 0/1
         controls whether the Zero Padding option (GR0 bit 46) should
         be set (requested) or not in the compression/expansion call.
-        If the -z option is not specified the default is 0:0. If the
-        option is specified but without any arguments then it's 1:1.
+        If the <b>-z</b> option is not specified the default is <b>0:0</b>. If the
+        option is specified but without any arguments then it's <b>1:1</b>.
 
-        The '-w' (Zero Padding Alignment) option controls adjustment
+        The '<b>-w</b>' (Zero Padding Alignment) option controls adjustment
         of the model-dependent storage boundary used by zero padding.
         The value should be specified as a power of 2 number of bytes
         ranging from 1 to 12 (i.e. zero pad to 2-4096 byte boundary).
 
-        The '-bb' (Test Buffer Bits) option indicates whether to check
+        The '<b>-bb</b>' (Test Buffer Bits) option indicates whether to check
         for the improper use of o/p or i/p buffer bits that according
         to the CBN should not be used as part of the compressed output
         or input. The option is specified as two 1/0 boolean values
         separated by a single colon. The first one indicates whether
         to perform the o/p buffer test during compression whereas the
         second one indicates whether to perform the same test for the
-        i/p buffer during expansion. The default is 1:1 meaning both
+        i/p buffer during expansion. The default is <b>1:1</b> meaning both
         tests should always be performed.
 
         All dictionaries must be in RAW BINARY format and MUST use
         the following file naming convention:
 
-                     <filename>.FST
+                     &lt;filename&gt;<b>.FST</b>
 
         Where:
 
-             F       Dictionary Format     0/1
-             S       Symbol Size           1-5
-             T       Dictionary Type       C/E
+             <b>F</b>       Dictionary Format     0/1
+             <b>S</b>       Symbol Size           1-5
+             <b>T</b>       Dictionary Type       C/E
 
         Thus, for a 13-bit CDSS format-1 dictionary there must be
         two files with whatever name you want, but with filename
         extensions of:
 
-             .15C        Compression dictionary
-             .15E        Expansion dictonary
+             <b>.15C</b>        Compression dictionary
+             <b>.15E</b>        Expansion dictonary
 
         For example:
 
-            mydict.03C
-            mydict.03E
-            foobar.15C
-            foobar.15E
+            mydict.<b>03C</b>
+            mydict.<b>03E</b>
+            foobar.<b>15C</b>
+            foobar.<b>15E</b>
             ...etc...
 
         Each dictionary pair MUST have the same name and each MUST
         be in the same directory and MUST be in raw binary format.
 
-    EXIT STATUS
+    <b>EXIT STATUS</b>
 
         0    Success.
         1    Failure.
 
-    AUTHOR
+    <b>AUTHOR</b>
 
         "Fish" (David B. Trout)
 
-    VERSION
+    <b>VERSION</b>
 
         2.6  (January 2014)
 
--------------------------------------------------------------------------------
-                            CMPSCTST.EXE
--------------------------------------------------------------------------------
+</pre>
 
+## cmpsctst-exe
+
+<pre>
 CMPSC Instruction Testing Tool, version 2.6.2
 Copyright (C) 2012-2014 Software Development Laboratories
 
-Options:
+<b>Options:</b>
 
-  -c  Compress (default)
-  -e  Expand
-  -a  Algorithm (see NOTES)
-  -r  Repeat Count
+  <b>-c</b>    Compress (default)
+  <b>-e</b>    Expand
+  <b>-a</b>    Algorithm (see NOTES)
+  <b>-r</b>    Repeat Count
 
-  -i  [buffer size:[offset:]] Input filename
-  -o  [buffer size:[offset:]] Output Filename
+  <b>-i</b>    [buffer size:[offset:]] Input filename
+  <b>-o</b>    [buffer size:[offset:]] Output Filename
 
-  -d  Compression Dictionary Filename
-  -x  Expansion Dictionary Filename
+  <b>-d</b>    Compression Dictionary Filename
+  <b>-x</b>    Expansion Dictionary Filename
 
-  -0  Format-0 (default)
-  -1  Format-1
-  -s  Symbol Size  (1-5 or 9-13; default = 2)
+  <b>-0</b>    Format-0 (default)
+  <b>-1</b>    Format-1
+  <b>-s</b>    Symbol Size  (1-5 or 9-13; default = 2)
 
-  -z  Zero Padding (enabled:requested; see NOTES)
-  -w  Zero Padding Alignment (default = 8 bit)
+  <b>-z</b>    Zero Padding (enabled:requested; see NOTES)
+  <b>-w</b>    Zero Padding Alignment (default = 8 bit)
 
-  -t  Translate (ASCII <-> EBCDIC as needed)
-  -b  Test proper cmp:exp out:input buffer CBN bit handling
-  -v  Verbose [filename]
-  -q  Quiet
+  <b>-t</b>    Translate (ASCII <-> EBCDIC as needed)
+  <b>-b</b>    Test proper cmp:exp out:input buffer CBN bit handling
+  <b>-v</b>    Verbose [filename]
+  <b>-q</b>    Quiet
 
-Returns:
+<b>Returns:</b>
 
-   0  Success
-   4  Protection Exception
-   7  Data Exception
-   n  Other (i/o error, help requested, etc)
+   0    Success
+   4    Protection Exception
+   7    Data Exception
+   n    Other (i/o error, help requested, etc)
 
-Examples:
+<b>Examples:</b>
 
   CMPSCTST -c -i 8192:*:foo.txt -o *:4095:foo.cmpsc -r 1000 \
            -t -d cdict.bin -x edict.bin -1 -s 10 -v rpt.log -z
@@ -421,11 +434,11 @@ Examples:
   CMPSCTST -c -a 1:0 -v -i 22684:2509:in.txt -o 2307:3221:out.bin \
            -d cdict.bin -x edict.bin -s 5 -1 -z 0:0 -b 1:0
 
-NOTES:
+<b>NOTES:</b>
 
   You may specify the buffer size to be used for input or output by
   preceding the filename with a number followed by a colon. Use the
-  value '*' for a randomly generated buffer size to be used instead.
+  value '<b>*</b>' for a randomly generated buffer size to be used instead.
   If not specified a default buffer size of 16 MB is used instead.
 
   Additionally, you may also optionally specify how you want your
@@ -433,17 +446,17 @@ NOTES:
   page offset value from 0-4095 indicating how many bytes past the
   beginning of the page that you wish the specified buffer to begin.
 
-  Like the buffer size option using an '*' causes a random value to
+  Like the buffer size option using an '<b>*</b>' causes a random value to
   be generated instead. Please note however that not specifying an
   offset value does not mean your buffer will then be automatically
   page aligned. To the contrary it will most likely *not* be aligned.
   If you want your buffers to always be page aligned then you need to
   specify 0 for the offset. Dictionaries will always be page aligned.
 
-  The '-z' (Zero Padding) option controls CMPSC-Enhancement Facility.
+  The '<b>-z</b>' (Zero Padding) option controls CMPSC-Enhancement Facility.
   Specify the option as two 0/1 values separated by a single colon.
-  If the -z option is not specified the default is 0:0. If the option
-  is specified but without any arguments then the default is 1:1.
+  If the <b>-z</b> option is not specified the default is <b>0:0</b>. If the option
+  is specified but without any arguments then the default is <b>1:1</b>.
   The first 0/1 defines whether the facility should be enabled or not.
   The second 0/1 controls whether the GR0 zero padding option bit 46
   should be set or not (i.e. whether the zero padding option should be
@@ -451,48 +464,48 @@ NOTES:
   handling of the facility since zero padding may only be attempted
   when both the Facility bit and the GR0 option bit 46 are both '1'.
 
-  The '-w' (Zero Padding Alignment) option allows adjusting the model-
+  The '<b>-w</b>' (Zero Padding Alignment) option allows adjusting the model-
   dependent integral storage boundary for zero padding. The value is
   specified as a power of 2 number of bytes ranging from 1 to 12.
 
-  Use the '-t' (Translate) option when testing using ASCII test files
+  Use the '<b>-t</b>' (Translate) option when testing using ASCII test files
   since most dictionaries are intended for EBCDIC data. If specified,
   the test data is first internally translated from ASCII to EBCDIC
   before being compressed and then from EBCDIC back into ASCII after
-  being expanded. Specifying the '-t' option with EBCDIC test files
+  being expanded. Specifying the '<b>-t</b>' option with EBCDIC test files
   will very likely cause erroneous compression/expansion results.
 
-  The '-b' option indicates whether to check for the improper use of
+  The '<b>-b</b>' option indicates whether to check for the improper use of
   output/input buffer bits which according to the CBN should not be
   used as part of the compressed output/input. The option is specified
   as two 1/0 boolean values separated by a single colon. The first one
   indicates whether to perform the output buffer test during compression
   and the second one indicates whether to perform the same test for the
-  input buffer during expansion. The default is 1:1 meaning both tests
+  input buffer during expansion. The default is <b>1:1</b> meaning both tests
   should be performed.
 
-  The '-a' (Algorithm) option allows you to choose between different
+  The '<b>-a</b>' (Algorithm) option allows you to choose between different
   Compression Call algorithms to allow you to compare implementations
   to see which one is better/faster. The currently defined algorithms
   are as follows:
 
-        default algorithm    0  =  CMPSC 2012
-        alternate algorithm  1  =  Legacy CMPSC
+        <b>default algorithm    0  =  CMPSC 2012</b>
+        <b>alternate algorithm  1  =  Legacy CMPSC</b>
 
-  If you specify the -a option without also specifying which algorithm
+  If you specify the <b>-a</b> option without also specifying which algorithm
   to use then the default alternate algorithm 1 will always be chosen.
 
-  The -a option also allows you to perform an algorithm comparison test
+  The <b>-a</b> option also allows you to perform an algorithm comparison test
   where the results of one algorithm (the one being tested) is compared
   against the results of the other (the base algorithm) using the format
-  a:b where 'a' identifies the test algorithm and 'b' the base algorithm.
+  <b>a:b</b> where '<b>a</b>' identifies the test algorithm and 'b' the base algorithm.
   As each buffer is compressed or expanded the results are compared with
   the base algorithm's results using the same register and buffer values.
   The test run immediately fails as soon as any difference is detected.
-  If the -v option is also specified the detected differences as well as
+  If the <b>-v</b> option is also specified the detected differences as well as
   all information needed to reproduce the failure are also displayed.
 
-  The '-r' (Repeat) option repeats each compression or expansion call
+  The '<b>-r</b>' (Repeat) option repeats each compression or expansion call
   the number of times specified. The input/output files are still read
   from and written to however. The repeat option only controls how many
   times to repeatedly call the chosen algorithm for each data block. It
@@ -500,8 +513,8 @@ NOTES:
   run on it for comparison with an alternate algorithm.
 
   The return code value, CPU time consumed and elapsed time are printed
-  at the end of the run when the '-v' verbose option is specified. Else
+  at the end of the run when the '<b>-v</b>' verbose option is specified. Else
   only the amount of data read/written and compression ratios are shown.
-  The '-q' (Quiet) option runs silently without displaying anything.
+  The '<b>-q</b>' (Quiet) option runs silently without displaying anything.
 
--------------------------------------------------------------------------------
+</pre>
