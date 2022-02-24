@@ -357,9 +357,9 @@ For more information refer to the **cmpsctst.rexx** section further below.
 
         Where:
 
-             <b>F</b>       Dictionary Format     0/1
-             <b>S</b>       Symbol Size           1-5
-             <b>T</b>       Dictionary Type       C/E
+             <b>F</b>       Dictionary Format   0/1   (Format-0/Format-1)
+             <b>S</b>       Symbol Size         1-5   (9-13 bits)
+             <b>T</b>       Dictionary Type     C/E   (Compression/Expansion)
 
         Thus, for a 13-bit CDSS format-1 dictionary there must be
         two files with whatever name you want, but with filename
