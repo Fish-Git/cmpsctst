@@ -13,9 +13,9 @@ in the following format:
 
 Where:
   
-    F     Dictionary Format    0/1
-    S     Symbol Size          1-5
-    T     Dictionary Type      C/E
+    F     Dictionary Format    0/1   (Format-0/Format-1)
+    S     Symbol Size          1-5   (9-13 bits)
+    T     Dictionary Type      C/E   (Compression/Expansion)
 
 
 
