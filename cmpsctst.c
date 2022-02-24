@@ -763,7 +763,7 @@ BOOL valid_inout_filename( const char* pszOptArg, char optchar,
     }
     else // (they specified a size)
     {
-        if (!*pbRandomSize && value && value < MIN_BUFFSIZE)
+        if (!*pbRandomSize && value && value < 1)
         {
             *(pszOption - 1) = 0;
             FPRINTF( stderr, "ERROR: Invalid '-%c' buffer size \"%s\".\n",
