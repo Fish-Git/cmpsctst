@@ -15,8 +15,8 @@
 #define VERINTER_NUM     7          // Minor Enhancements (new features, etc)
 #define VERINTER_STR    "7" 
                        
-#define VERMINOR_NUM     0          // Bug Fix or rebuild/relink, etc.
-#define VERMINOR_STR    "0"
+#define VERMINOR_NUM     1          // Bug Fix or rebuild/relink, etc.
+#define VERMINOR_STR    "1"
 
 #ifdef _DEBUG
 #define VERSION_STR     VERMAJOR_STR "." VERINTER_STR "." VERMINOR_STR "." GITHASH_STR "-D"
