@@ -5,7 +5,7 @@
 
                 Front-end driver for CMPSCTST.EXE Testing Tool
 
-               (C) Copyright "Fish" (David B. Trout), 2012-2014
+               (C) Copyright "Fish" (David B. Trout), 2012-2022
 
                 Released under "The Q Public License Version 1"
                  (http://www.hercules-390.org/herclic.html)
@@ -13,8 +13,8 @@
 
 \*****************************************************************************/
 
-  ver      = "2.6.2"          -- (version of this script)
-  ver_date = "December 2014"  -- (version of this script)
+  ver      = "2.6.3"          -- (version of this script)
+  ver_date = "February 2022"  -- (version of this script)
 
   Trace Off
   signal initialize
